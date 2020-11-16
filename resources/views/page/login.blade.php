@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Đăng nhập</title>
-    <link rel="shortcut icon" type="image/png" href="{{ url('public/images/logo-quan-doi.png') }}"/>
+    <link rel="shortcut icon" type="image/png" href="{{ url('public/images/logo_ctu.png') }}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     {{--Font googleapis--}}
@@ -15,10 +15,10 @@
     /* Coded with love by Mutiullah Samim */
     body{
         font-family: 'Mulish', sans-serif;
-        background-color: #b3b300;
+        background-color: white;
     }
     .container{
-        background-image: url('{{ url('public/images/bg-port.jpg') }}');
+        background-image: url('{{ url('public/images/ctu-background.jpeg') }}');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -30,7 +30,7 @@
         width: 350px;
         margin-top: auto;
         margin-bottom: auto;
-        background: #f39c12;
+        background: #2175ab;
         position: relative;
         display: flex;
         justify-content: center;
@@ -48,7 +48,7 @@
         width: 170px;
         top: -75px;
         border-radius: 50%;
-        background: #60a3bc;
+        background: white;
         padding: 10px;
         text-align: center;
     }
@@ -63,8 +63,8 @@
     }
     .login_btn {
         width: 100%;
-        background: #c0392b !important;
-        color: white !important;
+        background: yellow !important;
+        color: grey !important;
     }
     .login_btn:focus {
         box-shadow: none !important;
@@ -74,8 +74,8 @@
         padding: 0 2rem;
     }
     .input-group-text {
-        background: #c0392b !important;
-        color: white !important;
+        background: yellow !important;
+        color: grey !important;
         border: 0 !important;
         border-radius: 0.25rem 0 0 0.25rem !important;
     }
@@ -85,21 +85,21 @@
         outline: 0px !important;
     }
     .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-        background-color: #c0392b !important;
+        background-color: yellow !important;
     }
 </style>
 
 <div class="container p-0 pb-3">
-    <div class="jumbotron p-0 mt-1">
-        <img src="{{ url('public/images/bg-quan-doi.png') }}"
-        style="max-width:100%;height:142px;border-top-left-radius:5px;border-top-right-radius:5px;">
+    <div class="jumbotron p-0 mt-4">
+        <img src="{{ url('public/images/recommer-edit.jpg') }}"
+        style="max-width:100%;height:152px;border-top-left-radius:5px;border-top-right-radius:5px;">
     </div>
     <br><br>
     <div class="d-flex justify-content-center h-100">
         <div class="user_card">
             <div class="d-flex justify-content-center">
                 <div class="brand_logo_container">
-                    <img src="{{ url('public/images/logo-quan-doi.png') }}"
+                    <img src="{{ url('public/images/logo_ctu.png') }}"
                      class="brand_logo" alt="Logo">
                 </div>
             </div>
