@@ -11,4 +11,10 @@ class AdminController extends Controller
     {
         return view('page.login');
     }
+
+    //TRANG CHỦ GIẢNG VIÊN
+    protected function page_home_teacher()
+    {
+        return view('page.teacher.index_teacher');
+    }
 }
