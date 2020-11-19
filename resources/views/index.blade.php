@@ -1,4 +1,4 @@
-@extends('layout.layout_teacher')
+@extends('layout.layout')
 @section('title', 'Trang chủ')
 
 @section('breadcrumb')
