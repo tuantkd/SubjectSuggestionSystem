@@ -126,15 +126,70 @@ class AdminController extends Controller
     //TRANG KHÓA HỌC
     protected function page_course()
     {
-        return view('page.program_train.page_course');
+        return view('page.student.page_course');
     }
-    /*=================================================================*/
 
-    /*=================================================================*/
     //TRANG CHUYÊN NGÀNH
     protected function page_major()
     {
         return view('page.student.page_major');
+    }
+
+    //TRANG LỚP CHUYÊN NGÀNH
+    protected function page_class_major()
+    {
+        return view('page.student.page_class_major');
+    }
+
+    //TRANG THÊM CHUYÊN NGÀNH
+    protected function add_class_major()
+    {
+        return view('page.student.add_class_major');
+    }
+
+    //TRANG CHỈNH SỬA CHUYÊN NGÀNH
+    protected function edit_class_major()
+    {
+        return view('page.student.edit_class_major');
+    }
+
+    //TRANG DANH SÁCH SINH VIÊN
+    protected function page_list_student()
+    {
+        return view('page.student.page_list_student');
+    }
+
+    //TRANG THÊM SINH VIÊN
+    protected function add_student()
+    {
+        return view('page.student.add_student');
+    }
+
+    //TRANG CHỈNH SỬA SINH VIÊN
+    protected function edit_student()
+    {
+        return view('page.student.edit_student');
+    }
+
+    //TRANG THÔNG TIN SINH VIÊN
+    protected function view_infor_student()
+    {
+        return view('page.student.view_infor_student');
+    }
+    /*=================================================================*/
+
+
+    /*=================================================================*/
+    //TRANG HỌC KỲ NĂM HỌC
+    protected function page_semester_year()
+    {
+        return view('page.subject.page_semester_year');
+    }
+
+    //TRANG LOẠI HỌC PHẦN
+    protected function page_category_subject()
+    {
+        return view('page.subject.page_category_subject');
     }
     /*=================================================================*/
 

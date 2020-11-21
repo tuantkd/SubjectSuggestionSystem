@@ -91,6 +91,7 @@
                                         </td>
                                         <td data-label="Mô tả">
                                             <p class="text-justify">
+                                                Không có
                                             </p>
                                         </td>
                                         <td data-label="Chọn">
