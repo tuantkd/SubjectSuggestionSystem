@@ -2,27 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/page/degree/page_degree.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/department/edit-department.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/department/edit_part_subject.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/department/page_department.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/department/page_part_subject.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/position/page_position.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_course.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/role/page_role.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/role/page_role_user.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/page_major.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/teacher/add_admin.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/teacher/add_teacher.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/teacher/create_account.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/teacher/infor_teacher.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/teacher/list_admin.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/teacher/list_teacher.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/title/page_title.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/add_class_major.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/add_student.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/edit_class_major.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/edit_student.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/page_class_major.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/page_list_student.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_category_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_semester_year.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/layout_teacher.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/index_teacher.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/program_train/page_course.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/page_course.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -163,6 +157,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\subjectsuggestionsystem\resources\views\page\student" />
       <recent name="C:\xampp\htdocs\subjectsuggestionsystem\resources\views" />
     </key>
   </component>
@@ -194,7 +189,13 @@
       <workItem from="1605661609207" duration="10007000" />
       <workItem from="1605683629660" duration="6638000" />
       <workItem from="1605712413076" duration="94000" />
-      <workItem from="1605751839067" duration="564000" />
+      <workItem from="1605751839067" duration="3840000" />
+      <workItem from="1605768987727" duration="9790000" />
+      <workItem from="1605800333030" duration="10000" />
+      <workItem from="1605857599318" duration="600000" />
+      <workItem from="1605859336389" duration="4043000" />
+      <workItem from="1605864099812" duration="699000" />
+      <workItem from="1605924337602" duration="3925000" />
     </task>
     <servers />
   </component>
@@ -210,9 +211,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1605689599405" />
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1605712505552">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1605800341513">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1605712505552" />
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1605800341513" />
   </component>
 </project>

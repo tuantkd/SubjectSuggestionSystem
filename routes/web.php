@@ -79,10 +79,44 @@ Route::get('create-account', [AdminController::class, 'create_account']);
 /*============================================================================*/
 //TRANG KHÓA HỌC
 Route::get('page-course', [AdminController::class, 'page_course']);
-/*============================================================================*/
 
-
-/*============================================================================*/
 //TRANG CHUYÊN NGÀNH
 Route::get('page-major', [AdminController::class, 'page_major']);
+
+//TRANG LỚP CHUYÊN NGÀNH
+Route::get('page-class-major', [AdminController::class, 'page_class_major']);
+
+//TRANG THÊM CHUYÊN NGÀNH
+Route::get('add-class-major', [AdminController::class, 'add_class_major']);
+
+//TRANG CHỈNH SỬA CHUYÊN NGÀNH
+Route::get('edit-class-major', [AdminController::class, 'edit_class_major']);
+
+//TRANG DANH SÁCH SINH VIÊN
+Route::get('page-list-student', [AdminController::class, 'page_list_student']);
+
+//TRANG THÊM SINH VIÊN
+Route::get('add-student', [AdminController::class, 'add_student']);
+
+//TRANG CHỈNH SỬA SINH VIÊN
+Route::get('edit-student', [AdminController::class, 'edit_student']);
+
+//TRANG THÔNG TIN SINH VIÊN
+Route::get('view-infor-student', [AdminController::class, 'view_infor_student']);
+/*============================================================================*/
+
+
+
+/*============================================================================*/
+//TRANG CHƯƠNG TRÌNH ĐÀO TẠO
+Route::get('page-program-train', [AdminController::class, 'page_program_train']);
+/*============================================================================*/
+
+
+/*============================================================================*/
+//TRANG HỌC KỲ NĂM HỌC
+Route::get('page-semester-year', [AdminController::class, 'page_semester_year']);
+
+//TRANG LOẠI HỌC PHẦN
+Route::get('page-category-subject', [AdminController::class, 'page_category_subject']);
 /*============================================================================*/
