@@ -172,6 +172,15 @@ class AdminController extends Controller
     }
 
     //TRANG THÔNG TIN SINH VIÊN
+    protected function page_program_train()
+    {
+        return view('page.program_train.page_program_train');
+    }
+    /*=================================================================*/
+
+
+    /*=================================================================*/
+    //TRANG CHƯƠNG TRÌNH ĐÀO TẠO
     protected function view_infor_student()
     {
         return view('page.student.view_infor_student');
@@ -190,6 +199,48 @@ class AdminController extends Controller
     protected function page_category_subject()
     {
         return view('page.subject.page_category_subject');
+    }
+
+    //TRANG HỌC PHẦN
+    protected function page_subject()
+    {
+        return view('page.subject.page_subject');
+    }
+
+    //TRANG LỚP HỌC PHẦN
+    protected function page_class_subject()
+    {
+        return view('page.subject.page_class_subject');
+    }
+
+    //TRANG THÊM LỚP HỌC PHẦN
+    protected function add_class_subject()
+    {
+        return view('page.subject.add_class_subject');
+    }
+
+    //TRANG CHỈNH SỬA LỚP HỌC PHẦN
+    protected function edit_class_subject()
+    {
+        return view('page.subject.edit_class_subject');
+    }
+
+    //TRANG XEM LỚP HỌC PHẦN
+    protected function view_detail_class_subject()
+    {
+        return view('page.subject.view_detail_class_subject');
+    }
+
+    //TRANG XEM ĐIỂM HỌC PHẦN SINH VIÊN
+    protected function view_score_student()
+    {
+        return view('page.subject.view_score_student');
+    }
+
+    //TRANG CHƯƠNG TRÌNH HỌC
+    protected function page_program_study()
+    {
+        return view('page.subject.page_program_study');
     }
     /*=================================================================*/
 

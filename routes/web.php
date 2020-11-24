@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 //ĐĂNG NHẬP
 Route::get('page-login', [AdminController::class, 'page_login']);
 
-//TRANG CHỦ GIẢNG VIÊN
+//TRANG CHỦ
 Route::get('page-home-admin', [AdminController::class, 'page_home_admin']);
 
 /*============================================================================*/
@@ -119,4 +119,25 @@ Route::get('page-semester-year', [AdminController::class, 'page_semester_year'])
 
 //TRANG LOẠI HỌC PHẦN
 Route::get('page-category-subject', [AdminController::class, 'page_category_subject']);
+
+//TRANG HỌC PHẦN
+Route::get('page-subject', [AdminController::class, 'page_subject']);
+
+//TRANG LỚP HỌC PHẦN
+Route::get('page-class-subject', [AdminController::class, 'page_class_subject']);
+
+//TRANG THÊM LỚP HỌC PHẦN
+Route::get('add-class-subject', [AdminController::class, 'add_class_subject']);
+
+//TRANG CHỈNH SỬA LỚP HỌC PHẦN
+Route::get('edit-class-subject', [AdminController::class, 'edit_class_subject']);
+
+//TRANG XEM LỚP HỌC PHẦN
+Route::get('view-detail-class-subject', [AdminController::class, 'view_detail_class_subject']);
+
+//TRANG XEM ĐIỂM HỌC PHẦN SINH VIÊN
+Route::get('view-score-student', [AdminController::class, 'view_score_student']);
+
+//TRANG CHƯƠNG TRÌNH HỌC
+Route::get('page-program-study', [AdminController::class, 'page_program_study']);
 /*============================================================================*/

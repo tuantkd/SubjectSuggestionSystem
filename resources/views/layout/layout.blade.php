@@ -43,6 +43,8 @@
     <link rel="stylesheet prefetch" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
+    @yield('link_cdn')
+
     <style type="text/css" media="screen">
         table {
             margin: 5;
@@ -60,7 +62,7 @@
 
         table th,
         table td {
-            padding: .200em;
+            padding: .150em;
             text-align: center;
             border: 1px solid #ddd;
             font-size: 12px;
@@ -387,19 +389,19 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('page-admin') }}" class="nav-link">
+                                <a href="{{ url('page-subject') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Học phần</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('page-editor') }}" class="nav-link">
+                                <a href="{{ url('page-class-subject') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Lớp học phần</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('page-editor') }}" class="nav-link">
+                                <a href="{{ url('page-program-study') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Chương trình học</p>
                                 </a>
