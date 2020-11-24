@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Học phần')
+@section('title', 'Lớp học phần')
 
 @section('breadcrumb')
     <!-- Content Header (Page header) -->
@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
-                        <li class="breadcrumb-item active">Học phần</li>
+                        <li class="breadcrumb-item active">Lớp học phần</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -21,54 +21,22 @@
 @endsection
 
 @section('content')
-
-    <!-- Modal -->
-    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form action="" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><b>THÊM HỌC PHẦN</b></h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="">Mã học phần</label>
-                            <input type="text" name="" class="form-control" placeholder="Nhập mã học phần">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Tên học phần</label>
-                            <input type="text" name="" class="form-control" placeholder="Nhập tên học phần">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Tín chỉ</label>
-                            <input type="number" name="" class="form-control" placeholder="Nhập số tín chỉ">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <!-- Main row -->
             <div class="row">
                 <!--  col 6-->
-                <section class="col-lg-8 offset-lg-2">
+                <section class="col-lg-12">
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                <b>HỌC PHẦN</b>
+                                <b>LỚP HỌC PHẦN</b>
                             </h3>
                             <div class="card-tools">
-                                <a class="btn btn-primary btn-xs" href="#" role="button" data-toggle="modal" data-target="#modelId">
+                                <a class="btn btn-primary btn-xs" href="{{ url('add-class-subject') }}" role="button">
                                     <i class="fa fa-plus"></i> Thêm mới
                                 </a>
                             </div>
@@ -80,27 +48,42 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width: 5%;">STT</th>
-                                        <th scope="col" style="width: 20%;">Mã học phần</th>
-                                        <th scope="col" style="width: 50%;">Tên học phần</th>
-                                        <th scope="col" style="width: 20%;">Tín chỉ</th>
-                                        <th scope="col" style="width: 5%;">Chọn</th>
+                                        <th scope="col" style="width: 15%;">Mã lớp</th>
+                                        <th scope="col" style="width: 20%;">Tên lớp</th>
+                                        <th scope="col" style="width: 25%;">Giảng viên</th>
+                                        <th scope="col" style="width: 25%;">Học kỳ - Năm học</th>
+                                        <th scope="col" style="width: 10%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td data-label="STT">1</td>
-                                        <td data-label="Mã học phần">
-                                            <b>CT342</b>
+                                        <td data-label="Mã lớp">
+                                            <b>H02</b>
                                         </td>
-                                        <td data-label="Tên học phần">
+                                        <td data-label="Tên lớp">
                                             <b>Quản trị hệ thống</b>
                                         </td>
-                                        <td data-label="Tín chỉ">
-                                            <span>3</span>
+                                        <td data-label="Giảng viên">
+                                            <b>Nguyễn Thanh Hải</b>
                                         </td>
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button">
+                                        <td data-label="Ghi chú">
+                                            <span>Học kỳ 1 - Năm 2020</span>
+                                        </td>
+                                        <td data-label="Ghi chú">
+                                            <a class="btn btn-danger btn-xs" href="#" role="button">
                                                 <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                        <td data-label="Ghi chú">
+                                            <a class="btn btn-primary btn-xs"
+                                            href="{{ url('edit-class-subject') }}" role="button">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td><td data-label="Ghi chú">
+                                            <a class="btn btn-success btn-xs"
+                                            href="{{ url('view-detail-class-subject') }}" role="button">
+                                                <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -118,5 +101,11 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        $(function() {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
 
 @endsection

@@ -2,21 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/add_class_major.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/add_student.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/edit_class_major.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/edit_student.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/page_class_major.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/page_list_student.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_category_subject.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_semester_year.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/dist/css/select.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/dist/js/select.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_class_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/page_program_study.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/view_score_student.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/program_train/page_course.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/page_course.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_category_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_category_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,6 +156,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\subjectsuggestionsystem\resources\views\page\subject" />
+      <recent name="C:\xampp\htdocs\subjectsuggestionsystem\public\dist\css" />
       <recent name="C:\xampp\htdocs\subjectsuggestionsystem\resources\views\page\student" />
       <recent name="C:\xampp\htdocs\subjectsuggestionsystem\resources\views" />
     </key>
@@ -195,7 +196,15 @@
       <workItem from="1605857599318" duration="600000" />
       <workItem from="1605859336389" duration="4043000" />
       <workItem from="1605864099812" duration="699000" />
-      <workItem from="1605924337602" duration="3925000" />
+      <workItem from="1605924337602" duration="8574000" />
+      <workItem from="1605946640041" duration="223000" />
+      <workItem from="1605947495293" duration="1195000" />
+      <workItem from="1606028753181" duration="3198000" />
+      <workItem from="1606103608081" duration="469000" />
+      <workItem from="1606114567330" duration="1054000" />
+      <workItem from="1606115707780" duration="4358000" />
+      <workItem from="1606141704600" duration="192000" />
+      <workItem from="1606183437151" duration="22000" />
     </task>
     <servers />
   </component>
@@ -211,9 +220,13 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1605689599405" />
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1605800341513">
+    <state x="363" y="101" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1606115586924">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1605800341513" />
+    <state x="363" y="101" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1366.728@0.0.1366.728" timestamp="1606115586924" />
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1606141895246">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1606141895246" />
   </component>
 </project>

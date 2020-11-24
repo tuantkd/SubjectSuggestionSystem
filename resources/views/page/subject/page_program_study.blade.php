@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Chương trình đào tạo')
+@section('title', 'Chương trình học tập')
 
 @section('breadcrumb')
     <!-- Content Header (Page header) -->
@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ url('page-home-admin') }}">Bảng điều khiển</a></li>
-                        <li class="breadcrumb-item active">Chương trình đào tạo</li>
+                        <li class="breadcrumb-item active">Chương trình học tập</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -28,35 +28,34 @@
             <form action="" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"><b>THÊM CHƯƠNG TRÌNH ĐÀO TẠO</b></h5>
+                        <h5 class="modal-title"><b>THÊM CHƯƠNG TRÌNH HỌC</b></h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="">Tên chương trình đào tạo</label>
-                            <input type="text" name="" class="form-control" placeholder="Nhập tên chương trình đào tạo">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Ngày bắt đầu</label>
-                            <input type="date" name="" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Khóa học</label>
+                            <label for="">Loại học phần</label>
                             <select name="" class="form-control">
                                 <option value="">- - Chọn - -</option>
-                                <option value="">Khóa 44</option>
+                                <option value="">Tiên quyết</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Chuyên ngành</label>
+                            <label for="">Học phần</label>
                             <select name="" class="form-control">
                                 <option value="">- - Chọn - -</option>
-                                <option value="">Công nghệ thông tin</option>
+                                <option value="">Lập trình website</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Chương trình đào tạo</label>
+                            <select name="" class="form-control">
+                                <option value="">- - Chọn - -</option>
+                                <option value="">Chương trình đào tạo Khóa 44</option>
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
+                        <button type="button" class="btn btn-primary btn-sm">Nhập</button>
                     </div>
                 </div>
             </form>
@@ -68,16 +67,17 @@
         <div class="container-fluid">
             <!-- Main row -->
             <div class="row">
+                <!--  col 6-->
                 <section class="col-lg-12">
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                <b>CHƯƠNG TRÌNH ĐÀO TẠO</b>
+                                <b style="text-transform: uppercase;">CHƯƠNG TRÌNH HỌC TẬP</b>
                             </h3>
                             <div class="card-tools">
-                                <a class="btn btn-primary btn-xs" href="#" role="button" data-toggle="modal" data-target="#modelId">
+                                <a class="btn btn-primary btn-xs" href="{{ url('add-class-subject') }}" data-toggle="modal" data-target="#modelId">
                                     <i class="fa fa-plus"></i> Thêm mới
                                 </a>
                             </div>
@@ -89,27 +89,23 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
-                                        <th scope="col" style="width:30%;">Tên chương trình</th>
-                                        <th scope="col" style="width:15%;">Ngày bắt đầu</th>
-                                        <th scope="col" style="width:10%;">Khóa học</th>
-                                        <th scope="col" style="width:35%;">Chuyên ngành</th>
-                                        <th scope="col" style="width:5%;" colspan="2">Chọn</th>
+                                        <th scope="col" style="width:15%;">Loại học phần</th>
+                                        <th scope="col" style="width:35%;">Học phần</th>
+                                        <th scope="col" style="width:40%;">Chương trình đào tạo</th>
+                                        <th scope="col" style="width:5%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td data-label="STT">1</td>
-                                        <td data-label="Tên chương trình">
-                                            <b>Chương trình Đào Tạo K44</b>
+                                        <td data-label="Loại học phần">
+                                            <b>Tiên quyết</b>
                                         </td>
-                                        <td data-label="Ngày bắt đầu">
-                                            <b>16/0/2020</b>
+                                        <td data-label="Họ tên">
+                                            <b>Lập trình website</b>
                                         </td>
-                                        <td data-label="Khóa học">
-                                            Khóa 44
-                                        </td>
-                                        <td data-label="Chuyên ngành">
-                                            Công nghệ thông tin
+                                        <td data-label="Giới tính">
+                                            Chương trình đào tạo khóa 44
                                         </td>
                                         <td data-label="Chọn">
                                             <a class="btn btn-danger btn-xs" href="#" role="button">
@@ -117,7 +113,8 @@
                                             </a>
                                         </td>
                                         <td data-label="Chọn">
-                                            <a class="btn btn-primary btn-xs" href="#" role="button">
+                                            <a class="btn btn-success btn-xs"
+                                               href="{{ url('view-score-student') }}" role="button" title="Cập nhật điểm">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
@@ -130,11 +127,17 @@
                     </div>
                     <!-- /.card -->
                 </section>
-                <!--  End col 12-->
+                <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        $(function() {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
 
 @endsection
