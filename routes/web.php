@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 //ĐĂNG NHẬP
 Route::get('page-login', [AdminController::class, 'page_login']);
 
+
 //TRANG CHỦ
 Route::get('page-home-admin', [AdminController::class, 'page_home_admin']);
 
