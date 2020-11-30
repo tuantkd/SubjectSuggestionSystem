@@ -73,14 +73,16 @@
                         <!-- /.card-header -->
                         <div class="card-body p-1">
                             <!-- SEARCH FORM -->
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Nhập tìm kiếm giảng viên">
-                                <div class="input-group-append">
-                                    <button class="btn btn-success" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
+                            <form action="{{ url('page-list-teacher') }}" method="GET">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Nhập tìm kiếm giảng viên" name="inputSearch">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                             <!-- SEARCH FORM -->
 
                             <div class="table-responsive-sm">
@@ -89,51 +91,80 @@
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
                                         <th scope="col" style="width:15%;">Họ và tên</th>
-                                        <th scope="col" style="width:15%;">Ảnh đại diện</th>
-                                        <th scope="col" style="width:15%;">Giới tính</th>
-                                        <th scope="col" style="width:15%;">Điện thoại</th>
-                                        <th scope="col" style="width:15%;">Email</th>
-                                        <th scope="col" style="width:15%;">Chức vụ</th>
-                                        <th scope="col" style="width:5%;"colspan="2">Chọn</th>
+                                        <th scope="col" style="width:10%;">Ảnh đại diện</th>
+                                        <th scope="col" style="width:10%;">Giới tính</th>
+                                        <th scope="col" style="width:10%;">Điện thoại</th>
+                                        <th scope="col" style="width:10%;">Email</th>
+                                        <th scope="col" style="width:10%;">Chức vụ</th>
+                                        <th scope="col" style="width:20%;">Quê quán</th>
+                                        <th scope="col" style="width:5%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td data-label="STT">1</td>
-                                        <td data-label="Họ và tên">
-                                            <b>Nguyễn Thanh Hải</b>
-                                        </td>
-                                        <td data-label="Ảnh đại diện">
-                                            <img src="{{ url('public/dist/img/avatar.png') }}" alt="Ảnh đại diện"
-                                            style="max-width:100%;height:60px;border-radius:40%;">
-                                        </td>
-                                        <td data-label="Giới tính">
-                                            <p>Nam</p>
-                                        </td>
-                                        <td data-label="Điện thoại">
-                                            <p>0326859698</p>
-                                        </td>
-                                        <td data-label="Email">
-                                            <p>thanhhai@gmail.com</p>
-                                        </td>
-                                        <td data-label="Chức vụ">
-                                            <b>Phó bộ môn</b>
-                                        </td>
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button" title="Xóa">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </td>
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-success btn-sm"
-                                               href="{{ url('view-infor-reacher') }}" role="button" title="Xem thông tin">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    @forelse($show_teachers as $key => $show_teacher)
+                                        <tr>
+                                            <td data-label="STT"><b>{{ ++$key }}</b></td>
+                                            <td data-label="Họ và tên">
+                                                <b>{{ $show_teacher->fullname }}</b>
+                                            </td>
+                                            <td data-label="Ảnh đại diện">
+                                                @if ($show_teacher->avatar != null)
+                                                    <img src="{{ url('public/upload_avatar/'.$show_teacher->avatar) }}" alt="Ảnh đại diện"
+                                                    style="max-width:100%;height:70px;border-radius:30%;">
+                                                @else
+                                                    <img src="{{ url('public/dist/img/user_avatar.png') }}" alt="Ảnh đại diện"
+                                                         style="max-width:100%;height:70px;border-radius:30%;">
+                                                @endif
+                                            </td>
+                                            <td data-label="Giới tính">
+                                                <p>{{ $show_teacher->sex }}</p>
+                                            </td>
+                                            <td data-label="Điện thoại">
+                                                <p>{{ $show_teacher->phone }}</p>
+                                            </td>
+                                            <td data-label="Email">
+                                                <p>{{ $show_teacher->email }}</p>
+                                            </td>
+                                            <td data-label="Chức vụ">
+                                                @php($get_positions = DB::table('positions')->where('id', $show_teacher->position_id)->get())
+                                                @foreach($get_positions as $get_position)
+                                                    <b>{{ $get_position->position_name }}</b>
+                                                @endforeach
+                                            </td>
+                                            <td data-label="Quê quán">
+                                                {{ $show_teacher->address }}
+                                            </td>
+
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?');"
+                                                href="{{ url('delete-teacher/'.$show_teacher->id) }}" role="button">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-success btn-xs"
+                                                href="{{ url('view-infor-teacher/'.$show_teacher->id) }}" role="button">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="10">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm" style="margin:20px 0">
+                                {{ $show_teachers->links() }}
+                            </ul>
+                            <!-- /pagination -->
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -145,5 +176,17 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @if (Session::has('delete_teacher_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã xóa giảng viên'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
 
 @endsection

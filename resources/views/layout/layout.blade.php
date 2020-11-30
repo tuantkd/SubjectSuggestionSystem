@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title')</title>
     <!-- Tell the browser to be responsive to screen width -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Icon image -->
     <link rel="shortcut icon" type="image/png" href="{{ url('public/images/logo_ctu.png') }}"/>
@@ -39,9 +40,13 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
+
     <!-- Bootstrap-datepicker -->
     <link rel="stylesheet prefetch" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+
+    <!-- Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     @yield('link_cdn')
 
@@ -140,14 +145,12 @@
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown p-0">
                 <a href="{{ url('logout') }}" class="nav-link text-danger"
                    onclick="return confirm('Bạn có muốn đăng xuất không ?');">
                     <b><i class="fa fa-sign-out"></i> Đăng xuất</b>
                 </a>
             </li>
-
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -164,252 +167,354 @@
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                {{--@if(Auth::check())--}}
+                @if(Auth::check())
                     <div class="image">
                         <img src="{{ asset('public/dist/img/avatar.png') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="{{--{{ url('page-profile-user/'.Auth::id()) }}--}}" class="d-block">
-                            <b>Thanh Hải</b>
+                        <a href="{{ url('page-profile-user/'.Auth::id()) }}" class="d-block">
+                            <b>{{ Auth::user()->username }}</b>
                         </a>
                     </div>
-                {{--@endif--}}
+                @endif
             </div>
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    {{--===================================================--}}
-                    {{--BẢNG ĐIỀU KHIỂN--}}
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="{{ url('page-home-admin') }}" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Bảng điều khiển</p>
-                        </a>
-                    </li>
-                    {{--BẢNG ĐIỀU KHIỂN--}}
-                    {{--===================================================--}}
-                    <div class="dropdown-divider mb-3"></div>
+
+                    @if (Auth::check() && Auth::user()->role_id == 1)
+
+                        {{--BẢNG ĐIỀU KHIỂN--}}
+                        <li class="nav-item has-treeview menu-open">
+                            <a href="{{ url('page-home-admin') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Bảng điều khiển</p>
+                            </a>
+                        </li>
+                        {{--BẢNG ĐIỀU KHIỂN--}}
+                        <div class="dropdown-divider mb-3"></div>
 
 
-                    {{--QUẢN LÝ CẤP BẬC--}}
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fa fa-sitemap"></i>
-                            <p>
-                                Quản lý cấp bậc
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-position') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Chức vụ</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-degree') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Học vị</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-title') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Chức danh</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ CẤP BẬC--}}
-                    <div class="dropdown-divider mb-3"></div>
+                        {{--QUẢN LÝ CẤP BẬC--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-sitemap"></i>
+                                <p>
+                                    Quản lý cấp bậc
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-position') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chức vụ</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-degree') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Học vị</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-title') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chức danh</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ CẤP BẬC--}}
+                        <div class="dropdown-divider mb-3"></div>
 
-                    {{--QUẢN LÝ QUYỀN TRUY CẬP--}}
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-key"></i>
-                            <p>
-                                Quản lý quyền
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-role') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Quyền truy cập</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-role-user-access') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Người dùng truy cập</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ QUYỀN TRUY CẬP--}}
-                    <div class="dropdown-divider mb-3"></div>
 
-                    {{--QUẢN LÝ ĐƠN VỊ--}}
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fa fa-building-o"></i>
-                            <p>
-                                Quản lý đơn vị
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-department') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Khoa</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-part-subject') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Bộ môn</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ ĐƠN VỊ--}}
-                    <div class="dropdown-divider mb-3"></div>
+                        {{--QUẢN LÝ ĐƠN VỊ--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-building-o"></i>
+                                <p>
+                                    Quản lý đơn vị
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-department') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Khoa</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-part-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Bộ môn</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-major') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chuyên Ngành</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ ĐƠN VỊ--}}
+                        <div class="dropdown-divider mb-3"></div>
 
-                    {{--QUẢN LÝ GIẢNG VIÊN--}}
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>
-                                Quản lý người dùng
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-list-admin') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Quản trị</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-list-teacher') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Giảng viên</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ GIẢNG VIÊN--}}
-                    <div class="dropdown-divider mb-3"></div>
+                        {{--QUẢN LÝ GIẢNG VIÊN--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Quản lý người dùng
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-role') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Quyền truy cập</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-list-admin') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Quản trị</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-list-teacher') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Giảng viên</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-role-user-access') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Người dùng truy cập</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ GIẢNG VIÊN--}}
+                        <div class="dropdown-divider mb-3"></div>
 
-                    {{--QUẢN LÝ SINH VIÊN--}}
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>
-                                Quản lý sinh viên
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-course') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Khóa học</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-major') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Chuyên Ngành</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-class-major') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Lớp chuyên ngành</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-list-student') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Danh sách sinh viên</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ SINH VIÊN--}}
-                    <div class="dropdown-divider mb-3"></div>
+                        {{--QUẢN LÝ SINH VIÊN--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Quản lý sinh viên
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-course') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Khóa học</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-class-major') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Lớp chuyên ngành</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-list-student') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sinh viên</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ SINH VIÊN--}}
+                        <div class="dropdown-divider mb-3"></div>
 
-                    {{--QUẢN LÝ CT ĐÀO TẠO--}}
-                    <li class="nav-item has-treeview">
-                        <a href="pages/widgets.html" class="nav-link">
-                            <i class="nav-icon fas fa-list-alt"></i>
-                            <p>
-                                C.Trình đào tạo
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-program-train') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Chương trình đào tạo</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ CT ĐÀO TẠO--}}
-                    <div class="dropdown-divider mb-3"></div>
+                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
+                        <li class="nav-item has-treeview">
+                            <a href="pages/widgets.html" class="nav-link">
+                                <i class="nav-icon fas fa-list-alt"></i>
+                                <p>
+                                    C.Trình đào tạo
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-program-train') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chương trình đào tạo</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
+                        <div class="dropdown-divider mb-3"></div>
 
-                    {{--QUẢN LÝ HỌC PHẦN--}}
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
-                            <p>
-                                Quản lý học phần
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('page-semester-year') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Học kỳ - Năm học</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-category-subject') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Loại học phần</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-subject') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Học phần</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-class-subject') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Lớp học phần</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('page-program-study') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Chương trình học</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--QUẢN LÝ HỌC PHẦN--}}
-                    <div class="dropdown-divider mb-0"></div>
+                        {{--QUẢN LÝ HỌC PHẦN--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Quản lý học phần
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-semester-year') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Học kỳ - Năm học</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-category-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Loại học phần</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Học phần</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-class-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Lớp học phần</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-program-study') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chương trình học</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ HỌC PHẦN--}}
+                        <div class="dropdown-divider mb-0"></div>
+
+
+                    @elseif (Auth::check() && Auth::user()->role_id == 2)
+
+
+                        {{--BẢNG ĐIỀU KHIỂN--}}
+                        <li class="nav-item has-treeview menu-open">
+                            <a href="{{ url('page-home-admin') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Bảng điều khiển</p>
+                            </a>
+                        </li>
+                        {{--BẢNG ĐIỀU KHIỂN--}}
+                        <div class="dropdown-divider mb-3"></div>
+
+                        {{--QUẢN LÝ SINH VIÊN--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Quản lý sinh viên
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-course') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Khóa học</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-class-major') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Lớp chuyên ngành</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-list-student') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sinh viên</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ SINH VIÊN--}}
+                        <div class="dropdown-divider mb-3"></div>
+
+                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
+                        <li class="nav-item has-treeview">
+                            <a href="pages/widgets.html" class="nav-link">
+                                <i class="nav-icon fas fa-list-alt"></i>
+                                <p>
+                                    C.Trình đào tạo
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-program-train') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chương trình đào tạo</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
+                        <div class="dropdown-divider mb-3"></div>
+
+                        {{--QUẢN LÝ HỌC PHẦN--}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Quản lý học phần
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-semester-year') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Học kỳ - Năm học</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-category-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Loại học phần</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Học phần</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-class-subject') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Lớp học phần</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('page-program-study') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chương trình học</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ HỌC PHẦN--}}
+                        <div class="dropdown-divider mb-0"></div>
+
+                    @endif
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

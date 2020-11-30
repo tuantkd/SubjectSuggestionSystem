@@ -25,7 +25,8 @@
     <!-- Modal -->
     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="" method="post">
+            <form action="{{ url('post-add-title') }}" method="POST" class="needs-validation" novalidate>
+                @csrf
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"><b>THÊM CHỨC DANH</b></h5>
@@ -34,13 +35,14 @@
                         <div class="form-group row">
                             <div class="col-12">
                                 <label for="">Tên chức danh</label>
-                                <input type="text" name="" class="form-control" placeholder="Nhập tên chức danh">
+                                <input type="text" name="inputTitleName" class="form-control" placeholder="Nhập tên chức danh" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-12">
                                 <label for="">Mô tả</label>
-                                <textarea class="form-control" name="" id="" rows="3" placeholder="Nhập mô tả chức danh"></textarea>
+                                <textarea class="form-control" name="inputTitleDescription"
+                                rows="3" placeholder="Nhập mô tả chức danh" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -60,6 +62,16 @@
             <div class="row">
                 <!--  col 12-->
                 <section class="col-lg-12">
+                    <!-- Report message -->
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger p-2" role="alert">
+                            <strong>
+                                {{ $errors->first('inputTitleName') }}
+                            </strong>
+                        </div>
+                    @endif
+                    <!-- /Report message -->
+
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
@@ -86,30 +98,40 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @forelse($show_titles as $key => $show_title)
                                     <tr>
-                                        <td data-label="STT">1</td>
+                                        <td data-label="STT"><b>{{ ++$key }}</b></td>
                                         <td data-label="Tên quyền">
-                                            <b>Phó giáo sư</b>
+                                            <b>{{ $show_title->title_name }}</b>
                                         </td>
                                         <td data-label="Chức vụ">
                                             <p class="text-justify">
-                                                Tiến sĩ là một học vị do trường đại học cấp cho nghiên cứu sinh sau đại học,
-                                                công nhận luận án nghiên cứu của họ đã đáp ứng tiêu chuẩn bậc tiến sĩ,
-                                                là hoàn toàn mới chưa từng có ai làm qua.
-                                                Thời gian để hoàn thành luận án tiến sĩ có thể từ 3 đến 5 năm hay dài hơn,
-                                                tùy thuộc vào tình hình hay điều kiện khác nhau của từng nghiên cứu sinh,
-                                                có thể làm bán thời hay toàn thời.
+                                                {!! $show_title->title_description !!}
                                             </p>
                                         </td>
                                         <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button">
+                                            <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?');"
+                                            href="{{ url('delete-title/'.$show_title->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
                                     </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm">
+                                {{ $show_titles->links() }}
+                            </ul>
+                            <!-- /pagination -->
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -121,5 +143,50 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+    @if (Session::has('add_title_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm chức danh'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('delete_title_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Xóa chức danh'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
 
 @endsection

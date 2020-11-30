@@ -40,25 +40,33 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-3">
-                            <form action="" method="post">
+                            <form action="{{ url('post-create-account/'.$account->id) }}" method="POST">
+                                @csrf
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Tên tài khoản</label>
-                                        <input type="text" name="" class="form-control" placeholder="Nhập tên tài khoản">
+                                        <input type="text" name="inputUsername" class="form-control" placeholder="Nhập tên tài khoản">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Mật khẩu</label>
-                                        <input type="password" name="" class="form-control" placeholder="Nhập mật khẩu">
+                                        <input type="password" name="inputPassword" class="form-control" placeholder="Nhập mật khẩu">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Quyền truy cập</label>
-                                        <select name="" class="form-control">
+                                        <select name="inputRoleId" class="form-control">
                                             <option value="">- - Chọn - -</option>
-                                            <option value="">Quản trị - Trưởng khoa</option>
+
+                                            @php($get_roles = DB::table('roles')->get())
+                                            @foreach($get_roles as $get_role)
+                                            <option value="{{ $get_role->id }}">
+                                                {{ $get_role->role_name }}
+                                            </option>
+                                            @endforeach
+
                                         </select>
                                     </div>
                                 </div>
@@ -80,5 +88,33 @@
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @php($get_users = DB::table('users')->where('teacher_id', $account->id)->get())
+    @foreach($get_users as $get_user)
+        @if ($get_user->role_id == 1)
+            <script type="text/javascript">
+                Swal.fire({
+                    position: 'center'
+                    , icon: 'success'
+                    , title: 'Đã thêm quản trị'
+                    , showConfirmButton: false
+                    , timer: 2000
+                });
+                location.href = "{{ url('page-list-admin') }}";
+            </script>
+        @else
+            <script type="text/javascript">
+                Swal.fire({
+                    position: 'center'
+                    , icon: 'success'
+                    , title: 'Đã thêm giảng viên'
+                    , showConfirmButton: false
+                    , timer: 2000
+                });
+                location.href = "{{ url('page-list-teacher') }}";
+            </script>
+        @endif
+
+    @endforeach
 
 @endsection

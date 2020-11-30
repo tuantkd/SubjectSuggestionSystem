@@ -42,21 +42,20 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-2">
-                            <form action="" method="post">
+                            <form action="{{ url('update-department/'.$edit_departments->id) }}" method="POST" class="needs-validation" novalidate>
+                                @csrf
+                                @method('PUT')
                                 <div class="form-group row">
-                                    <div class="col-6">
-                                        <label for="">Mã khoa</label>
-                                        <input type="text" name="" class="form-control" disabled>
-                                    </div>
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label for="">Tên khoa</label>
-                                        <input type="text" name="" class="form-control" placeholder="Nhập tên khoa">
+                                        <input type="text" name="inputDepartmentName" class="form-control" placeholder="Nhập tên khoa"
+                                        value="{{ $edit_departments->department_name }}" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Mô tả</label>
-                                        <textarea class="form-control" name="" id="" rows="5" placeholder="Nhập mô tả khoa"></textarea>
+                                        <textarea class="form-control" name="inputDepartmentDescription" rows="10" placeholder="Nhập mô tả khoa" required>{{ $edit_departments->department_description }}</textarea>
                                     </div>
                                 </div>
 
@@ -74,8 +73,30 @@
                 <!--  End col 12-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
 @endsection
