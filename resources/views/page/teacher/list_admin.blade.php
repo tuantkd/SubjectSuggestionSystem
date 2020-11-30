@@ -50,36 +50,50 @@
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
                                         <th scope="col" style="width:15%;">Họ và tên</th>
-                                        <th scope="col" style="width:15%;">Ảnh đại diện</th>
-                                        <th scope="col" style="width:15%;">Giới tính</th>
-                                        <th scope="col" style="width:15%;">Điện thoại</th>
-                                        <th scope="col" style="width:15%;">Email</th>
-                                        <th scope="col" style="width:15%;">Chức vụ</th>
+                                        <th scope="col" style="width:10%;">Ảnh đại diện</th>
+                                        <th scope="col" style="width:10%;">Giới tính</th>
+                                        <th scope="col" style="width:10%;">Điện thoại</th>
+                                        <th scope="col" style="width:10%;">Email</th>
+                                        <th scope="col" style="width:10%;">Chức vụ</th>
+                                        <th scope="col" style="width:25%;">Quê quán</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @forelse($show_admins as $key => $show_admin)
                                     <tr>
-                                        <td data-label="STT">1</td>
+                                        <td data-label="STT"><b>{{ ++$key }}</b></td>
                                         <td data-label="Họ và tên">
-                                            <b>Nguyễn Thanh Hải</b>
+                                            <b>{{ $show_admin->fullname }}</b>
                                         </td>
                                         <td data-label="Ảnh đại diện">
-                                            <img src="{{ url('public/dist/img/avatar.png') }}" alt="Ảnh đại diện"
-                                                 style="max-width:100%;height:60px;border-radius:40%;">
+                                            <img src="{{ url('public/upload_avatar/'.$show_admin->avatar) }}" alt="Ảnh đại diện"
+                                            style="max-width:100%;height:70px;border-radius:30%;">
                                         </td>
                                         <td data-label="Giới tính">
-                                            <p>Nam</p>
+                                            <p>{{ $show_admin->sex }}</p>
                                         </td>
                                         <td data-label="Điện thoại">
-                                            <p>0326859698</p>
+                                            <p>{{ $show_admin->phone }}</p>
                                         </td>
                                         <td data-label="Email">
-                                            <p>thanhhai@gmail.com</p>
+                                            <p>{{ $show_admin->email }}</p>
                                         </td>
                                         <td data-label="Chức vụ">
-                                            <b>Trưởng khoa</b>
+                                            @php($get_positions = DB::table('positions')->where('id', $show_admin->position_id)->get())
+                                            @foreach($get_positions as $get_position)
+                                            <b>{{ $get_position->position_name }}</b>
+                                            @endforeach
+                                        </td><td data-label="Quê quán">
+                                            {{ $show_admin->address }}
                                         </td>
                                     </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -91,7 +105,8 @@
                 <!--  End col 12-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 

@@ -25,7 +25,8 @@
     <!-- Modal -->
     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="" method="post">
+            <form action="{{ url('post-add-part-subject') }}" method="POST" class="needs-validation" novalidate>
+                @csrf
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"><b>THÊM BỘ MÔN</b></h5>
@@ -33,18 +34,25 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="">Khoa</label>
-                            <select name="" class="form-control">
+                            <select name="inputDepartmentId" class="form-control">
                                 <option value="">- - Chọn - -</option>
-                                <option value="">CNTT&TT - Công nghê thông tin và truyền thông</option>
+
+                                @php($get_departments = DB::table('departments')->latest()->get())
+                                @foreach($get_departments as $get_department)
+                                    <option value="{{ $get_department->id }}">
+                                        {{ $get_department->department_name }}
+                                    </option>
+                                @endforeach
+
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Tên bộ môn</label>
-                            <input type="text" name="" class="form-control" placeholder="Nhập tên bộ môn">
+                            <input type="text" name="inputPartSubjectName" class="form-control" placeholder="Nhập tên bộ môn">
                         </div>
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea class="form-control" name="" id="" rows="5" placeholder="Nhập mô bộ môn"></textarea>
+                            <textarea class="form-control" name="inputPartSubjectDescription" rows="10" placeholder="Nhập mô tả bộ môn"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -63,6 +71,17 @@
             <div class="row">
                 <!--  col 12-->
                 <section class="col-lg-12">
+
+                    <!-- message -->
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger" role="alert">
+                            <strong>
+                                {{ $errors->first('inputPartSubjectName') }}
+                            </strong>
+                        </div>
+                    @endif
+                    <!-- /message -->
+
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
@@ -90,39 +109,54 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td data-label="STT">1</td>
-                                        <td data-label="Khoa">
-                                            <b>CNTT&TT - Công nghệ thông và truyền thông</b>
-                                        </td>
-                                        <td data-label="Tên bộ môn">
-                                            <b>Công nghệ thông tin</b>
-                                        </td>
-                                        <td data-label="Mô tả">
-                                            <p class="text-justify">
-                                                Được thành lập năm 1994, Khoa Công nghệ Thông tin và Truyền thông (CNTT&TT),
-                                                một trong bảy khoa trọng điểm về lĩnh vực công nghệ thông tin của Việt Nam, đã không ngừng hoàn thiện và phát triển vững mạnh.
-                                                Năm 2019, Khoa nhận được Huân chương lao động hạng ba của Chủ tịch nước.
-                                                Sứ mệnh của Khoa là đào tạo, nghiên cứu khoa học và chuyển giao công nghệ trong lĩnh vực CNTT&TT. Tầm nhìn đến 2025,
-                                                Khoa trở thành một trung tâm đào tạo và nghiên cứu khoa học đẳng cấp trong nước và khu vực Đông Nam Á về lĩnh vực CNTT&TT.
-                                            </p>
-                                        </td>
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </td>
+                                    @forelse($show_part_subjects as $key => $show_part_subject)
+                                        <tr>
+                                            <td data-label="STT"><b>{{ ++$key }}</b></td>
+                                            <td data-label="Khoa">
+                                                @php($get_departments = DB::table('departments')->where('id',$show_part_subject->department_id)->get())
+                                                @foreach($get_departments as $get_department)
+                                                <b>{{ $get_department->department_name }}</b>
+                                                @endforeach
+                                            </td>
+                                            <td data-label="Tên bộ môn">
+                                                <b>{{ $show_part_subject->part_subject_name }}</b>
+                                            </td>
+                                            <td data-label="Mô tả">
+                                                <p class="text-justify">
+                                                    {!! $show_part_subject->part_subject_description !!}
+                                                </p>
+                                            </td>
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?');"
+                                                href="{{ url('delete-part-subject/'.$show_part_subject->id) }}" role="button">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
 
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-primary btn-sm"
-                                            href="{{ url('edit-part-subject') }}" role="button">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-primary btn-xs"
+                                                href="{{ url('edit-part-subject/'.$show_part_subject->id) }}" role="button">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm" style="margin:20px 0">
+                                {{ $show_part_subjects->links() }}
+                            </ul>
+                            <!-- /pagination -->
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -131,8 +165,67 @@
                 <!--  End col 12-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+    {{--Thông báo box--}}
+    @if (Session::has('add_part_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã thêm Bộ môn'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('delete_part_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã xóa Bộ môn'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_part_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã cập nhật Bộ môn'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
 
 @endsection

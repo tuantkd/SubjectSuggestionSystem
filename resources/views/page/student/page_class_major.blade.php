@@ -10,15 +10,18 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('page-home-admin') }}">Bảng điều khiển</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">Bảng điều khiển</a></li>
                         <li class="breadcrumb-item active">Lớp chuyên ngành</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 @endsection
+
+
 
 @section('content')
 
@@ -48,45 +51,73 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
-                                        <th scope="col" style="width:20%;">Mã lớp</th>
-                                        <th scope="col" style="width:25%;">Tên lớp</th>
-                                        <th scope="col" style="width:15%;">Khóa học</th>
-                                        <th scope="col" style="width:25%;">Chuyên ngành</th>
-                                        <th scope="col" style="width:10%;" colspan="2">Chọn</th>
+                                        <th scope="col" style="width:15%;">Mã lớp</th>
+                                        <th scope="col" style="width:30%;">Tên lớp</th>
+                                        <th scope="col" style="width:10%;">Khóa học</th>
+                                        <th scope="col" style="width:30%;">Chuyên ngành</th>
+                                        <th scope="col" style="width:10%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @forelse($show_class_majors as $key => $show_class_major)
                                     <tr>
-                                        <td data-label="STT">1</td>
+                                        <td data-label="STT"><b>{{ ++$key }}</b></td>
                                         <td data-label="Mã lớp">
-                                            <h6>HG16V7A1</h6>
+                                            <a href="{{ url('view-class-major/'.$show_class_major->id) }}">
+                                                <h6><b>{{ $show_class_major->class_major_code }}</b></h6>
+                                            </a>
                                         </td>
                                         <td data-label="Tên lớp">
-                                            <h6>
-                                                Công nghệ thông tin - Hòa An
-                                            </h6>
+                                            <h6>{{ $show_class_major->class_major_name }}</h6>
                                         </td>
                                         <td data-label="Khóa học">
-                                            <h6>Khóa 42</h6>
+                                            @php($get_courses = DB::table('courses')->where('id', $show_class_major->course_id)->get())
+                                            @foreach($get_courses as $get_course)
+                                                <h6>{{ $get_course->course_name }}</h6>
+                                            @endforeach
                                         </td>
                                         <td data-label="Chuyên ngành">
-                                            <h6>Công nghệ thông tin</h6>
+                                            @php($get_majors = DB::table('majors')->where('id', $show_class_major->major_id)->get())
+                                            @foreach($get_majors as $get_major)
+                                                <h6>{{ $get_major->major_name }}</h6>
+                                            @endforeach
                                         </td>
                                         <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button">
+                                            <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?')"
+                                            href="{{ url('delete-class-major/'.$show_class_major->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
                                         <td data-label="Chọn">
                                             <a class="btn btn-primary btn-sm"
-                                            href="{{ url('edit-class-major') }}" role="button">
+                                            href="{{ url('edit-class-major/'.$show_class_major->id) }}" role="button">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-success btn-sm"
+                                            href="{{ url('view-class-major/'.$show_class_major->id) }}" role="button">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </td>
                                     </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm">
+                                {{ $show_class_majors->links() }}
+                            </ul>
+                            <!-- /pagination -->
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -95,8 +126,45 @@
                 <!--  End col 12-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @if (Session::has('add_class_major_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm lớp chuyên ngành'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('delete_class_major_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Xóa lớp chuyên ngành'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_class_major_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật lớp chuyên ngành'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
 
 @endsection

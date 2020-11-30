@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\CheckLogin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,129 +15,237 @@ use Illuminate\Support\Facades\Route;
 //ĐĂNG NHẬP
 Route::get('page-login', [AdminController::class, 'page_login']);
 
+//ĐĂNG XUẤT
+Route::get('logout', [AdminController::class, 'logout']);
+
+//XỬ LÝ ĐĂNG NHẬP
+Route::post('post-login', [AdminController::class, 'post_login']);
+
 //TRANG CHỦ
-Route::get('page-home-admin', [AdminController::class, 'page_home_admin']);
-
-/*============================================================================*/
-//TRANG CHỨC VỤ
-Route::get('page-position', [AdminController::class, 'page_position']);
-
-//TRANG HỌC VỊ
-Route::get('page-degree', [AdminController::class, 'page_degree']);
-
-//TRANG CHỨC DANH
-Route::get('page-title', [AdminController::class, 'page_title']);
-/*============================================================================*/
-
-
-/*============================================================================*/
-//TRANG QUYỀN TRUY CẬP
-Route::get('page-role', [AdminController::class, 'page_role']);
-
-//TRANG QUYỀN NGƯỜI DÙNG TRUY CẬP
-Route::get('page-role-user-access', [AdminController::class, 'page_role_user_access']);
-/*============================================================================*/
-
-
-/*============================================================================*/
-//TRANG KHOA
-Route::get('page-department', [AdminController::class, 'page_department']);
-
-//TRANG CHỈNH SỬA KHOA
-Route::get('edit-department', [AdminController::class, 'edit_department']);
-
-//TRANG CHỈNH SỬA BỘ MÔN
-Route::get('page-part-subject', [AdminController::class, 'page_part_subject']);
-
-//TRANG BỘ MÔN
-Route::get('edit-part-subject', [AdminController::class, 'edit_part_subject']);
-/*============================================================================*/
-
-
-/*============================================================================*/
-//TRANG DANH SÁCH QUẢN TRỊ
-Route::get('page-list-admin', [AdminController::class, 'page_list_admin']);
-
-//TRANG THÊM QUẢN TRỊ
-Route::get('add-admin', [AdminController::class, 'add_admin']);
-
-//TRANG DANH SÁCH GIẢNG VIÊN
-Route::get('page-list-teacher', [AdminController::class, 'page_list_teacher']);
-
-//TRANG THÔNG TIN GIẢNG VIÊN
-Route::get('view-infor-reacher', [AdminController::class, 'view_infor_reacher']);
-
-//TRANG THÊM GIẢNG VIÊN
-Route::get('add-teacher', [AdminController::class, 'add_teacher']);
-
-//TRANG TẠO TÀI KHOẢN
-Route::get('create-account', [AdminController::class, 'create_account']);
-/*============================================================================*/
+Route::get('/', [AdminController::class, 'page_home_admin']);
 
 
 
-/*============================================================================*/
-//TRANG KHÓA HỌC
-Route::get('page-course', [AdminController::class, 'page_course']);
+Route::middleware([CheckLogin::class])->group(function () {
+    /*============================================================================*/
+    //TRANG CHỨC VỤ
+    Route::get('page-position', [AdminController::class, 'page_position']);
 
-//TRANG CHUYÊN NGÀNH
-Route::get('page-major', [AdminController::class, 'page_major']);
+    //THÊM CHỨC VỤ CSDL
+    Route::post('post-add-position', [AdminController::class, 'post_add_position']);
 
-//TRANG LỚP CHUYÊN NGÀNH
-Route::get('page-class-major', [AdminController::class, 'page_class_major']);
+    //XÓA CHỨC VỤ
+    Route::get('delete-position/{id_position}', [AdminController::class, 'delete_position']);
 
-//TRANG THÊM CHUYÊN NGÀNH
-Route::get('add-class-major', [AdminController::class, 'add_class_major']);
+    //TRANG HỌC VỊ
+    Route::get('page-degree', [AdminController::class, 'page_degree']);
 
-//TRANG CHỈNH SỬA CHUYÊN NGÀNH
-Route::get('edit-class-major', [AdminController::class, 'edit_class_major']);
+    //THÊM HỌC VỊ CSDL
+    Route::post('post-add-degree', [AdminController::class, 'post_add_degree']);
 
-//TRANG DANH SÁCH SINH VIÊN
-Route::get('page-list-student', [AdminController::class, 'page_list_student']);
+    //XÓA HỌC VỊ
+    Route::get('delete-degree/{id_degree}', [AdminController::class, 'delete_degree']);
 
-//TRANG THÊM SINH VIÊN
-Route::get('add-student', [AdminController::class, 'add_student']);
+    //TRANG CHỨC DANH
+    Route::get('page-title', [AdminController::class, 'page_title']);
 
-//TRANG CHỈNH SỬA SINH VIÊN
-Route::get('edit-student', [AdminController::class, 'edit_student']);
+    //THÊM CHỨC DANH CSDL
+    Route::post('post-add-title', [AdminController::class, 'post_add_title']);
 
-//TRANG THÔNG TIN SINH VIÊN
-Route::get('view-infor-student', [AdminController::class, 'view_infor_student']);
-/*============================================================================*/
-
-
-
-/*============================================================================*/
-//TRANG CHƯƠNG TRÌNH ĐÀO TẠO
-Route::get('page-program-train', [AdminController::class, 'page_program_train']);
-/*============================================================================*/
+    //XÓA CHỨC DANH
+    Route::get('delete-title/{id_title}', [AdminController::class, 'delete_title']);
+    /*============================================================================*/
 
 
-/*============================================================================*/
-//TRANG HỌC KỲ NĂM HỌC
-Route::get('page-semester-year', [AdminController::class, 'page_semester_year']);
+    /*============================================================================*/
+    //TRANG QUYỀN TRUY CẬP
+    Route::get('page-role', [AdminController::class, 'page_role']);
 
-//TRANG LOẠI HỌC PHẦN
-Route::get('page-category-subject', [AdminController::class, 'page_category_subject']);
+    //THÊM QUYỀN TRUY CẬP CSDL
+    Route::post('post-add-role', [AdminController::class, 'post_add_role']);
 
-//TRANG HỌC PHẦN
-Route::get('page-subject', [AdminController::class, 'page_subject']);
+    //TRANG QUYỀN NGƯỜI DÙNG TRUY CẬP
+    Route::get('page-role-user-access', [AdminController::class, 'page_role_user_access']);
 
-//TRANG LỚP HỌC PHẦN
-Route::get('page-class-subject', [AdminController::class, 'page_class_subject']);
+    //TRANG THAY ĐỔI QUYỀN TRUY CẬP
+    Route::get('change-role/{id_user}', [AdminController::class, 'change_role']);
 
-//TRANG THÊM LỚP HỌC PHẦN
-Route::get('add-class-subject', [AdminController::class, 'add_class_subject']);
+    //CẬP NHẬT THAY ĐỔI QUYỀN TRUY CẬP
+    Route::put('update-change-role/{id_user}', [AdminController::class, 'update_change_role']);
+    /*============================================================================*/
 
-//TRANG CHỈNH SỬA LỚP HỌC PHẦN
-Route::get('edit-class-subject', [AdminController::class, 'edit_class_subject']);
 
-//TRANG XEM LỚP HỌC PHẦN
-Route::get('view-detail-class-subject', [AdminController::class, 'view_detail_class_subject']);
+    /*============================================================================*/
+    //TRANG KHOA
+    Route::get('page-department', [AdminController::class, 'page_department']);
 
-//TRANG XEM ĐIỂM HỌC PHẦN SINH VIÊN
-Route::get('view-score-student', [AdminController::class, 'view_score_student']);
+    //XÓA KHOA
+    Route::get('delete-department/{id_department}', [AdminController::class, 'delete_department']);
 
-//TRANG CHƯƠNG TRÌNH HỌC
-Route::get('page-program-study', [AdminController::class, 'page_program_study']);
-/*============================================================================*/
+    //THÊM KHOA CSDL
+    Route::post('post-add-department', [AdminController::class, 'post_add_department']);
+
+    //TRANG CHỈNH SỬA KHOA
+    Route::get('edit-department/{id_department}', [AdminController::class, 'edit_department']);
+
+    //CẬP NHẬT KHOA
+    Route::put('update-department/{id_department}', [AdminController::class, 'update_department']);
+
+    //TRANG CHỈNH SỬA BỘ MÔN
+    Route::get('edit-part-subject/{id_department}', [AdminController::class, 'edit_part_subject']);
+
+    //CẬP NHẬT BỘ MÔN
+    Route::put('update-part-subject/{id_department}', [AdminController::class, 'update_part_subject']);
+
+    //TRANG BỘ MÔN
+    Route::get('page-part-subject', [AdminController::class, 'page_part_subject']);
+
+    //XÓA BỘ MÔN
+    Route::get('delete-part-subject/{id_part_subject}', [AdminController::class, 'delete_part_subject']);
+
+    //THÊM BỘ MÔN CSDL
+    Route::post('post-add-part-subject', [AdminController::class, 'post_add_part_subject']);
+
+    //TRANG CHUYÊN NGÀNH
+    Route::get('page-major', [AdminController::class, 'page_major']);
+
+    //XÓA CHUYÊN NGÀNH
+    Route::get('delete-major/{id_major}', [AdminController::class, 'delete_major']);
+
+    //CHỈNH SỬA CHUYÊN NGÀNH
+    Route::get('edit-major/{id_major}', [AdminController::class, 'edit_major']);
+
+    //CẬP NHẬT CHUYÊN NGÀNH
+    Route::put('update-major/{id_major}', [AdminController::class, 'update_major']);
+
+    //THÊM CHUYÊN NGÀNH
+    Route::post('post-add-major', [AdminController::class, 'post_add_major']);
+    /*============================================================================*/
+
+
+    /*============================================================================*/
+    //TRANG DANH SÁCH QUẢN TRỊ
+    Route::get('page-list-admin', [AdminController::class, 'page_list_admin']);
+
+    //TRANG THÊM QUẢN TRỊ
+    Route::get('add-admin', [AdminController::class, 'add_admin']);
+
+    //TRANG THÊM QUẢN TRỊ CSDL
+    Route::post('post-add-admin', [AdminController::class, 'post_add_admin']);
+
+    //---------------------------
+    //TRANG DANH SÁCH GIẢNG VIÊN
+    Route::get('page-list-teacher', [AdminController::class, 'page_list_teacher']);
+
+    //TRANG THÔNG TIN GIẢNG VIÊN
+    Route::get('view-infor-teacher/{id_teacher}', [AdminController::class, 'view_infor_reacher']);
+
+    //TRANG THÊM GIẢNG VIÊN
+    Route::get('add-teacher', [AdminController::class, 'add_teacher']);
+
+    //XÓA GIẢNG VIÊN
+    Route::get('delete-teacher/{id_teacher}', [AdminController::class, 'delete_teacher']);
+
+    //TRANG THÊM GIẢNG VIÊN CSDL
+    Route::post('post-add-teacher', [AdminController::class, 'post_add_teacher']);
+
+    //---------------------------
+    //TRANG TẠO TÀI KHOẢN
+    Route::get('create-account/{id}', [AdminController::class, 'create_account']);
+
+    //TRANG TẠO TÀI KHOẢN CSDL
+    Route::post('post-create-account/{id}', [AdminController::class, 'post_create_account']);
+    /*============================================================================*/
+
+
+
+    /*============================================================================*/
+    //TRANG KHÓA HỌC
+    Route::get('page-course', [AdminController::class, 'page_course']);
+
+    //XÓA KHÓA HỌC
+    Route::get('delete-course/{id_course}', [AdminController::class, 'delete_course']);
+
+    //THÊM KHÓA HỌC
+    Route::post('post-add-page-course', [AdminController::class, 'post_add_page_course']);
+
+    //TRANG LỚP CHUYÊN NGÀNH
+    Route::get('page-class-major', [AdminController::class, 'page_class_major']);
+
+    //TRANG THÊM LỚP CHUYÊN NGÀNH
+    Route::get('add-class-major', [AdminController::class, 'add_class_major']);
+
+    //XÓA LỚP CHUYÊN NGÀNH
+    Route::get('delete-class-major/{id_class_major}', [AdminController::class, 'delete_class_major']);
+
+    //TRANG THÊM LỚP CHUYÊN NGÀNH CSDL
+    Route::post('post-add-class-major', [AdminController::class, 'post_add_class_major']);
+
+    //TRANG CHỈNH SỬA LỚP CHUYÊN NGÀNH
+    Route::get('edit-class-major/{id_class_major}', [AdminController::class, 'edit_class_major']);
+
+    //TRANG XEM LỚP CHUYÊN NGÀNH
+    Route::get('view-class-major/{id_class_major}', [AdminController::class, 'view_class_major']);
+
+    //THÊM SINH VIÊN TRONG LỚP HỌC
+    Route::post('post-add-student-to-class-major/{id_class_major}', [AdminController::class, 'post_add_student_to_class_major']);
+
+    //XÓA SINH VIÊN TRONG LỚP HỌC
+    Route::delete('delete-check_all-student-class', [AdminController::class, 'delete_check_all_student_class']);
+
+    //NHẬP FILE EXCEL SINH VIÊN
+    Route::post('import-file-excel/{id_class_major}', [AdminController::class, 'import_file_excel']);
+
+    //CẬP NHẬT LỚP CHUYÊN NGÀNH
+    Route::put('update-class-major/{id_class_major}', [AdminController::class, 'update_class_major']);
+
+    //TRANG DANH SÁCH SINH VIÊN
+    Route::get('page-list-student', [AdminController::class, 'page_list_student']);
+
+    //TRANG THÊM SINH VIÊN
+    Route::get('add-student', [AdminController::class, 'add_student']);
+
+    //TRANG CHỈNH SỬA SINH VIÊN
+    Route::get('edit-student', [AdminController::class, 'edit_student']);
+
+    //TRANG THÔNG TIN SINH VIÊN
+    Route::get('view-infor-student', [AdminController::class, 'view_infor_student']);
+    /*============================================================================*/
+
+
+
+    /*============================================================================*/
+    //TRANG CHƯƠNG TRÌNH ĐÀO TẠO
+    Route::get('page-program-train', [AdminController::class, 'page_program_train']);
+    /*============================================================================*/
+
+
+    /*============================================================================*/
+    //TRANG HỌC KỲ NĂM HỌC
+    Route::get('page-semester-year', [AdminController::class, 'page_semester_year']);
+
+    //TRANG LOẠI HỌC PHẦN
+    Route::get('page-category-subject', [AdminController::class, 'page_category_subject']);
+
+    //TRANG HỌC PHẦN
+    Route::get('page-subject', [AdminController::class, 'page_subject']);
+
+    //TRANG LỚP HỌC PHẦN
+    Route::get('page-class-subject', [AdminController::class, 'page_class_subject']);
+
+    //TRANG THÊM LỚP HỌC PHẦN
+    Route::get('add-class-subject', [AdminController::class, 'add_class_subject']);
+
+    //TRANG CHỈNH SỬA LỚP HỌC PHẦN
+    Route::get('edit-class-subject', [AdminController::class, 'edit_class_subject']);
+
+    //TRANG XEM LỚP HỌC PHẦN
+    Route::get('view-detail-class-subject', [AdminController::class, 'view_detail_class_subject']);
+
+    //TRANG XEM ĐIỂM HỌC PHẦN SINH VIÊN
+    Route::get('view-score-student', [AdminController::class, 'view_score_student']);
+
+    //TRANG CHƯƠNG TRÌNH HỌC
+    Route::get('page-program-study', [AdminController::class, 'page_program_study']);
+    /*============================================================================*/
+});

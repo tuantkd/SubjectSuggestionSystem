@@ -5,7 +5,9 @@
     <link rel="shortcut icon" type="image/png" href="{{ url('public/images/logo_ctu.png') }}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    {{--Font googleapis--}}
+    <!-- Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!--Font googleapis-->
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
@@ -104,22 +106,23 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center form_container">
-                <form>
+                <form action="{{ url('post-login') }}" method="POST">
+                    @csrf
                     <div class="input-group mb-3">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" name="" class="form-control input_user" value="" placeholder="Tài khoản">
+                        <input type="text" name="inputUsername" class="form-control input_user" placeholder="Tài khoản">
                     </div>
                     <div class="input-group mb-2">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input type="password" name="" class="form-control input_pass" value="" placeholder="Mật khẩu">
+                        <input type="password" name="inputPassword" class="form-control input_pass" placeholder="Mật khẩu">
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customControlInline">
+                            <input type="checkbox" class="custom-control-input" id="customControlInline" name="remember_me" value="1">
                             <label class="custom-control-label" for="customControlInline">Ghi nhớ tôi</label>
                         </div>
                     </div>
@@ -132,5 +135,18 @@
         </div>
     </div>
 </div>
+
+@if (Session::has('error_login_session'))
+    <script type="text/javascript">
+        Swal.fire({
+            position: 'center'
+            , icon: 'error'
+            , title: 'Tài khoản hoặc mật khẩu sai'
+            , showConfirmButton: false
+            , timer: 3000
+        });
+    </script>
+@endif
+
 </body>
 </html>

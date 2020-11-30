@@ -42,21 +42,38 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-2">
-                            <form action="" method="post">
+                            <form action="{{ url('update-part-subject/'.$edit_part_subjects->id) }}" method="POST"
+                            class="needs-validation" novalidate>
+                                @csrf
+                                @method('PUT')
                                 <div class="form-group">
                                     <label for="">Khoa</label>
-                                    <select name="" class="form-control">
+                                    <select name="inputDepartmentId" class="form-control">
+                                        @php($departments = DB::table('departments')->where('id',$edit_part_subjects->department_id)->get())
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department->id }}">
+                                                {{ $department->department_name }}
+                                            </option>
+                                        @endforeach
+
                                         <option value="">- - Chọn - -</option>
-                                        <option value="">CNTT&TT - Công nghê thông tin và truyền thông</option>
+                                        @php($get_departments = DB::table('departments')
+                                        ->where([['id','<>',$edit_part_subjects->department_id]])->get())
+                                        @foreach($get_departments as $get_department)
+                                            <option value="{{ $get_department->id }}">
+                                                {{ $get_department->department_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Tên bộ môn</label>
-                                    <input type="text" name="" class="form-control" placeholder="Nhập tên bộ môn">
+                                    <input type="text" name="inputPartSubjectName" class="form-control" placeholder="Nhập tên bộ môn"
+                                    value="{{ $edit_part_subjects->part_subject_name }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Mô tả</label>
-                                    <textarea class="form-control" name="" id="" rows="5" placeholder="Nhập mô bộ môn"></textarea>
+                                    <textarea class="form-control" name="inputPartSubjectDescription" rows="10" placeholder="Nhập mô bộ môn">{!! $edit_part_subjects->part_subject_description !!}</textarea>
                                 </div>
                                 <div class="form-group text-right">
                                     <button type="submit" class="btn btn-primary btn-sm">Cập nhật</button>
