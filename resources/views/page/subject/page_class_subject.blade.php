@@ -48,45 +48,67 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width: 5%;">STT</th>
-                                        <th scope="col" style="width: 15%;">Mã lớp</th>
-                                        <th scope="col" style="width: 20%;">Tên lớp</th>
-                                        <th scope="col" style="width: 25%;">Giảng viên</th>
-                                        <th scope="col" style="width: 25%;">Học kỳ - Năm học</th>
-                                        <th scope="col" style="width: 10%;" colspan="3">Chọn</th>
+                                        <th scope="col" style="width: 10%;">Mã lớp</th>
+                                        <th scope="col" style="width: 25%;">Tên lớp</th>
+                                        <th scope="col" style="width: 20%;">Giảng viên</th>
+                                        <th scope="col" style="width: 15%;">HK - NH</th>
+                                        <th scope="col" style="width: 20%;">Ghi chú</th>
+                                        <th scope="col" style="width: 5%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @forelse($show_class_subjects as $key => $show_class_subject)
                                     <tr>
-                                        <td data-label="STT">1</td>
+                                        <td data-label="STT"><b>{{ ++$key }}</b></td>
                                         <td data-label="Mã lớp">
-                                            <b>H02</b>
+                                            <b>{{ $show_class_subject->class_subject_code }}</b>
                                         </td>
                                         <td data-label="Tên lớp">
-                                            <b>Quản trị hệ thống</b>
+                                            <b style="text-transform: uppercase;">{{ $show_class_subject->class_subject_name }}</b>
                                         </td>
                                         <td data-label="Giảng viên">
-                                            <b>Nguyễn Thanh Hải</b>
+                                            @php($teachers = DB::table('teachers')->where('id', $show_class_subject->teacher_id)->get())
+                                            @foreach($teachers as $teacher)
+                                                <b>{{ $teacher->fullname }}</b>
+                                            @endforeach
                                         </td>
-                                        <td data-label="Ghi chú">
-                                            <span>Học kỳ 1 - Năm 2020</span>
+                                        <td data-label="Học kỳ - Năm học">
+                                            @php($semester_year = DB::table('semester_years')->where('id', $show_class_subject->semester_year_id)->first())
+                                            <?php
+                                                $semester_year = str_split($semester_year->semester_year);
+                                                echo $semester = "HK ".$semester_year[0];
+                                                echo $year = " - NH ".$semester_year[1].$semester_year[2].$semester_year[3].$semester_year[4];
+                                            ?>
                                         </td>
-                                        <td data-label="Ghi chú">
-                                            <a class="btn btn-danger btn-xs" href="#" role="button">
+                                        <td data-label="Ghi chú" class="text-justify">
+                                            <p>{{ $show_class_subject->class_subject_note }}</p>
+                                        </td>
+
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?')"
+                                            href="{{ url('delete-class-subject/'.$show_class_subject->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
-                                        <td data-label="Ghi chú">
+                                        <td data-label="Chọn">
                                             <a class="btn btn-primary btn-xs"
-                                            href="{{ url('edit-class-subject') }}" role="button">
+                                            href="{{ url('edit-class-subject/'.$show_class_subject->id) }}" role="button">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                        </td><td data-label="Ghi chú">
+                                        </td><td data-label="Chọn">
                                             <a class="btn btn-success btn-xs"
                                             href="{{ url('view-detail-class-subject') }}" role="button">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
                                     </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -101,6 +123,42 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @if (Session::has('add_class_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm lớp học phần'
+                , showConfirmButton: false
+                , timer: 3000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('delete_class_subject'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Xóa lớp học phần'
+                , showConfirmButton: false
+                , timer: 3000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_class_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật lớp học phần'
+                , showConfirmButton: false
+                , timer: 3000
+            });
+        </script>
+    @endif
 
     <script>
         $(function() {

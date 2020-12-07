@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategorySubject;
 use App\Models\ClassMajor;
+use App\Models\ClassSubject;
 use App\Models\Course;
 use App\Models\Degree;
 use App\Models\Department;
 use App\Models\Major;
 use App\Models\PartSubject;
 use App\Models\Position;
+use App\Models\ProgramStudy;
+use App\Models\ProgramTrain;
 use App\Models\Role;
+use App\Models\SemesterYear;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Title;
 use App\Models\User;
@@ -651,7 +657,7 @@ class AdminController extends Controller
                     ->orWhere('student_fullname', 'like', '%'.$search.'%');
             })->paginate(2);
         }else{
-            $show_student_classes = Student::where('class_major_id', $id_class_major)->latest()->paginate(10);
+            $show_student_classes = Student::where('class_major_id', $id_class_major)->latest()->paginate(20);
         }
         $class_majors = ClassMajor::find($id_class_major);
         return view('page.student.view_class_major',['class_majors'=>$class_majors,'show_student_classes'=>$show_student_classes]);
@@ -715,13 +721,73 @@ class AdminController extends Controller
     {
         $ids = $request->ids;
         DB::table('students')->whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success'=>"Products Deleted successfully."]);
+        return response()->json(['success'=>"Đã Xóa sinh viên trong lớp"]);
+    }
+
+
+    //XÓA SINH VIÊN
+    public function delete_student(Request $request)
+    {
+        $ids = $request->ids;
+        DB::table('students')->whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"Đã Xóa sinh viên"]);
     }
 
     //TRANG DANH SÁCH SINH VIÊN
-    protected function page_list_student()
+    protected function page_list_student(Request $request)
     {
-        return view('page.student.page_list_student');
+        $search = $request->input('inputSearch');
+        if($search != ""){
+            $show_students = Student::where(function ($query) use ($search){
+                $query->where('student_code','like', '%'.$search.'%')
+                    ->orWhere('student_fullname', 'like', '%'.$search.'%');
+            })->paginate(2);
+        }else{
+            $show_students = Student::latest()->paginate(20);
+        }
+
+        return view('page.student.page_list_student',['show_students'=>$show_students]);
+    }
+
+    //NHẬP EXCEL VÀO DANH SÁCH SINH VIÊN
+    protected function import_excel_to_list_student(Request $request)
+    {
+        $this->validate($request, [
+            'inputFileExcel'  => 'mimes:xls,xlsx,csv'
+        ],[
+            'inputFileExcel.mimes' => 'Bắt buộc file có phần mở rộng: xls, xlsx, csv'
+        ]);
+
+        // load file ra object PHPExcel
+        $objPHPExcel = \PHPExcel_IOFactory::load($request->file('inputFileExcel'));
+        // Set sheet sẽ được đọc dữ liệu
+        $provinceSheet = $objPHPExcel->setActiveSheetIndex(0);
+        // Lấy số row lớn nhất trong sheet
+        $highestRow    = $provinceSheet->getHighestRow();
+        // For chạy từ 2 vì row 1 là title
+        for ($row = 2; $row <= $highestRow; $row++) {
+            $student_code_excel = $provinceSheet->getCellByColumnAndRow(0, $row)->getValue();
+            $count_student_code = DB::table('students')->where('student_code',$student_code_excel)->count();
+            if ($count_student_code >= 1) {
+                $message_error_excel = $request->session()->get('message_error_excel');
+                return redirect()->back()->with('message_error_excel','');
+            }else {
+                // lấy dữ liệu từng ô theo col và row
+                Student::create([
+                    'student_code' => $provinceSheet->getCellByColumnAndRow(0, $row)->getValue(),
+                    'student_fullname' => $provinceSheet->getCellByColumnAndRow(1, $row)->getValue(),
+                    'student_birthday' => $provinceSheet->getCellByColumnAndRow(2, $row)->getValue(),
+                    'student_phone' => $provinceSheet->getCellByColumnAndRow(3, $row)->getValue(),
+                    'student_sex' => $provinceSheet->getCellByColumnAndRow(4, $row)->getValue(),
+                    'student_address' => $provinceSheet->getCellByColumnAndRow(5, $row)->getValue(),
+                    'student_email' => $provinceSheet->getCellByColumnAndRow(6, $row)->getValue(),
+                    'class_major_id' => $request->input('inputClassMajorId')
+                ]);
+            }
+        }
+
+        $import_file_excel_list_student = $request->session()->get('import_file_excel_list_student');
+        return redirect()->back()->with('import_file_excel_list_student','');
     }
 
     //TRANG THÊM SINH VIÊN
@@ -730,25 +796,95 @@ class AdminController extends Controller
         return view('page.student.add_student');
     }
 
-    //TRANG CHỈNH SỬA SINH VIÊN
-    protected function edit_student()
+    //TRANG THÊM SINH VIÊN CSDL
+    protected function post_add_student(Request $request)
     {
-        return view('page.student.edit_student');
+        $this->validate($request, [
+            'inputStudentCode'  => 'unique:students,student_code'
+        ],[
+            'inputStudentCode.unique' => 'Mã số Sinh viên đã tồn tại !'
+        ]);
+
+        $add_student = new Student();
+        $add_student->class_major_id = $request->input('inputClassMajorId');
+        $add_student->student_code = $request->input('inputStudentCode');
+        $add_student->student_fullname = $request->input('inputStudentFullName');
+        $add_student->student_birthday = $request->input('inputStudentBirthday');
+        $add_student->student_sex = $request->input('inputStudentSex');
+        $add_student->student_phone = $request->input('inputStudentPhone');
+        $add_student->student_email = $request->input('inputStudentEmail');
+        $add_student->student_address = $request->input('inputStudentAddress');
+        $add_student->save();
+
+        $add_student_session = $request->session()->get('add_student_session');
+        return redirect('page-list-student')->with('add_student_session','');
+    }
+
+    //TRANG THÊM SINH VIÊN CSDL
+    protected function update_student(Request $request, $id_student)
+    {
+        $update_student = Student::find($id_student);
+        $update_student->student_birthday = $request->input('inputStudentBirthday');
+        $update_student->student_sex = $request->input('inputStudentSex');
+        $update_student->student_phone = $request->input('inputStudentPhone');
+        $update_student->student_email = $request->input('inputStudentEmail');
+        $update_student->student_address = $request->input('inputStudentAddress');
+        $update_student->save();
+
+        $update_student_session = $request->session()->get('update_student_session');
+        return redirect('page-list-student')->with('update_student_session','');
+    }
+
+    //TRANG CHỈNH SỬA SINH VIÊN
+    protected function edit_student($id_student)
+    {
+        $edit_student = Student::find($id_student);
+        return view('page.student.edit_student',['edit_student'=>$edit_student]);
     }
 
     //TRANG THÔNG TIN SINH VIÊN
-    protected function page_program_train()
+    protected function view_infor_student($id_student)
     {
-        return view('page.program_train.page_program_train');
+        $infor_students = Student::find($id_student);
+        return view('page.student.view_infor_student',['infor_students'=>$infor_students]);
     }
     /*=================================================================*/
 
 
     /*=================================================================*/
     //TRANG CHƯƠNG TRÌNH ĐÀO TẠO
-    protected function view_infor_student()
+    protected function page_program_train()
     {
-        return view('page.student.view_infor_student');
+        $show_program_trains = ProgramTrain::latest()->paginate(10);
+        return view('page.program_train.page_program_train',['show_program_trains'=>$show_program_trains]);
+    }
+
+    //XÓA CHƯƠNG TRÌNH ĐÀO TẠO
+    protected function delete_program_train(Request $request, $id_program_train)
+    {
+        ProgramTrain::destroy($id_program_train);
+        $delete_program_train_session = $request->session()->get('delete_program_train_session');
+        return redirect()->back()->with('delete_program_train_session','');
+    }
+
+    //THÊM CHƯƠNG TRÌNH ĐÀO TẠO
+    protected function post_add_program_train(Request $request)
+    {
+        $this->validate($request, [
+            'inputProgramCourseId'  => 'unique:program_trains,course_id'
+        ],[
+            'inputProgramCourseId.unique' => 'Chương trình đào tạo đã tồn tại!'
+        ]);
+
+        $add_program_train = new ProgramTrain();
+        $add_program_train->course_id = $request->input('inputProgramCourseId');
+        $add_program_train->major_id = $request->input('inputMajorId');
+        $add_program_train->program_train_name = $request->input('inputProgramName');
+        $add_program_train->program_train_date_begin = $request->input('inputProgramDateBegin');
+        $add_program_train->save();
+
+        $add_program_train_session = $request->session()->get('add_program_train_session');
+        return redirect()->back()->with('add_program_train_session','');
     }
     /*=================================================================*/
 
@@ -757,25 +893,167 @@ class AdminController extends Controller
     //TRANG HỌC KỲ NĂM HỌC
     protected function page_semester_year()
     {
-        return view('page.subject.page_semester_year');
+        $show_semester_years = SemesterYear::latest()->paginate(5);
+        return view('page.subject.page_semester_year',['show_semester_years'=>$show_semester_years]);
+    }
+
+    //XÓA HỌC KỲ NĂM HỌC
+    protected function delete_semester_year(Request $request, $id_semester_year)
+    {
+        SemesterYear::destroy($id_semester_year);
+        $delete_semester_year_session = $request->session()->get('delete_semester_year_session');
+        return redirect()->back()->with('delete_semester_year_session','');
+    }
+
+    //THÊM HỌC KỲ NĂM HỌC
+    protected function post_add_semester_year(Request $request)
+    {
+        $semester = $request->input('inputSemester');
+        $year_study = $request->input('inputYearStudy');
+        $semester_year = $semester.$year_study;
+
+        $count_semester_year  = DB::table('semester_years')->where('semester_year',$semester_year)->count();
+        if ($count_semester_year >= 1) {
+            $message_error = $request->session()->get('message_error');
+            return redirect()->back()->with('message_error','');
+        }else{
+            $add_semester_year = new SemesterYear();
+            $add_semester_year->semester_year = $semester_year;
+            $add_semester_year->date_begin = $request->input('inputDateBegin');
+            $add_semester_year->date_end = $request->input('inputDateEnd');
+            $add_semester_year->save();
+
+            $add_semester_year_session = $request->session()->get('add_semester_year_session');
+            return redirect()->back()->with('add_semester_year_session','');
+        }
     }
 
     //TRANG LOẠI HỌC PHẦN
     protected function page_category_subject()
     {
-        return view('page.subject.page_category_subject');
+        $show_category_subjects = CategorySubject::latest()->paginate(5);
+        return view('page.subject.page_category_subject',['show_category_subjects'=>$show_category_subjects]);
+    }
+
+    //XÓA LOẠI HỌC PHẦN
+    protected function delete_category_subject(Request $request, $id_category_subject)
+    {
+        CategorySubject::destroy($id_category_subject);
+        $delete_category_subjectsession = $request->session()->get('delete_category_subjectsession');
+        return redirect()->back()->with('delete_category_subjectsession','');
+    }
+
+    //THÊM LOẠI HỌC PHẦN CSDL
+    protected function post_add_category_subject(Request $request)
+    {
+        $this->validate($request, [
+            'inputCategoryName'  => 'unique:category_subjects,category_subject_name'
+        ],[
+            'inputCategoryName.unique' => 'Tên loại học phần đã tồn tại!'
+        ]);
+
+        $add_category_subject = new CategorySubject();
+        $add_category_subject->category_subject_name = $request->input('inputCategoryName');
+        $add_category_subject->category_subject_note = $request->input('inputCategoryNote');
+        $add_category_subject->save();
+
+        $add_category_subject_session = $request->session()->get('add_category_subject_session');
+        return redirect()->back()->with('add_category_subject_session','');
+    }
+
+    //CẬP NHẬT LOẠI HỌC PHẦN CSDL
+    protected function update_subject(Request $request, $id_subject)
+    {
+        $update_subject = Subject::find($id_subject);
+        $update_subject->subject_name = $request->input('inputSubjectName');
+        $update_subject->subject_number_credit = $request->input('inputSubjectCredit');
+        $update_subject->save();
+
+        $update_subject_session = $request->session()->get('update_subject_session');
+        return redirect('page-subject')->with('update_subject_session','');
     }
 
     //TRANG HỌC PHẦN
-    protected function page_subject()
+    protected function page_subject(Request $request)
     {
-        return view('page.subject.page_subject');
+        $search = $request->input('inputSearch');
+        if($search != ""){
+            $show_subjects = Subject::where(function ($query) use ($search){
+                $query->where('subject_code','like', '%'.$search.'%')
+                    ->orWhere('subject_name', 'like', '%'.$search.'%');
+            })->paginate(2);
+        }else{
+            $show_subjects = Subject::latest()->paginate(40);
+        }
+        return view('page.subject.page_subject',['show_subjects'=>$show_subjects]);
+    }
+
+    //CHỈNH SỬA HỌC PHẦN
+    protected function edit_subject($id_subject)
+    {
+        $edit_subject = Subject::find($id_subject);
+        return view('page.subject.edit_subject',['edit_subject'=>$edit_subject]);
+    }
+
+    //XÓA HỌC PHẦN
+    protected function delete_subject(Request $request)
+    {
+        $ids = $request->ids;
+        DB::table('subjects')->whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"Đã Xóa sinh viên"]);
+    }
+
+    //NHẬP FILE EXCEL VÀO HỌC PHẦN
+    protected function import_excel_to_subject(Request $request)
+    {
+        $this->validate($request, [
+            'inputFileExcel'  => 'mimes:xls,xlsx,csv'
+        ],[
+            'inputFileExcel.mimes' => 'Bắt buộc file có phần mở rộng: xls, xlsx, csv'
+        ]);
+
+        // load file ra object PHPExcel
+        $objPHPExcel = \PHPExcel_IOFactory::load($request->file('inputFileExcel'));
+
+        // Set sheet sẽ được đọc dữ liệu
+        $provinceSheet = $objPHPExcel->setActiveSheetIndex(0);
+
+        // Lấy số row lớn nhất trong sheet
+        $highestRow    = $provinceSheet->getHighestRow();
+
+        // For chạy từ 2 vì row 1 là title
+        for ($row = 2; $row <= $highestRow; $row++) {
+
+            //Lấy mã học phần trong hàng đầu tiên
+            $subject_code_excel = $provinceSheet->getCellByColumnAndRow(0, $row)->getValue();
+            $count_subject_code = DB::table('subjects')->where('subject_code',$subject_code_excel)->count();
+
+            if ($count_subject_code >= 1) {
+                $message_error_excel = $request->session()->get('message_error_excel');
+                return redirect()->back()->with('message_error_excel','');
+            }else {
+                // lấy dữ liệu từng ô theo col và row
+                Subject::create([
+                    'subject_code' => $provinceSheet->getCellByColumnAndRow(0, $row)->getValue(),
+                    'subject_name' => $provinceSheet->getCellByColumnAndRow(1, $row)->getValue(),
+                    'subject_number_credit' => $provinceSheet->getCellByColumnAndRow(2, $row)->getValue(),
+                    'subject_status' => 0,
+                ]);
+            }
+        }
+        $import_file_excel_subject = $request->session()->get('import_file_excel_subject');
+        return redirect()->back()->with('import_file_excel_subject','');
     }
 
     //TRANG LỚP HỌC PHẦN
     protected function page_class_subject()
     {
-        return view('page.subject.page_class_subject');
+        if (Auth::user()->role_id == 1) {
+            $show_class_subjects = ClassSubject::latest()->paginate(10);
+        }else{
+            $show_class_subjects = ClassSubject::where('teacher_id', Auth::user()->teacher_id)->latest()->paginate(10);
+        }
+        return view('page.subject.page_class_subject',['show_class_subjects'=>$show_class_subjects]);
     }
 
     //TRANG THÊM LỚP HỌC PHẦN
@@ -784,10 +1062,55 @@ class AdminController extends Controller
         return view('page.subject.add_class_subject');
     }
 
-    //TRANG CHỈNH SỬA LỚP HỌC PHẦN
-    protected function edit_class_subject()
+    //XÓA THÊM LỚP HỌC PHẦN
+    protected function delete_class_subject(Request $request, $id_class_subject)
     {
-        return view('page.subject.edit_class_subject');
+        ClassSubject::destroy($id_class_subject);
+        $delete_class_subject = $request->session()->get('delete_class_subject');
+        return redirect()->back()->with('delete_class_subject','');
+    }
+
+    //THÊM LỚP HỌC PHẦN CSDL
+    protected function post_add_class_subject(Request $request)
+    {
+        $this->validate($request, [
+            'inputClassSubjectCode'  => 'unique:class_subjects,class_subject_code'
+        ],[
+            'inputClassSubjectCode.unique' => 'Mã lớp học phần đã tồn tại'
+        ]);
+        $add_class_subject = new ClassSubject();
+        $add_class_subject->teacher_id = $request->input('inputTeacherId');
+        $add_class_subject->semester_year_id = $request->input('inputSemesterYearId');
+        $add_class_subject->subject_id = $request->input('inputSubjectId');
+        $add_class_subject->class_subject_code = $request->input('inputClassSubjectCode');
+        $add_class_subject->class_subject_name = $request->input('inputClassSubjectName');
+        $add_class_subject->class_subject_note = $request->input('inputClassSubjectNote');
+        $add_class_subject->save();
+
+        $add_class_subject_session = $request->session()->get('add_class_subject_session');
+        return redirect('page-class-subject')->with('add_class_subject_session','');
+    }
+
+    //THÊM LỚP HỌC PHẦN CSDL
+    protected function update_class_subject(Request $request, $id_class_subject)
+    {
+        $update_class_subject = ClassSubject::find($id_class_subject);
+        $update_class_subject->teacher_id = $request->input('inputTeacherId');
+        $update_class_subject->semester_year_id = $request->input('inputSemesterYearId');
+        $update_class_subject->subject_id = $request->input('inputSubjectId');
+        $update_class_subject->class_subject_name = $request->input('inputClassSubjectName');
+        $update_class_subject->class_subject_note = $request->input('inputClassSubjectNote');
+        $update_class_subject->save();
+
+        $update_class_subject_session = $request->session()->get('update_class_subject_session');
+        return redirect('page-class-subject')->with('update_class_subject_session','');
+    }
+
+    //TRANG CHỈNH SỬA LỚP HỌC PHẦN
+    protected function edit_class_subject($id_class_subject)
+    {
+        $edit_class_subject = ClassSubject::find($id_class_subject);
+        return view('page.subject.edit_class_subject',['edit_class_subject'=>$edit_class_subject]);
     }
 
     //TRANG XEM LỚP HỌC PHẦN
@@ -803,9 +1126,46 @@ class AdminController extends Controller
     }
 
     //TRANG CHƯƠNG TRÌNH HỌC
-    protected function page_program_study()
+    protected function page_program_study(Request $request)
     {
-        return view('page.subject.page_program_study');
+        $search = $request->input('inputSearch');
+        if($search != ""){
+            $show_program_studys = DB::table('program_studies')
+                ->join('subjects', 'program_studies.subject_id', '=', 'subjects.id')
+                ->where('program_studies.subject_id','=', $search)
+                ->select('program_studies.*', 'subjects.id')
+                ->paginate(3);
+        }else{
+            $show_program_studys = DB::table('program_studies')->latest()->paginate(30);
+        }
+        return view('page.subject.page_program_study',['show_program_studys'=>$show_program_studys]);
+    }
+
+    //XÓA CHƯƠNG TRÌNH HỌC
+    protected function delete_program_study(Request $request)
+    {
+        $ids = $request->ids;
+        DB::table('program_studies')->whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"Đã Xóa chương trình học"]);
+    }
+
+    //THÊM CHƯƠNG TRÌNH HỌC CSDL
+    protected function post_add_program_study(Request $request)
+    {
+        $this->validate($request, [
+            'inputSubjectId'  => 'unique:program_studies,subject_id'
+        ],[
+            'inputSubjectId.unique' => 'Học phần đã tồn tại'
+        ]);
+
+        $add_program_study = new ProgramStudy();
+        $add_program_study->category_subject_id = $request->input('inputCategorySubjectId');
+        $add_program_study->subject_id = $request->input('inputSubjectId');
+        $add_program_study->program_train_id = $request->input('inputProgramTrainId');
+        $add_program_study->save();
+
+        $add_program_study_session = $request->session()->get('add_program_study_session');
+        return redirect()->back()->with('add_program_study_session','');
     }
     /*=================================================================*/
 

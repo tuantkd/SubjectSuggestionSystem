@@ -25,4 +25,10 @@ class Major extends Model
     {
         return $this->hasMany('App\Models\ClassMajor');
     }
+
+    //Chuyên ngành có nhiều chương trình đào tạo
+    public function ProgramTrain()
+    {
+        return $this->hasMany('App\Models\ProgramTrain');
+    }
 }

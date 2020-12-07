@@ -25,7 +25,8 @@
     <!-- Modal -->
     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="" method="post">
+            <form action="{{ url('post-add-category-subject') }}" method="POST" class="needs-validation" novalidate>
+                @csrf
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"><b>THÊM LOẠI HỌC PHẦN</b></h5>
@@ -33,11 +34,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="">Tên loại</label>
-                            <input type="text" name="" class="form-control" placeholder="Nhập tên loại học phần">
+                            <input type="text" name="inputCategoryName" class="form-control" placeholder="Nhập tên loại học phần" required>
                         </div>
                         <div class="form-group">
                             <label for="">Ghi chú</label>
-                            <textarea name="" rows="5" class="form-control" placeholder="Nhập ghi chú loại học phần"></textarea>
+                            <textarea name="inputCategoryNote" rows="5" class="form-control" placeholder="Nhập ghi chú loại học phần" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -82,22 +83,31 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td data-label="STT">1</td>
-                                        <td data-label="Tên loại học phần">
-                                            <b>Tiên quyết</b>
-                                        </td>
-                                        <td data-label="Ghi chú">
-                                            <span class="text-justify">
-                                                Loại học phần tiên quyết là học phần mà sinh viên phải tích lũy mới đăng ký học phần mới kế tiếp
-                                            </span>
-                                        </td>
-                                        <td data-label="Ghi chú">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    @forelse($show_category_subjects as $key => $show_category_subject)
+                                        <tr>
+                                            <td data-label="STT"><b>{{ ++$key }}</b></td>
+                                            <td data-label="Tên loại học phần">
+                                                <b>{{ $show_category_subject->category_subject_name }}</b>
+                                            </td>
+                                            <td data-label="Ghi chú">
+                                                <span class="text-justify">
+                                                    {{ $show_category_subject->category_subject_note }}
+                                                </span>
+                                            </td>
+                                            <td data-label="Ghi chú">
+                                                <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?')"
+                                                href="{{ url('delete-category-subject/'.$show_category_subject->id) }}" role="button">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -109,8 +119,54 @@
                 <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+    @if (Session::has('add_category_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm loại học phần'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('delete_category_subjectsession'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Xóa loại học phần'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
 
 @endsection

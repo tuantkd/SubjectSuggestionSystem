@@ -40,49 +40,64 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-3">
-                            <form action="" method="post">
+                            <form action="{{ url('update-student/'.$edit_student->id) }}" method="POST" class="needs-validation" novalidate>
+                                @csrf
+                                @method('PUT')
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-6">
                                         <label for="">Mã sinh viên</label>
-                                        <input type="text" name="" class="form-control" disabled>
+                                        <input type="text" name="inputStudentCode" class="form-control" disabled value="{{ $edit_student->student_code }}">
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Họ và tên</label>
-                                        <input type="text" name="" class="form-control" disabled>
+                                        <input type="text" name="inputStudentFullName" class="form-control" disabled value="{{ $edit_student->student_fullname }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-6">
                                         <label for="">Giới tính</label><br>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="optradio" value="Nam">Nam
-                                            </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" class="form-check-input" name="optradio" value="Nữ">Nữ
-                                            </label>
-                                        </div>
+                                        @if ($edit_student->student_sex == 'Nam')
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" name="inputStudentSex" value="Nam" checked>Nam
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" name="inputStudentSex" value="Nữ">Nữ
+                                                </label>
+                                            </div>
+                                        @else
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" name="inputStudentSex" value="Nam">Nam
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" name="inputStudentSex" value="Nữ" checked>Nữ
+                                                </label>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Ngày sinh</label>
-                                        <input type="date" name="" class="form-control">
+                                        <input type="date" name="inputStudentBirthday" class="form-control" value="{{ $edit_student->student_birthday }}">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-6">
                                         <label for="">Điện thoại</label>
-                                        <input type="number" name="" class="form-control" placeholder="Nhập số điện thoại">
+                                        <input type="number" name="inputStudentPhone" class="form-control" placeholder="Nhập số điện thoại" value="{{ $edit_student->student_phone }}">
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Email</label>
-                                        <input type="email" name="" class="form-control" placeholder="Nhập địa chỉ email">
+                                        <input type="email" name="inputStudentEmail" class="form-control" placeholder="Nhập địa chỉ email" value="{{ $edit_student->student_email }}">
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                {{--<div class="form-group row">
                                     <div class="col-12 col-sm-12">
                                         <label for="">Lớp chuyên ngành</label>
                                         <select class="form-control" name="">
@@ -90,11 +105,12 @@
                                             <option value="">Công nghệ thông tin</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div>--}}
+
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-12">
                                         <label for="">Quê quán</label>
-                                        <textarea name="" rows="3" class="form-control" placeholder="Nhập địa chỉ quê quán"></textarea>
+                                        <textarea name="inputStudentAddress" rows="3" class="form-control" placeholder="Nhập địa chỉ quê quán">{{ $edit_student->student_address }}</textarea>
                                     </div>
                                 </div>
 
@@ -112,8 +128,30 @@
                 <!--  End col 12-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
 @endsection

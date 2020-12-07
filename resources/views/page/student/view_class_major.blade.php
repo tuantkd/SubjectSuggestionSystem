@@ -153,6 +153,19 @@
                     @endif
                     <!-- /Message Errors-->
 
+                    <!-- SEARCH FORM -->
+                    <form action="{{ url('view-class-major/'.$class_majors->id) }}" method="GET">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" placeholder="Nhập tìm kiếm sinh viên" name="inputSearch">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- SEARCH FORM -->
+
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
@@ -161,6 +174,12 @@
                                 LỚP <b style="text-transform: uppercase;">[ {{ $class_majors->class_major_code }} - {{ $class_majors->class_major_name }} ]</b>
                             </h3>
                             <div class="card-tools">
+                                <!-- row-option -->
+                                <button class="btn btn-danger btn-xs delete_all" data-url="{{ url('delete-check_all-student-class') }}">
+                                    <i class="fa fa-trash"></i> Xóa đã chọn
+                                </button>
+                                <!-- /row-option -->
+
                                 <a class="btn btn-success btn-xs" href="#" role="button" data-toggle="modal" data-target="#modelId">
                                     <i class="fa fa-file-excel"></i> Nhập Excel
                                 </a>
@@ -173,31 +192,6 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-2">
-                            <!-- row-option -->
-                            <div class="row mt-1">
-                                <div class="col-sm-4 mb-2">
-                                    <button class="btn btn-danger btn-sm delete_all" data-url="{{ url('delete-check_all-student-class') }}">
-                                        <i class="fa fa-trash"></i> Xóa đã chọn
-                                    </button>
-                                </div>
-                                <div class="col-sm-8 mb-2">
-                                    <!-- SEARCH FORM -->
-                                    <form action="{{ url('view-class-major/'.$class_majors->id) }}" method="GET">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" placeholder="Nhập tìm kiếm sinh viên" name="inputSearch">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-success" type="submit">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <!-- SEARCH FORM -->
-                                </div>
-                            </div>
-                            <!-- /row-option -->
-                            <hr class="mt-0">
-
                             <!-- table-student -->
                             <div class="table-responsive-sm">
                                 <table class="table table-striped">
@@ -272,14 +266,14 @@
                                         </td>
                                         <td data-label="Chọn">
                                             <a class="btn btn-success btn-xs"
-                                               href="{{ url('view-infor-student') }}" role="button">
+                                               href="{{ url('view-infor-student/'.$show_student_class->id) }}" role="button">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
                                     </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="9">
+                                            <td colspan="10">
                                                 <b class="text-danger">Không có dữ liệu</b>
                                             </td>
                                         </tr>

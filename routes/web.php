@@ -202,14 +202,29 @@ Route::middleware([CheckLogin::class])->group(function () {
     //TRANG DANH SÁCH SINH VIÊN
     Route::get('page-list-student', [AdminController::class, 'page_list_student']);
 
+    //XÓA SINH VIÊN
+    Route::delete('delete-student', [AdminController::class, 'delete_student']);
+
+    //NHẬP EXCEL VÀO DANH SÁCH SINH VIÊN
+    Route::post('import-excel-to-list-student', [AdminController::class, 'import_excel_to_list_student']);
+
     //TRANG THÊM SINH VIÊN
     Route::get('add-student', [AdminController::class, 'add_student']);
+
+    //TRANG CHỈNH SỬA SINH VIÊN
+    Route::get('edit-student/{id_student}', [AdminController::class, 'edit_student']);
+
+    //CẬP NHẬT SINH VIÊN
+    Route::put('update-student/{id_student}', [AdminController::class, 'update_student']);
+
+    //THÊM SINH VIÊN CSDL
+    Route::post('post-add-student', [AdminController::class, 'post_add_student']);
 
     //TRANG CHỈNH SỬA SINH VIÊN
     Route::get('edit-student', [AdminController::class, 'edit_student']);
 
     //TRANG THÔNG TIN SINH VIÊN
-    Route::get('view-infor-student', [AdminController::class, 'view_infor_student']);
+    Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
     /*============================================================================*/
 
 
@@ -217,6 +232,12 @@ Route::middleware([CheckLogin::class])->group(function () {
     /*============================================================================*/
     //TRANG CHƯƠNG TRÌNH ĐÀO TẠO
     Route::get('page-program-train', [AdminController::class, 'page_program_train']);
+
+    //XÓA CHƯƠNG TRÌNH ĐÀO TẠO
+    Route::get('delete-program-train/{id_program_train}', [AdminController::class, 'delete_program_train']);
+
+    //THÊM CHƯƠNG TRÌNH ĐÀO TẠO
+    Route::post('post-add-program-train', [AdminController::class, 'post_add_program_train']);
     /*============================================================================*/
 
 
@@ -224,20 +245,56 @@ Route::middleware([CheckLogin::class])->group(function () {
     //TRANG HỌC KỲ NĂM HỌC
     Route::get('page-semester-year', [AdminController::class, 'page_semester_year']);
 
+    //XÓA HỌC KỲ NĂM HỌC
+    Route::get('delete-semester-year/{id_semester_year}', [AdminController::class, 'delete_semester_year']);
+
+    //THÊM HỌC KỲ NĂM HỌC CSDL
+    Route::post('post-add-semester-year', [AdminController::class, 'post_add_semester_year']);
+
     //TRANG LOẠI HỌC PHẦN
     Route::get('page-category-subject', [AdminController::class, 'page_category_subject']);
+
+    //XÓA LOẠI HỌC PHẦN
+    Route::get('delete-category-subject/{page-subject}', [AdminController::class, 'delete_category_subject']);
+
+    //THÊM LOẠI HỌC PHẦN
+    Route::post('post-add-category-subject', [AdminController::class, 'post_add_category_subject']);
 
     //TRANG HỌC PHẦN
     Route::get('page-subject', [AdminController::class, 'page_subject']);
 
+    //THÊM HỌC PHẦN
+    Route::post('post-add-subject', [AdminController::class, 'post_add_subject']);
+
+    //CHỈNH SỬA HỌC PHẦN
+    Route::get('edit-subject/{id_subject}', [AdminController::class, 'edit_subject']);
+
+    //CẬP NHẬT HỌC PHẦN
+    Route::put('update-subject/{id_subject}', [AdminController::class, 'update_subject']);
+
+    //XÓA HỌC PHẦN
+    Route::delete('delete-subject', [AdminController::class, 'delete_subject']);
+
+    //NHẬP FILE EXCEL VÀO HỌC PHẦN
+    Route::post('import-excel-to-subject', [AdminController::class, 'import_excel_to_subject']);
+
     //TRANG LỚP HỌC PHẦN
     Route::get('page-class-subject', [AdminController::class, 'page_class_subject']);
+
+    //XÓA LỚP HỌC PHẦN
+    Route::get('delete-class-subject/{id_class_subject}', [AdminController::class, 'delete_class_subject']);
 
     //TRANG THÊM LỚP HỌC PHẦN
     Route::get('add-class-subject', [AdminController::class, 'add_class_subject']);
 
+    //THÊM LỚP HỌC PHẦN CSDL
+    Route::post('post-add-class-subject', [AdminController::class, 'post_add_class_subject']);
+
     //TRANG CHỈNH SỬA LỚP HỌC PHẦN
-    Route::get('edit-class-subject', [AdminController::class, 'edit_class_subject']);
+    Route::get('edit-class-subject/{id_class_subject}', [AdminController::class, 'edit_class_subject']);
+
+    //CẬP NHẬT LỚP HỌC PHẦN
+    Route::put('update-class-subject/{id_class_subject}', [AdminController::class, 'update_class_subject']);
 
     //TRANG XEM LỚP HỌC PHẦN
     Route::get('view-detail-class-subject', [AdminController::class, 'view_detail_class_subject']);
@@ -247,5 +304,11 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //TRANG CHƯƠNG TRÌNH HỌC
     Route::get('page-program-study', [AdminController::class, 'page_program_study']);
+
+    //XÓA CHƯƠNG TRÌNH HỌC
+    Route::delete('delete-program-study', [AdminController::class, 'delete_program_study']);
+
+    //THÊM CHƯƠNG TRÌNH HỌC
+    Route::post('post-add-program-study', [AdminController::class, 'post_add_program_study']);
     /*============================================================================*/
 });
