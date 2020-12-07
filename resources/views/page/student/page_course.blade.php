@@ -52,7 +52,7 @@
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Ghi chú</label>
-                                        <textarea class="form-control" name="inputCourseNote" rows="5" placeholder="Nhập ghi chú khóa học" required></textarea>
+                                        <textarea class="form-control" name="inputCourseNote" rows="2" placeholder="Nhập ghi chú khóa học" required></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">

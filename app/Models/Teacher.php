@@ -41,4 +41,10 @@ class Teacher extends Model
     {
         return $this->belongsTo('App\Models\Degree');
     }
+
+    //Giảng viên có nhiều lớp học phần
+    public function ClassSubject()
+    {
+        return $this->hasMany('App\Models\ClassSubject');
+    }
 }

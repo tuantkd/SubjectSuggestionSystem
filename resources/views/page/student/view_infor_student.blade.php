@@ -33,10 +33,10 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle" src="{{ url('public/dist/img/avatar.png') }}">
+                                <img class="profile-user-img img-fluid img-circle" src="{{ url('public/dist/img/user_avatar.png') }}">
                             </div>
-                            <h3 class="profile-username text-center">B1607138</h3>
-                            <p class="text-muted text-center">Nguyễn Văn Tuấn</p>
+                            <h3 class="profile-username text-center"><b>{{ $infor_students->student_fullname }}</b></h3>
+                            <p class="text-muted text-center">MSSV {{ $infor_students->student_code }}</p>
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
@@ -69,27 +69,23 @@
                         <!-- /.card-header -->
                         <div class="card-body p-2">
                             <strong><i class="fas fa-book mr-1"></i>Giới tính</strong>
-                            <p class="text-muted">
-                                Nam
-                            </p>
+                            <p class="text-muted">{{ $infor_students->student_sex }}</p>
                             <hr>
 
                             <strong><i class="fas fa-map-marker-alt mr-1"></i> Ngày sinh</strong>
-                            <p class="text-muted">25/01/1998</p>
+                            <p class="text-muted">{{ $infor_students->student_birthday }}</p>
                             <hr>
 
                             <strong><i class="fas fa-pencil-alt mr-1"></i> Điện thoại</strong>
-                            <p class="text-muted">
-                                0326827393
-                            </p>
+                            <p class="text-muted">{{ $infor_students->student_phone }}</p>
                             <hr>
 
                             <strong><i class="far fa-file-alt mr-1"></i> Email</strong>
-                            <p class="text-muted">tuanb1607138@student.ctu.edu.vn</p>
+                            <p class="text-muted">{{ $infor_students->student_email }}</p>
                             <hr>
 
                             <strong><i class="far fa-file-alt mr-1"></i> Quê quán</strong>
-                            <p class="text-muted">Ấp 3, Xã Thủy, Vị Thủy, Hậu Giang</p>
+                            <p class="text-muted">{{ $infor_students->student_address }}</p>
 
                         </div>
                         <!-- /.card-body -->

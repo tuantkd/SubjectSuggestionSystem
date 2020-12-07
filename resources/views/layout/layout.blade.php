@@ -9,11 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Icon image -->
     <link rel="shortcut icon" type="image/png" href="{{ url('public/images/logo_ctu.png') }}"/>
+
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
     <!-- Ckeditor 4 -->
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <!-- Sweetalert2 -->
@@ -47,6 +49,10 @@
 
     <!-- Sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ url('public/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
     @yield('link_cdn')
 
@@ -566,6 +572,9 @@
 
 <!-- Sparkline -->
 <script src="{{ url('public/plugins/sparklines/sparkline.js') }}"></script>
+
+<!-- Select2 -->
+<script src="{{ url('public/plugins/select2/js/select2.full.min.js') }}"></script>
 
 <!-- daterangepicker -->
 <script src="{{ url('public/plugins/moment/moment.min.js') }}"></script>

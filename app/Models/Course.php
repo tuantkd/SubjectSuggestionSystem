@@ -19,4 +19,10 @@ class Course extends Model
     {
         return $this->hasMany('App\Models\ClassMajor');
     }
+
+    //Khóa học có nhiều chương trình đào tạo
+    public function ProgramTrain()
+    {
+        return $this->hasMany('App\Models\ProgramTrain');
+    }
 }

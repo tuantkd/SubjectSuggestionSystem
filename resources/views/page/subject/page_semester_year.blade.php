@@ -22,10 +22,11 @@
 
 @section('content')
 
-    <!-- Modal -->
+    <!-- Modal Add Semester Year -->
     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="" method="post">
+            <form action="{{ url('post-add-semester-year') }}" method="POST" class="needs-validation" novalidate>
+                @csrf
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"><b>THÊM HỌC KỲ - NĂM HỌC</b></h5>
@@ -34,7 +35,7 @@
                         <div class="form-group row">
                             <div class="col-12 col-sm-6">
                                 <label for="">Học kỳ</label>
-                                <select name="" class="form-control">
+                                <select name="inputSemester" class="form-control" required>
                                     <option value="">- - Chọn - -</option>
                                     <option value="1">Học kỳ 1</option>
                                     <option value="2">Học kỳ 2</option>
@@ -43,7 +44,18 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label for="">Năm học</label>
-                                <input type="text" name="" class="form-control" placeholder="Nhập năm học">
+                                <input type="text" name="inputYearStudy" class="form-control" placeholder="Nhập năm học" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12 col-sm-6">
+                                <label for="">Ngày bắt đầu</label>
+                                <input type="date" name="inputDateBegin" class="form-control" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label for="">Ngày kết thúc</label>
+                                <input type="date" name="inputDateEnd" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -55,6 +67,8 @@
             </form>
         </div>
     </div>
+    <!-- /Modal Add Semester Year -->
+
 
     <!-- Main content -->
     <section class="content">
@@ -85,24 +99,51 @@
                                         <th scope="col">STT</th>
                                         <th scope="col">Năm học</th>
                                         <th scope="col">Học kỳ</th>
+                                        <th scope="col">Ngày bắt đầu</th>
+                                        <th scope="col">Ngày kết thúc</th>
                                         <th scope="col">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @forelse($show_semester_years as $key => $show_semester_year)
                                     <tr>
-                                        <td data-label="STT">1</td>
+                                        <td data-label="STT">{{ ++$key }}</td>
                                         <td data-label="Năm học">
-                                            <b>Năm học 2020</b>
+                                            <b>Năm
+                                                <?php
+                                                    $year = str_split($show_semester_year->semester_year);
+                                                    echo $year_arr = $year[1].$year[2].$year[3].$year[4]
+                                                ?>
+                                            </b>
                                         </td>
-                                        <td data-label="Tên học phần">
-                                            <b>Học kỳ 1</b>
+                                        <td data-label="Học kỳ">
+                                            <b>Học kỳ
+                                                <?php
+                                                    $semester = str_split($show_semester_year->semester_year);
+                                                    echo $semester_arr = $semester[0]
+                                                ?>
+                                            </b>
                                         </td>
+                                        <td data-label="Ngày bắt đầu">
+                                            <b>{{ date('d-m-Y', strtotime($show_semester_year->date_begin)) }}</b>
+                                        </td><td data-label="Ngày kết thúc">
+                                            <b>{{ date('d-m-Y', strtotime($show_semester_year->date_end)) }}</b>
+                                        </td>
+
                                         <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-sm" href="#" role="button">
+                                            <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?')"
+                                            href="{{ url('delete-semester-year/'.$show_semester_year->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
                                     </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -114,8 +155,66 @@
                 <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @if (Session::has('message_error'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'error'
+                , title: 'Lỗi! Năm học và học kỳ đã tồn tại'
+                , showConfirmButton: false
+                , timer: 3000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('add_semester_year_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm năm học và học kỳ'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('delete_semester_year_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Xóa năm học và học kỳ'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
 @endsection

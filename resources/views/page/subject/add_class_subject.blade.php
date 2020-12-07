@@ -22,10 +22,12 @@
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 @endsection
+
 
 @section('content')
 
@@ -47,36 +49,69 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-3">
-                            <form action="" method="post">
+                            <form action="{{ url('post-add-class-subject') }}" method="POST" class="needs-validation" novalidate>
+                                @csrf
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-4">
                                         <label for="">Mã lớp</label>
-                                        <input type="text" name="" class="form-control" placeholder="Nhập mã lớp">
+                                        <input type="text" name="inputClassSubjectCode" class="form-control" placeholder="Nhập mã lớp" required>
                                     </div>
                                     <div class="col-12 col-sm-8">
-                                        <label for="">Tên lớp</label>
-                                        <select class="form-control form-control-xs selectpicker" name="" data-size="5"
-                                                data-live-search="true" data-title="- - Chọn - -" data-width="100%">
-                                            <option value="">Quản trị hệ thống</option>
-                                            <option value="">Lập trình website</option>
+                                        <label for="">Tên lớp học phần</label>
+                                        <input type="text" name="inputClassSubjectName" class="form-control" placeholder="Nhập tên lớp học phần" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-12 col-sm-12">
+                                        <label for="">Học phần</label>
+                                        <select class="form-control selectpicker" name="inputSubjectId" data-size="10" required
+                                        data-live-search="true" data-title="- - Chọn học phần- -" data-width="100%">
+                                            @php($get_subjects = DB::table('subjects')->get())
+                                            @foreach($get_subjects as $get_subject)
+                                            <option value="{{ $get_subject->id }}">
+                                                {{ $get_subject->subject_code }} - {{ $get_subject->subject_name }}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-6">
                                         <label for="">Giảng viên</label>
-                                        <select class="form-control form-control-xs selectpicker" name="" data-size="5"
-                                                data-live-search="true" data-title="- - Chọn - -" data-width="100%">
-                                            <option value="">Nguyễn Thanh Hải</option>
-                                            <option value="">Trần Thanh Điện</option>
+                                        <select class="form-control selectpicker" name="inputTeacherId" data-size="5" required
+                                        data-live-search="true" data-title="- - Chọn - -" data-width="100%">
+                                            @php($get_teachers = DB::table('teachers')->get())
+                                            @foreach($get_teachers as $get_teacher)
+                                                <option value="{{ $get_teacher->id }}">
+                                                    {{ $get_teacher->fullname }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Năm học - Học kỳ </label>
-                                        <select class="form-control form-control-xs selectpicker" name="" data-size="5"
-                                                data-live-search="true" data-title="- - Chọn - -" data-width="100%">
-                                            <option value="">Học kỳ 1 - Năm 2020</option>
+                                        <select class="form-control selectpicker" name="inputSemesterYearId" data-size="5" required
+                                        data-live-search="true" data-title="- - Chọn - -" data-width="100%">
+                                            @php($get_semester_years = DB::table('semester_years')->get())
+                                            @foreach($get_semester_years as $get_semester_year)
+                                                <option value="{{ $get_semester_year->id }}">
+                                                    <?php
+                                                        $year = str_split($get_semester_year->semester_year);
+                                                        //Hiển thị học kỳ
+                                                        echo $semester = "Học kỳ ".$year[0];
+
+                                                        //Hiển thị năm học
+                                                        echo $year_arr = " - Năm ".$year[1].$year[2].$year[3].$year[4];
+                                                    ?>
+                                                </option>
+                                            @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-12 col-sm-12">
+                                        <label for="">Ghi chú</label>
+                                        <textarea name="inputClassSubjectNote" class="form-control" rows="3" required placeholder="Nhập ghi chú lớp học phần"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -93,8 +128,30 @@
                 <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
 @endsection
