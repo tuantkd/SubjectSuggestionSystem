@@ -12,7 +12,7 @@ class ProgramStudy extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['id', 'category_subject_id', 'subject_id', 'program_train_id'];
+    protected $fillable = ['id', 'category_subject_id', 'subject_id', 'program_train_id', 'program_studie_note'];
 
     //Chương trình học thuộc loại học phần
     public function CategorySubject()

@@ -28,6 +28,8 @@ class CreateProgramStudiesTable extends Migration
             $table->foreign('program_train_id')->references('id')
                 ->on('program_trains')->onDelete('cascade');
 
+            $table->text('program_studie_note')->nullable();
+
             $table->timestamps();
         });
     }

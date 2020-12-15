@@ -12,7 +12,7 @@ class CategorySubject extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['id', 'category_subject_name', 'category_subject_note'];
+    protected $fillable = ['id', 'category_subject_name', 'category_subject_note', 'symbol'];
 
     //Loại học phần có nhiều chương trình học
     public function ProgramStudy()

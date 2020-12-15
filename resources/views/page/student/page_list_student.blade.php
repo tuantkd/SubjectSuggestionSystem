@@ -126,7 +126,7 @@
                                         <th scope="col" style="width:10%;">SĐT</th>
                                         <th scope="col" style="width:18%;">Email</th>
                                         <th scope="col" style="width:12%;">Ngày sinh</th>
-                                        <th scope="col" style="width:18%;">Địa chỉ</th>
+                                        <th scope="col" style="width:18%;">Lớp C.Ngành</th>
                                         <th scope="col" style="width:4%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
@@ -180,12 +180,11 @@
                                                     <b class="text-danger">Không có</b>
                                                 @endif
                                             </td>
-                                            <td data-label="Quê quán">
-                                                @if ($show_student->student_address != null)
-                                                    <b>{{ $show_student->student_address }}</b>
-                                                @else
-                                                    <b class="text-danger">Không có</b>
-                                                @endif
+                                            <td data-label="Chuyên ngành">
+                                                @php($class_majors = DB::table('class_majors')->where('id', $show_student->class_major_id)->get())
+                                                @foreach($class_majors as $class_major)
+                                                    <b>{{ $class_major->class_major_name }}</b>
+                                                @endforeach
                                             </td>
 
                                             <td data-label="Chọn">
@@ -250,6 +249,18 @@
                 position: 'center'
                 , icon: 'success'
                 , title: 'Đã nhập File Excel thành công'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('mes_success'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Tạo tài khoản'
                 , showConfirmButton: false
                 , timer: 2000
             });

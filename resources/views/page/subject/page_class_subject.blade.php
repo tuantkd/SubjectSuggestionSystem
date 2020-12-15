@@ -97,7 +97,7 @@
                                             </a>
                                         </td><td data-label="Chọn">
                                             <a class="btn btn-success btn-xs"
-                                            href="{{ url('view-detail-class-subject') }}" role="button">
+                                            href="{{ url('view-detail-class-subject/'.$show_class_subject->id) }}" role="button">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
@@ -120,7 +120,8 @@
                 <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 

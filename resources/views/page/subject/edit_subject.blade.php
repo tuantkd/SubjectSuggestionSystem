@@ -53,9 +53,19 @@
                                     <label for="">Tên học phần</label>
                                     <input type="text" name="inputSubjectName" class="form-control" placeholder="Nhập tên học phần" value="{{ $edit_subject->subject_name }}">
                                 </div>
-                                <div class="form-group">
-                                    <label for="">Tín chỉ</label>
-                                    <input type="number" name="inputSubjectCredit" class="form-control" placeholder="Nhập số tín chỉ" value="{{ $edit_subject->subject_number_credit }}">
+                                <div class="form-group row">
+                                    <div class="col-4">
+                                        <label for="">Tín chỉ</label>
+                                        <input type="number" name="inputSubjectCredit" class="form-control" placeholder="Nhập số tín chỉ" value="{{ $edit_subject->subject_number_credit }}">
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="">Số tiết LT</label>
+                                        <input type="number" name="inputSubjectNumberTheory" class="form-control" placeholder="Số tiết LT" value="{{ $edit_subject->subject_number_theory }}">
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="">Số tiết TH</label>
+                                        <input type="number" name="inputSubjectNumberPractice" class="form-control" placeholder="Số tiết TH" value="{{ $edit_subject->subject_number_practice }}">
+                                    </div>
                                 </div>
                                 <div class="form-group text-right">
                                     <button type="submit" class="btn btn-primary">Cập nhật</button>

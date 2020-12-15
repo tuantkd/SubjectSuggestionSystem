@@ -146,7 +146,8 @@
                                                 </a>
                                             </td>
                                             <td data-label="Chọn">
-                                                <a class="btn btn-success btn-xs" href="#" role="button">
+                                                <a class="btn btn-success btn-xs"
+                                                href="{{ url('page-program-study/'.$show_program_train->id) }}" role="button">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>

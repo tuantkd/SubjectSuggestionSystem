@@ -2,43 +2,60 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Models/CategorySubject.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/ClassSubject.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/ProgramStudy.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/ProgramTrain.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/SemesterYear.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Subject.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_02_023840_create_program_trains_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_03_084646_create_semester_years_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_03_094536_create_category_subjects_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_04_070735_create_subjects_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_05_032227_create_class_subjects_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_07_052101_create_program_studies_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/DetailScore.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/PrerequisiteParallel.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/SubjectPrerequisiteParallel.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_08_040656_create_detail_scores_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_09_034410_create_prerequisite_parallels_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_09_035621_create_subject_prerequisite_parallels_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/run_python/D1_format.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/run_python/train_d1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1607330098-user8-128x128.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1607334861-avatar5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1607394754-user2-160x160.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1607757985-avatar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/profile/change_password.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/profile/profile_user.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/profile/profile_user_layout.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/add_prerequisite_parallel.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/add_program_study.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Course.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Course.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Major.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Major.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Teacher.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Teacher.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/CheckLogin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/CheckLogin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/CategorySubject.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/CategorySubject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ClassSubject.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ClassSubject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ProgramStudy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ProgramStudy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Student.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Student.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Subject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_04_070735_create_subjects_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_04_070735_create_subjects_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_07_052101_create_program_studies_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_07_052101_create_program_studies_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/login.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/add_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/add_student.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/edit_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/edit_student.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/page_course.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/page_course.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/page_list_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/page_list_student.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/view_class_major.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/view_class_major.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_category_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_category_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/edit_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_class_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_program_study.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_program_study.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_semester_year.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_semester_year.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/view_score_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/view_score_student.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/create_account.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/teacher/create_account.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/infor_teacher.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/teacher/infor_teacher.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/subject_suggestion_system.sql" beforeDir="false" afterPath="$PROJECT_DIR$/subject_suggestion_system.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/InstalledVersions.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/InstalledVersions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/symfony/process/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/symfony/process/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/symfony/process/Process.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/symfony/process/Process.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,7 +284,23 @@
       <workItem from="1607137724482" duration="5209000" />
       <workItem from="1607156454017" duration="3196000" />
       <workItem from="1607181016487" duration="198000" />
-      <workItem from="1607313823530" duration="8633000" />
+      <workItem from="1607313823530" duration="20227000" />
+      <workItem from="1607394258525" duration="11833000" />
+      <workItem from="1607415304229" duration="2499000" />
+      <workItem from="1607429878866" duration="5328000" />
+      <workItem from="1607478400293" duration="9776000" />
+      <workItem from="1607500883806" duration="7492000" />
+      <workItem from="1607524829061" duration="6052000" />
+      <workItem from="1607565572202" duration="5790000" />
+      <workItem from="1607583584850" duration="7382000" />
+      <workItem from="1607671210476" duration="5286000" />
+      <workItem from="1607745506376" duration="8173000" />
+      <workItem from="1607763021685" duration="58000" />
+      <workItem from="1607763147322" duration="3065000" />
+      <workItem from="1607856973207" duration="15534000" />
+      <workItem from="1607996335248" duration="7079000" />
+      <workItem from="1608014781008" duration="1103000" />
+      <workItem from="1608018209212" duration="2761000" />
     </task>
     <servers />
   </component>
@@ -285,6 +318,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="499" y="245" key="#Composer/0.0.1366.728@0.0.1366.728" timestamp="1605172030290" />
+    <state x="439" y="189" key="#Notifications" timestamp="1607761191075">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="439" y="189" key="#Notifications/0.0.1366.728@0.0.1366.728" timestamp="1607761191075" />
     <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605689599405">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -305,5 +342,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1606456754029" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1607584604523">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1607584604523" />
   </component>
 </project>

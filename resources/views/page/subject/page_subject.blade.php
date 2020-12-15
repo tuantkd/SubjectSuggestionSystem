@@ -40,9 +40,19 @@
                             <label for="">Tên học phần</label>
                             <input type="text" name="inputSubjectName" class="form-control" placeholder="Nhập tên học phần" required>
                         </div>
-                        <div class="form-group">
-                            <label for="">Tín chỉ</label>
-                            <input type="number" name="inputSubjectCredit" class="form-control" placeholder="Nhập số tín chỉ" required>
+                        <div class="form-group row">
+                            <div class="col-4">
+                                <label for="">Tín chỉ</label>
+                                <input type="number" name="inputSubjectCredit" class="form-control" placeholder="Số tín chỉ" required>
+                            </div>
+                            <div class="col-4">
+                                <label for="">Số tiết LT</label>
+                                <input type="number" name="inputSubjectNumberTheory" class="form-control" placeholder="Số tiết LT" required>
+                            </div>
+                            <div class="col-4">
+                                <label for="">Số tiết TH</label>
+                                <input type="number" name="inputSubjectNumberPractice" class="form-control" placeholder="Số tiết TH" required>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -146,10 +156,12 @@
                                     <tr>
                                         <th scope="col" style="width:2%;"><input type="checkbox" id="master"></th>
                                         <th scope="col" style="width: 5%;">STT</th>
-                                        <th scope="col" style="width: 20%;">Mã học phần</th>
-                                        <th scope="col" style="width: 53%;">Tên học phần</th>
+                                        <th scope="col" style="width: 20%;">Mã HP</th>
+                                        <th scope="col" style="width: 33%;">Tên học phần</th>
                                         <th scope="col" style="width: 15%;">Tín chỉ</th>
-                                        <th scope="col" style="width: 5%;">Chọn</th>
+                                        <th scope="col" style="width: 10%;">Số LT</th>
+                                        <th scope="col" style="width: 10%;">Số TH</th>
+                                        <th scope="col" style="width: 5%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -168,16 +180,36 @@
                                         <td data-label="Tín chỉ">
                                             <span>{{ $show_subject->subject_number_credit }}</span>
                                         </td>
+                                        <td data-label="Số LT">
+                                            @if ($show_subject->subject_number_theory != null)
+                                                <span>{{ $show_subject->subject_number_theory }}</span>
+                                            @else
+                                                <b class="text-danger">...</b>
+                                            @endif
+                                        </td><td data-label="Số TH">
+                                            @if ($show_subject->subject_number_practice != null)
+                                                <span>{{ $show_subject->subject_number_practice }}</span>
+                                            @else
+                                                <b class="text-danger">...</b>
+                                            @endif
+                                        </td>
                                         <td data-label="Chọn">
                                             <a class="btn btn-primary btn-xs"
-                                            href="{{ url('edit-subject/'.$show_subject->id) }}" role="button">
+                                            href="{{ url('edit-subject/'.$show_subject->id) }}" role="button" title="Chỉnh sửa học phần">
                                                 <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-success btn-xs"
+                                            href="{{ url('add-prerequisite-parallel/'.$show_subject->id) }}" role="button"
+                                            title="Thêm tiên quyết hoặc song hành">
+                                                <i class="fa fa-plus"></i>
                                             </a>
                                         </td>
                                     </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6">
+                                            <td colspan="8">
                                                 <b class="text-danger">Không có dữ liệu</b>
                                             </td>
                                         </tr>
@@ -235,6 +267,18 @@
                 position: 'center'
                 , icon: 'success'
                 , title: 'Đã Xóa học phần'
+                , showConfirmButton: false
+                , timer: 3000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('add_subject_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm học phần'
                 , showConfirmButton: false
                 , timer: 3000
             });

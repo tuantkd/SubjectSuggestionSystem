@@ -11,7 +11,9 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ url('page-home-teacher') }}">Bảng điều khiển</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url('page-list-teacher') }}">Danh sách giảng viên</a></li>
+                        @if (Auth::user()->role_id == 1)
+                            <li class="breadcrumb-item"><a href="{{ url('page-list-teacher') }}">Danh sách giảng viên</a></li>
+                        @endif
                         <li class="breadcrumb-item active">Thông tin giảng viên</li>
                     </ol>
                 </div><!-- /.col -->
@@ -32,8 +34,12 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle"
-                                src="{{ url('public/upload_avatar/'.$infor_teachers->avatar) }}">
+                                @if ($infor_teachers->avatar != null)
+                                    <img class="profile-user-img img-fluid img-circle"
+                                         src="{{ url('public/upload_avatar/'.$infor_teachers->avatar) }}">
+                                @else
+                                    <img src="{{ url('public/dist/img/user_avatar.png') }}" class="profile-user-img img-fluid img-circle">
+                                @endif
                             </div>
                             <h3 class="profile-username text-center">{{ $infor_teachers->fullname }}</h3>
                             @php($get_positions = DB::table('positions')->where('id', $infor_teachers->position_id)->get())
@@ -43,7 +49,11 @@
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
-                                    <b>Số lớp dạy</b> <a class="float-right">3</a>
+                                    <b>Số lớp dạy</b>
+                                    <a class="float-right">
+                                        @php($count_class = DB::table('class_subjects')->where('teacher_id', $infor_teachers->id)->count())
+                                        <b class="text-success">{{ $count_class }}</b> Lớp
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -55,16 +65,10 @@
 
                 <div class="col-md-9">
                     <div class="card">
-                        <div class="card-header p-2">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link active btn-sm p-2" href="#timeline" data-toggle="tab">
-                                        Hồ sơ thông tin
-                                    </a>
-                                </li>
-                            </ul>
+                        <div class="card-header">
+                            <h3 class="card-title"><b>THÔNG TIN CÁ NHÂN</b></h3>
                         </div><!-- /.card-header -->
-                        <div class="card-body p-2">
+                        <div class="card-body p-1">
                             <table class="table">
                                 <tbody>
                                     <tr>
@@ -138,46 +142,75 @@
 
                                 </tbody>
                             </table>
-                            <br>
-                            <!-- tab-content -->
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="timeline">
-                                    <!-- The timeline -->
-                                    <div class="timeline timeline-inverse">
-                                        <!-- timeline time label -->
-                                        <div class="time-label">
-                                            <span class="bg-primary">
-                                              Lớp giảng dạy
-                                            </span>
-                                        </div>
-                                        <!-- /.timeline-label -->
-                                        <!-- timeline item -->
-                                        <div class="p-0">
-                                            <div class="timeline-item">
-                                                <div class="timeline-body p-0">
-                                                    <ul class="list-group list-group-flush">
-                                                        <li class="list-group-item p-2">
-                                                            <a href="">Lớp H01 - Nguyên lý máy học</a>
-                                                        </li>
-                                                        <li class="list-group-item p-2">
-                                                            <a href="">Lớp H03 - An toàn hệ thống</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- END timeline item -->
-                                        <div>
-                                            <i class="far fa-circle bg-gray"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.tab-pane -->
-                            </div>
-                            <!-- /.tab-content -->
-                        </div><!-- /.card-body -->
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.nav-tabs-custom -->
+                    <!-- /.card -->
+
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><b>LỚP GIẢNG DẠY</b></h3>
+                        </div><!-- /.card-header -->
+                        <div class="card-body p-1">
+                            <div class="table-responsive-sm">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 5%;">STT</th>
+                                        <th scope="col" style="width: 10%;">Mã lớp</th>
+                                        <th scope="col" style="width: 25%;">Tên lớp</th>
+                                        <th scope="col" style="width: 15%;">HK - NH</th>
+                                        <th scope="col" style="width: 40%;">Ghi chú</th>
+                                        <th scope="col" style="width: 5%;">Chọn</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($class_subjects as $key => $show_class_subject)
+                                        <tr>
+                                            <td data-label="STT"><b>{{ ++$key }}</b></td>
+                                            <td data-label="Mã lớp">
+                                                <b>{{ $show_class_subject->class_subject_code }}</b>
+                                            </td>
+                                            <td data-label="Tên lớp">
+                                                <a href="{{ url('view-detail-class-subject/'.$show_class_subject->id) }}">
+                                                    <b style="text-transform: uppercase;">{{ $show_class_subject->class_subject_name }}</b>
+                                                </a>
+                                            </td>
+                                            <td data-label="Học kỳ - Năm học">
+                                                @php($semester_year = DB::table('semester_years')->where('id', $show_class_subject->semester_year_id)->first())
+                                                <?php
+                                                $semester_year = str_split($semester_year->semester_year);
+                                                echo $semester = "HK ".$semester_year[0];
+                                                echo $year = " - NH ".$semester_year[1].$semester_year[2].$semester_year[3].$semester_year[4];
+                                                ?>
+                                            </td>
+                                            <td data-label="Ghi chú" class="text-justify">
+                                                <p>{{ $show_class_subject->class_subject_note }}</p>
+                                            </td>
+
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-success btn-sm" title="Xem lớp học phần"
+                                                href="{{ url('view-detail-class-subject/'.$show_class_subject->id) }}" role="button">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
                 </div>
                 <!-- /.col -->
             </div>

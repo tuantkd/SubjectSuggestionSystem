@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubjectsTable extends Migration
+class CreatePrerequisiteParallelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateSubjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('prerequisite_parallels', function (Blueprint $table) {
             $table->id();
+
             $table->string('subject_code')->nullable();
-            $table->text('subject_name')->nullable();
-            $table->integer('subject_number_credit')->nullable();
-            $table->integer('subject_number_theory')->nullable();
-            $table->integer('subject_number_practice')->nullable();
-            $table->integer('subject_status')->nullable();
+            $table->string('prerequisite_parallel_note')->nullable();
+
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateSubjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('prerequisite_parallels');
     }
 }

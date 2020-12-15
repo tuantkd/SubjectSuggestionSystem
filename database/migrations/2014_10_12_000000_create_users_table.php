@@ -20,6 +20,10 @@ class CreateUsersTable extends Migration
             $table->foreign('teacher_id')->references('id')
                 ->on('teachers')->onDelete('cascade');
 
+            $table->unsignedBigInteger('student_id')->nullable();
+            $table->foreign('student_id')->references('id')
+                ->on('students')->onDelete('cascade');
+
             $table->unsignedBigInteger('role_id')->nullable();
             $table->foreign('role_id')->references('id')
                 ->on('roles')->onDelete('cascade');
