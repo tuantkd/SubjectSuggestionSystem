@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'a623f0b26aa1dabe0793ba19cfac96a79c7fd89c',
+    'reference' => 'bf0dcf493c9b257dd01a4a3ee256448aa5a34646',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -458,7 +458,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'a623f0b26aa1dabe0793ba19cfac96a79c7fd89c',
+      'reference' => 'bf0dcf493c9b257dd01a4a3ee256448aa5a34646',
     ),
     'laravel/tinker' => 
     array (
@@ -1234,12 +1234,12 @@ private static $installed = array (
     ),
     'symfony/process' => 
     array (
-      'pretty_version' => 'v5.1.8',
-      'version' => '5.1.8.0',
+      'pretty_version' => 'v5.2.0',
+      'version' => '5.2.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f00872c3f6804150d6a0f73b4151daab96248101',
+      'reference' => '240e74140d4d956265048f3025c0aecbbc302d54',
     ),
     'symfony/routing' => 
     array (

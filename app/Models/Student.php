@@ -22,4 +22,10 @@ class Student extends Model
     {
         return $this->belongsTo('App\Models\ClassMajor');
     }
+
+    //Sinh viên có nhiều chi tiết điểm
+    public function DetailScore()
+    {
+        return $this->hasMany('App\Models\DetailScore');
+    }
 }

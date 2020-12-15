@@ -137,7 +137,9 @@
     </style>
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Mulish', sans-serif;">
+
+<!-- Loader CSS khi chuyển trang myFunction -->
+<body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Mulish', sans-serif;" onload="myFunction()">
 
 <div class="wrapper">
     <!-- Navbar -->
@@ -152,14 +154,28 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown p-0">
-                <a href="{{ url('logout') }}" class="nav-link text-danger"
-                   onclick="return confirm('Bạn có muốn đăng xuất không ?');">
+                <a href="#" class="nav-link text-danger" data-toggle="modal" data-target="#modelLogout">
                     <b><i class="fa fa-sign-out"></i> Đăng xuất</b>
                 </a>
             </li>
         </ul>
     </nav>
     <!-- /.navbar -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="modelLogout" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-2">
+                    <h4>Bạn có muốn đăng xuất không ?</h4>
+                </div>
+                <div class="modal-footer p-2">
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Đóng</button>
+                    <a class="btn btn-primary btn-sm" href="{{ url('logout') }}"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -175,10 +191,16 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 @if(Auth::check())
                     <div class="image">
-                        <img src="{{ asset('public/dist/img/avatar.png') }}" class="img-circle elevation-2" alt="User Image">
+                        @php($teachers = DB::table('teachers')->where('id', Auth::user()->teacher_id)->first())
+                        @if ($teachers->avatar != null)
+                            <img src="{{ url('public/upload_avatar/'.$teachers->avatar) }}" class="img-circle elevation-2">
+                        @else
+                            <img src="{{ url('public/dist/img/user_avatar.png') }}" class="img-circle elevation-2">
+                        @endif
+
                     </div>
                     <div class="info">
-                        <a href="{{ url('page-profile-user/'.Auth::id()) }}" class="d-block">
+                        <a href="{{ url('page-profile-user/'.$teachers->id) }}" class="d-block">
                             <b>{{ Auth::user()->username }}</b>
                         </a>
                     </div>
@@ -193,7 +215,7 @@
 
                         {{--BẢNG ĐIỀU KHIỂN--}}
                         <li class="nav-item has-treeview menu-open">
-                            <a href="{{ url('page-home-admin') }}" class="nav-link active">
+                            <a href="{{ url('/') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Bảng điều khiển</p>
                             </a>
@@ -269,6 +291,27 @@
                         {{--QUẢN LÝ ĐƠN VỊ--}}
                         <div class="dropdown-divider mb-3"></div>
 
+                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
+                        <li class="nav-item has-treeview">
+                            <a href="pages/widgets.html" class="nav-link">
+                                <i class="nav-icon fas fa-list-alt"></i>
+                                <p>
+                                    Chương Trình ĐT
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('page-program-train') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chương trình ĐT</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
+                        <div class="dropdown-divider mb-3"></div>
+
                         {{--QUẢN LÝ GIẢNG VIÊN--}}
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
@@ -341,26 +384,6 @@
                         {{--QUẢN LÝ SINH VIÊN--}}
                         <div class="dropdown-divider mb-3"></div>
 
-                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
-                        <li class="nav-item has-treeview">
-                            <a href="pages/widgets.html" class="nav-link">
-                                <i class="nav-icon fas fa-list-alt"></i>
-                                <p>
-                                    C.Trình đào tạo
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('page-program-train') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Chương trình đào tạo</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
-                        <div class="dropdown-divider mb-3"></div>
 
                         {{--QUẢN LÝ HỌC PHẦN--}}
                         <li class="nav-item has-treeview">
@@ -394,12 +417,6 @@
                                     <a href="{{ url('page-class-subject') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Lớp học phần</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-program-study') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Chương trình học</p>
                                     </a>
                                 </li>
                             </ul>
@@ -410,115 +427,14 @@
 
                     @elseif (Auth::check() && Auth::user()->role_id == 2)
 
-
-                        {{--BẢNG ĐIỀU KHIỂN--}}
-                        <li class="nav-item has-treeview menu-open">
-                            <a href="{{ url('page-home-admin') }}" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Bảng điều khiển</p>
-                            </a>
-                        </li>
-                        {{--BẢNG ĐIỀU KHIỂN--}}
-                        <div class="dropdown-divider mb-3"></div>
-
-                        {{--QUẢN LÝ SINH VIÊN--}}
+                        {{--QUẢN LÝ HỌC PHẦN--}}
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Quản lý sinh viên
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('page-course') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Khóa học</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-class-major') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Lớp chuyên ngành</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-list-student') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh sách sinh viên</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        {{--QUẢN LÝ SINH VIÊN--}}
-                        <div class="dropdown-divider mb-3"></div>
-
-                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
-                        <li class="nav-item has-treeview">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="{{ url('page-class-subject') }}" class="nav-link">
                                 <i class="nav-icon fas fa-list-alt"></i>
-                                <p>
-                                    C.Trình đào tạo
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
+                                <p>Lớp học phần</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('page-program-train') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Chương trình đào tạo</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        {{--QUẢN LÝ CT ĐÀO TẠO--}}
-                        <div class="dropdown-divider mb-3"></div>
-
-                        {{--QUẢN LÝ HỌC PHẦN--}}
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>
-                                    Quản lý học phần
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('page-semester-year') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Học kỳ - Năm học</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-category-subject') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Loại học phần</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-subject') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Học phần</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-class-subject') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Lớp học phần</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('page-program-study') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Chương trình học</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         {{--QUẢN LÝ HỌC PHẦN--}}
-                        <div class="dropdown-divider mb-0"></div>
 
                     @endif
                 </ul>

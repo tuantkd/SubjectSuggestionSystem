@@ -1,18 +1,23 @@
 @extends('layout.layout')
 @section('title', 'Xem lớp học phần')
 
+@section('link_cdn')
+    <link rel="stylesheet" href="{{ url('public/dist/css/select.css') }}">
+    <script src="{{ url('public/dist/js/select.js') }}"></script>
+@endsection
+
 @section('breadcrumb')
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                </div><!-- /.col -->
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
-                        <li class="breadcrumb-item"><a href="#">Lớp học phần</a></li>
-                        <li class="breadcrumb-item active">H02 - Quản trị hệ thống</li>
+                        <li class="breadcrumb-item"><a href="{{ url('page-class-subject') }}">Lớp học phần</a></li>
+                        <li class="breadcrumb-item active">
+                            {{ $class_subject_id->class_subject_code }} - {{ $class_subject_id->class_subject_name }}
+                        </li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -23,28 +28,39 @@
 
 @section('content')
 
-    <!-- Modal -->
-    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <!-- Modal Add Detail Score-->
+    <div class="modal fade" id="modelAddToClassSubject" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="" method="post">
+            <form action="{{ url('post-add-detail-score/'.$class_subject_id->id) }}" method="POST">
+                @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><b>NHẬP FILE EXCEL</b></h5>
+                    <div class="modal-header p-2">
+                        <h5 class="modal-title"><b>THÊM SINH VIÊN LỚP HỌC PHẦN</b></h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="">Chọn file Excel</label><br>
-                            <input type="file" name="">
+                            <label for="">Sinh viên</label>
+                            <select class="form-control selectpicker" name="inputStudentId" data-size="10" required
+                            data-live-search="true" data-title="- - Chọn sinh viên- -" data-width="100%">
+                                @php($get_students = DB::table('students')->get())
+                                @foreach($get_students as $get_student)
+                                    <option value="{{ $get_student->id }}">
+                                        {{ $get_student->student_code }} - {{ $get_student->student_fullname }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary btn-sm">Nhập</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <!-- Modal Add Detail Score-->
+
 
     <!-- Main content -->
     <section class="content">
@@ -58,14 +74,11 @@
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                <b style="text-transform: uppercase;">H02 - Quản trị hệ thống</b>
+                                <b style="text-transform: uppercase;">{{ $class_subject_id->class_subject_code }} - {{ $class_subject_id->class_subject_name }}</b>
                             </h3>
                             <div class="card-tools">
-                                <a class="btn btn-success btn-xs" href="#" role="button" data-toggle="modal" data-target="#modelId">
-                                    <i class="fa fa-file-excel"></i> Nhập Excel
-                                </a>
-
-                                <a class="btn btn-primary btn-xs" href="{{ url('add-class-subject') }}" role="button">
+                                <a class="btn btn-primary btn-xs" href="#" role="button"
+                                data-toggle="modal" data-target="#modelAddToClassSubject">
                                     <i class="fa fa-plus"></i> Thêm mới
                                 </a>
                             </div>
@@ -78,35 +91,36 @@
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
                                         <th scope="col" style="width:15%;">Mã SV</th>
-                                        <th scope="col" style="width:15%;">Họ tên</th>
-                                        <th scope="col" style="width:10%;">Giới tính</th>
-                                        <th scope="col" style="width:15%;">Điện thoại</th>
-                                        <th scope="col" style="width:15%;">Email</th>
-                                        <th scope="col" style="width:20%;">Lớp CN</th>
-                                        <th scope="col" style="width:5%;" colspan="3">Chọn</th>
+                                        <th scope="col" style="width:45%;">Họ tên</th>
+                                        <th scope="col" style="width:15%;">Điểm số</th>
+                                        <th scope="col" style="width:15%;">Điểm chữ</th>
+                                        <th scope="col" style="width:5%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @forelse($student_class_subjects as $key => $student)
                                     <tr>
-                                        <td data-label="STT">1</td>
+                                        <td data-label="STT"><b>{{ ++$key }}</b></td>
                                         <td data-label="Mã sinh viên">
-                                            <b>B1607138</b>
+                                            @php($students = DB::table('students')->where('id',$student->student_id)->first())
+                                            <b>{{ $students->student_code }}</b>
                                         </td>
                                         <td data-label="Họ tên">
-                                            <b>Nguyễn Văn Tuấn</b>
+                                            <b>{{ $students->student_fullname }}</b>
                                         </td>
-                                        <td data-label="Giới tính">
-                                            Nam
+                                        <td data-label="Điểm số">
+                                            @if($student->score_number != null)
+                                                <b class="text-success">{{ $student->score_number }}</b>
+                                            @else
+                                                <b class="text-danger">...</b>
+                                            @endif
                                         </td>
-                                        <td data-label="Điện thoại">
-                                            0326598969
-                                        </td>
-                                        <td data-label="Email">
-                                            tuanb1607138@student.ctu.edu.vn
-                                        </td>
-
-                                        <td data-label="Lớp chuyên ngành">
-                                            <b>Công nghệ thông tin</b>
+                                        <td data-label="Điểm chữ">
+                                            @if($student->score_char != null)
+                                                <b class="text-success">{{ $student->score_char }}</b>
+                                            @else
+                                                <b class="text-danger">...</b>
+                                            @endif
                                         </td>
                                         <td data-label="Chọn">
                                             <a class="btn btn-danger btn-xs" href="#" role="button">
@@ -114,12 +128,19 @@
                                             </a>
                                         </td>
                                         <td data-label="Chọn">
-                                            <a class="btn btn-success btn-xs"
-                                               href="{{ url('view-score-student') }}" role="button" title="Cập nhật điểm">
-                                                <i class="fa fa-eye"></i>
+                                            <a class="btn btn-warning btn-xs"
+                                            href="{{ url('view-score-student/'.$class_subject_id->id.'/'.$student->id) }}" role="button" title="Cập nhật điểm">
+                                                <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7">
+                                                <b class="text-danger">Không có dữ liệu</b>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -131,14 +152,45 @@
                 <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 
-    <script>
-        $(function() {
-            $('.selectpicker').selectpicker();
-        });
-    </script>
+    @if (Session::has('add_detail_score_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Thêm'
+                , showConfirmButton: false
+                , timer: 1500
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_score_student_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật điểm'
+                , showConfirmButton: false
+                , timer: 1500
+            });
+        </script>
+    @endif
+
+    @if (Session::has('message_error'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'error'
+                , title: 'Lỗi! Sinh viên đã tồn tại'
+                , showConfirmButton: false
+                , timer: 3000
+            });
+        </script>
+    @endif
 
 @endsection

@@ -12,7 +12,10 @@ class Subject extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['id', 'subject_code', 'subject_name', 'subject_number_credit','subject_status'];
+    protected $fillable = [
+        'id', 'subject_code', 'subject_name', 'subject_number_credit',
+        'subject_status', 'subject_number_theory','subject_number_practice'
+    ];
 
     //Học phần có nhiều lớp học phần
     public function ClassSubject()
@@ -24,5 +27,11 @@ class Subject extends Model
     public function ProgramStudy()
     {
         return $this->hasMany('App\Models\ProgramStudy');
+    }
+
+    //Học phần có nhiều trong học phần tiên quyết hoặc song hành
+    public function SubjectPrerequisiteParallel()
+    {
+        return $this->hasMany('App\Models\PrerequisiteParallel');
     }
 }

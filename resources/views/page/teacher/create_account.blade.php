@@ -40,18 +40,18 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-3">
-                            <form action="{{ url('post-create-account/'.$account->id) }}" method="POST">
+                            <form action="{{ url('post-create-account/'.$account->id) }}" method="POST" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Tên tài khoản</label>
-                                        <input type="text" name="inputUsername" class="form-control" placeholder="Nhập tên tài khoản">
+                                        <input type="text" name="inputUsername" class="form-control" placeholder="Nhập tên tài khoản" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <label for="">Mật khẩu</label>
-                                        <input type="password" name="inputPassword" class="form-control" placeholder="Nhập mật khẩu">
+                                        <input type="password" name="inputPassword" class="form-control" placeholder="Nhập mật khẩu" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">

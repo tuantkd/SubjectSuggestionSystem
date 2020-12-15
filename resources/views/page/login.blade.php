@@ -112,13 +112,13 @@
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" name="inputUsername" class="form-control input_user" placeholder="Tài khoản">
+                        <input type="text" name="inputUsername" class="form-control input_user" placeholder="Tài khoản" required>
                     </div>
                     <div class="input-group mb-2">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input type="password" name="inputPassword" class="form-control input_pass" placeholder="Mật khẩu">
+                        <input type="password" name="inputPassword" class="form-control input_pass" placeholder="Mật khẩu" required>
                     </div>
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">

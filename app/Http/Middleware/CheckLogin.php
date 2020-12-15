@@ -20,6 +20,6 @@ class CheckLogin
         if ((Auth::check() && Auth::user()->role_id == 1) || (Auth::check() && Auth::user()->role_id == 2)) {
             return $next($request);
         }
-        abort(404);
+        return redirect('page-login');
     }
 }

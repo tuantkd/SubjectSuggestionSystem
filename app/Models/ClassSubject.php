@@ -35,4 +35,10 @@ class ClassSubject extends Model
     {
         return $this->belongsTo('App\Models\Subject');
     }
+
+    //Lớp học phần có nhiều chi tiết điểm
+    public function DetailScore()
+    {
+        return $this->hasMany('App\Models\DetailScore');
+    }
 }

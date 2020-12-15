@@ -115,7 +115,12 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <div class="col-12 col-sm-12 text-right">
+                                    <div class="col-6 col-sm-6 text-left">
+                                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modelId">
+                                            <i class="fa fa-user-plus"></i> Tạo tài khoản
+                                        </a>
+                                    </div>
+                                    <div class="col-6 col-sm-6 text-right">
                                         <button type="submit" class="btn btn-primary">Cập nhật</button>
                                     </div>
                                 </div>
@@ -132,6 +137,44 @@
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="{{ url('post-create-account-student/'.$edit_student->id) }}" method="post" class="needs-validation" novalidate>
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><b>TẠO TÀI KHOẢN ĐĂNG NHẬP</b></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <label for="">Tên tài khoản</label>
+                                <input type="text" name="inputUsername" class="form-control" placeholder="Nhập tên tài khoản" required
+                                       value="{{ $edit_student->student_code }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <label for="">Mật khẩu</label>
+                                <input type="text" name="inputPassword" class="form-control" placeholder="Nhập mật khẩu" required id="pass"
+                                onclick='document.getElementById("pass").value = Password.generate(8)'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Tạo</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 
     <script>
         // Disable form submissions if there are invalid fields
@@ -152,6 +195,50 @@
                 });
             }, false);
         })();
+
+
+        //=====================================================
+        var Password = {
+            _pattern : /[a-zA-Z0-9\!\$\@\$\&\*]/,
+            _getRandomByte : function()
+            {
+                // http://caniuse.com/#feat=getrandomvalues
+                if(window.crypto && window.crypto.getRandomValues)
+                {
+                    var result = new Uint8Array(1);
+                    window.crypto.getRandomValues(result);
+                    return result[0];
+                }
+                else if(window.msCrypto && window.msCrypto.getRandomValues)
+                {
+                    var result = new Uint8Array(1);
+                    window.msCrypto.getRandomValues(result);
+                    return result[0];
+                }
+                else
+                {
+                    return Math.floor(Math.random() * 256);
+                }
+            },
+
+            generate : function(length)
+            {
+                return Array.apply(null, {'length': length})
+                    .map(function()
+                    {
+                        var result;
+                        while(true)
+                        {
+                            result = String.fromCharCode(this._getRandomByte());
+                            if(this._pattern.test(result))
+                            {
+                                return result;
+                            }
+                        }
+                    }, this)
+                    .join('');
+            }
+        };
     </script>
 
 @endsection

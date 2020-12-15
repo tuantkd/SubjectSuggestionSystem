@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
 use App\Models\CategorySubject;
 use App\Models\ClassMajor;
 use App\Models\ClassSubject;
 use App\Models\Course;
 use App\Models\Degree;
 use App\Models\Department;
+use App\Models\DetailScore;
 use App\Models\Major;
 use App\Models\PartSubject;
 use App\Models\Position;
+use App\Models\PrerequisiteParallel;
 use App\Models\ProgramStudy;
 use App\Models\ProgramTrain;
 use App\Models\Role;
 use App\Models\SemesterYear;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\SubjectPrerequisiteParallel;
 use App\Models\Teacher;
 use App\Models\Title;
 use App\Models\User;
@@ -53,6 +59,8 @@ class AdminController extends Controller
 
         if (Auth::attempt(['username' => $username, 'password' => $password], $remember_me)) {
             return redirect('/');
+        }elseif (Auth::attempt(['username'=>$username, 'password'=>$password, 'role_id'=>3], $remember_me)){
+            return redirect('home-student');
         }else{
             $error_login_session = $request->session()->get('error_login_session');
             return redirect()->back()->with('error_login_session','');
@@ -62,11 +70,13 @@ class AdminController extends Controller
     //TRANG CHỦ GIẢNG VIÊN
     protected function page_home_admin()
     {
-        if (Auth::check()) {
-            return view('index');
-        }else{
-            return redirect('page-login');
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            $show_class_subjects = ClassSubject::latest()->take(5)->get();
+        }elseif (Auth::check()){
+            $teachers = Teacher::where('id', Auth::user()->teacher_id)->first();
+            $show_class_subjects = ClassSubject::where('teacher_id',$teachers->id)->latest()->take(5)->get();
         }
+        return view('index',['show_class_subjects'=>$show_class_subjects]);
     }
 
 
@@ -169,6 +179,75 @@ class AdminController extends Controller
 
         $add_title_session = $request->session()->get('add_title_session');
         return redirect()->back()->with('add_title_session','');
+    }
+    /*=================================================================*/
+
+
+
+    /*=================================================================*/
+    //THAY ĐỔI MẬT KHẨU
+    protected function update_password(Request $request, $id_user)
+    {
+        $users = DB::table('users')->where('id',$id_user)->get();
+
+        $old_pass = $request->input('inputPasswordOld');
+        $new_pass = $request->input('inputPasswordNew');
+        $new_pass_confirm = $request->input('inputPasswordComfirmNew');
+
+        $change = User::find($id_user);
+        foreach($users as $val_users){
+            $db_pass = $val_users->password;
+            if(password_verify($old_pass,$db_pass)){
+                if($new_pass == $new_pass_confirm){
+                    $change->password = bcrypt($request->input('inputPasswordComfirmNew'));
+                    $change->save();
+                    $change_password_user = $request->session()->get('change_password_user');
+                    return redirect()->back()->with('change_password_user','');
+                }else{
+                    $change_password_user_fail = $request->session()->get('change_password_user_fail');
+                    return redirect()->back()->with('change_password_user_fail','');
+                }
+            }else{
+                $old_pass_fail = $request->session()->get('old_pass_fail');
+                return redirect()->back()->with('old_pass_fail','');
+            }
+        }
+    }
+
+    //TRANG THAY ĐỔI MẬT KHẨU
+    protected function change_password($id_user)
+    {
+        $user= User::find($id_user);
+        return view('page.profile.change_password',['user'=>$user]);
+    }
+
+    //TRANG THÔNG TIN NGƯỜI DÙNG
+    protected function page_profile_user($id_teacher)
+    {
+        $teachers = Teacher::find($id_teacher);
+        $class_subjects = ClassSubject::where('teacher_id', $id_teacher)->latest()->get();
+        return view('page.profile.profile_user',['teachers'=>$teachers, 'class_subjects'=>$class_subjects]);
+    }
+
+    //CẬP NHẬT THÔNG TIN NGƯỜI DÙNG
+    protected function update_profile_teacher(Request $request, $id_teacher)
+    {
+        $update_teacher = Teacher::find($id_teacher);
+        $update_teacher->email = $request->input('inputEmail');
+        $update_teacher->phone = $request->input('inputPhone');
+        $update_teacher->address = $request->input('inputAddress');
+
+        //Upload hình ảnh
+        if ($request->hasFile('inputFileImage')) {
+            $file_image = $request->file('inputFileImage');
+            $imageName = time().'-'.$file_image->getClientOriginalName();
+            $file_image->move(public_path('upload_avatar'), $imageName);
+            $update_teacher->avatar = $imageName;
+        }
+        $update_teacher->save();
+
+        $update_profile_session = $request->session()->get('update_profile_session');
+        return redirect()->back()->with('update_profile_session','');
     }
     /*=================================================================*/
 
@@ -467,7 +546,8 @@ class AdminController extends Controller
     protected function view_infor_reacher($id_teacher)
     {
         $infor_teachers = Teacher::find($id_teacher);
-        return view('page.teacher.infor_teacher',['infor_teachers'=>$infor_teachers]);
+        $class_subjects = ClassSubject::where('teacher_id', $id_teacher)->latest()->get();
+        return view('page.teacher.infor_teacher',['infor_teachers'=>$infor_teachers, 'class_subjects'=>$class_subjects]);
     }
 
     //TRANG THÊM GIẢNG VIÊN
@@ -533,6 +613,21 @@ class AdminController extends Controller
     {
         $account = Teacher::find($id);
         return view('page.teacher.create_account',['account'=>$account]);
+    }
+
+    //TRANG TẠO TÀI KHOẢN
+    protected function post_create_account_student(Request $request, $id_student)
+    {
+        $create_account_student = new User();
+        $create_account_student->student_id = $id_student;
+        $create_account_student->username = $request->input('inputUsername');
+        $create_account_student->username = $request->input('inputUsername');
+        $create_account_student->password = bcrypt($request->input('inputPassword'));
+        $create_account_student->role_id = 3;
+        $create_account_student->save();
+
+        $mes_success = $request->session()->get('mes_success');
+        return redirect('page-list-student')->with('mes_success','');
     }
 
     //TRANG TẠO TÀI KHOẢN CSDL
@@ -743,7 +838,7 @@ class AdminController extends Controller
                     ->orWhere('student_fullname', 'like', '%'.$search.'%');
             })->paginate(2);
         }else{
-            $show_students = Student::latest()->paginate(20);
+            $show_students = Student::latest()->paginate(40);
         }
 
         return view('page.student.page_list_student',['show_students'=>$show_students]);
@@ -846,7 +941,9 @@ class AdminController extends Controller
     protected function view_infor_student($id_student)
     {
         $infor_students = Student::find($id_student);
-        return view('page.student.view_infor_student',['infor_students'=>$infor_students]);
+        $detail_scores = DetailScore::where('student_id', $id_student)->get();
+        return view('page.student.view_infor_student',
+            ['infor_students'=>$infor_students, 'detail_scores'=>$detail_scores]);
     }
     /*=================================================================*/
 
@@ -939,6 +1036,7 @@ class AdminController extends Controller
     protected function delete_category_subject(Request $request, $id_category_subject)
     {
         CategorySubject::destroy($id_category_subject);
+
         $delete_category_subjectsession = $request->session()->get('delete_category_subjectsession');
         return redirect()->back()->with('delete_category_subjectsession','');
     }
@@ -967,6 +1065,8 @@ class AdminController extends Controller
         $update_subject = Subject::find($id_subject);
         $update_subject->subject_name = $request->input('inputSubjectName');
         $update_subject->subject_number_credit = $request->input('inputSubjectCredit');
+        $update_subject->subject_number_theory = $request->input('inputSubjectNumberTheory');
+        $update_subject->subject_number_practice = $request->input('inputSubjectNumberPractice');
         $update_subject->save();
 
         $update_subject_session = $request->session()->get('update_subject_session');
@@ -989,10 +1089,69 @@ class AdminController extends Controller
     }
 
     //CHỈNH SỬA HỌC PHẦN
-    protected function edit_subject($id_subject)
+    protected function edit_subject(Request $request, $id_subject)
     {
         $edit_subject = Subject::find($id_subject);
         return view('page.subject.edit_subject',['edit_subject'=>$edit_subject]);
+    }
+
+    //THÊM TIÊN QUYẾT HOẶC SONG HÀNH HỌC PHẦN
+    protected function add_prerequisite_parallel(Request $request, $id_subject)
+    {
+        $subject_id = Subject::find($id_subject);
+        return view('page.subject.add_prerequisite_parallel',['subject_id'=>$subject_id]);
+    }
+
+    //XÓA TIÊN QUYẾT HOẶC SONG HÀNH HỌC PHẦN
+    protected function delete_subject_prerequisite_parallel(Request $request, $id)
+    {
+        SubjectPrerequisiteParallel::destroy($id);
+        $delete_session = $request->session()->get('delete_session');
+        return redirect()->back()->with('delete_session','');
+    }
+
+    //THÊM TIÊN QUYẾT HOẶC SONG HÀNH HỌC PHẦN CSDL
+    protected function post_add_prerequisite_parallel(Request $request, $id_subject)
+    {
+        //Run one
+        $add_prerequisite_parallel = new PrerequisiteParallel();
+        $add_prerequisite_parallel->subject_code = $request->input('inputSubjectCode');
+        $add_prerequisite_parallel->prerequisite_parallel_note = $request->input('inputNote');
+        $add_prerequisite_parallel->save();
+
+        //Run two
+        $max_id_prerequisite_parallel = DB::table('prerequisite_parallels')->max('id');
+
+        //Run three
+        $add_sub_pre_para = new SubjectPrerequisiteParallel();
+        $add_sub_pre_para->subject_id = $id_subject;
+        $add_sub_pre_para->prerequisite_parallel_id = $max_id_prerequisite_parallel;
+        $add_sub_pre_para->save();
+
+        $add_session = $request->session()->get('add_session');
+        return redirect()->back()->with('add_session','');
+    }
+
+    //THÊM HỌC PHẦN CSDL
+    protected function post_add_subject(Request $request)
+    {
+        $this->validate($request, [
+            'inputSubjectCode'  => 'unique:subjects,subject_code'
+        ],[
+            'inputSubjectCode.unique' => 'Mã Học Phần này đã tồn tại!'
+        ]);
+
+        $add_subject = new Subject();
+        $add_subject->subject_code = $request->input('inputSubjectCode');
+        $add_subject->subject_name = $request->input('inputSubjectName');
+        $add_subject->subject_number_credit = $request->input('inputSubjectCredit');
+        $add_subject->subject_number_theory = $request->input('inputSubjectNumberTheory');
+        $add_subject->subject_number_practice = $request->input('inputSubjectNumberPractice');
+        $add_subject->subject_status = 0;
+        $add_subject->save();
+
+        $add_subject_session = $request->session()->get('add_subject_session');
+        return redirect()->back()->with('add_subject_session','');
     }
 
     //XÓA HỌC PHẦN
@@ -1037,6 +1196,8 @@ class AdminController extends Controller
                     'subject_code' => $provinceSheet->getCellByColumnAndRow(0, $row)->getValue(),
                     'subject_name' => $provinceSheet->getCellByColumnAndRow(1, $row)->getValue(),
                     'subject_number_credit' => $provinceSheet->getCellByColumnAndRow(2, $row)->getValue(),
+                    'subject_number_theory' => $provinceSheet->getCellByColumnAndRow(3, $row)->getValue(),
+                    'subject_number_practice' => $provinceSheet->getCellByColumnAndRow(4, $row)->getValue(),
                     'subject_status' => 0,
                 ]);
             }
@@ -1114,31 +1275,80 @@ class AdminController extends Controller
     }
 
     //TRANG XEM LỚP HỌC PHẦN
-    protected function view_detail_class_subject()
+    protected function view_detail_class_subject($id_class_subject)
     {
-        return view('page.subject.view_detail_class_subject');
+        $class_subject_id = ClassSubject::find($id_class_subject);
+        $student_class_subjects = DetailScore::where('class_subject_id',$id_class_subject)->latest()->paginate(20);
+        return view('page.subject.view_detail_class_subject',
+        ['class_subject_id'=>$class_subject_id, 'student_class_subjects'=>$student_class_subjects]);
+    }
+
+    //THÊM CHI TIẾT ĐIỂM KÈM SINH VIÊN
+    protected function post_add_detail_score(Request $request, $id_class_subject)
+    {
+        $inputStudentId = $request->input('inputStudentId');
+        $count_detail_score = DB::table('detail_scores')
+            ->where([
+                ['class_subject_id','=',$id_class_subject],
+                ['student_id','=',$inputStudentId]
+            ])->count();
+
+        if ($count_detail_score >= 1) {
+            $message_error = $request->session()->get('message_error');
+            return redirect()->back()->with('message_error','');
+        }else{
+            $add_detail_score = new DetailScore();
+            $add_detail_score->class_subject_id = $id_class_subject;
+            $add_detail_score->student_id = $inputStudentId;
+            $add_detail_score->save();
+
+            $add_detail_score_session = $request->session()->get('add_detail_score_session');
+            return redirect()->back()->with('add_detail_score_session','');
+        }
     }
 
     //TRANG XEM ĐIỂM HỌC PHẦN SINH VIÊN
-    protected function view_score_student()
+    protected function view_score_student($id_class_subject, $id_detail_score)
     {
-        return view('page.subject.view_score_student');
+        $class_subject_id = ClassSubject::find($id_class_subject);
+        $view_score_student = DetailScore::find($id_detail_score);
+        return view('page.subject.view_score_student',
+        ['class_subject_id'=>$class_subject_id, 'view_score_student'=>$view_score_student, ]);
+    }
+
+    //CẬP NHẬT ĐIỂM HỌC PHẦN SINH VIÊN
+    protected function update_score_student(Request $request, $id_class_subject, $id_detail_score)
+    {
+        $update_score = DetailScore::find($id_detail_score);
+        $update_score->score_number = $request->input('inputScoreNumber');
+        $update_score->score_char = $request->input('inputScoreChar');
+        $update_score->save();
+
+        $update_score_student_session = $request->session()->get('update_score_student_session');
+        return redirect('view-detail-class-subject/'.$id_class_subject)->with('update_score_student_session','');
     }
 
     //TRANG CHƯƠNG TRÌNH HỌC
-    protected function page_program_study(Request $request)
+    protected function page_program_study(Request $request, $id_program_train)
     {
         $search = $request->input('inputSearch');
+        $program_train = ProgramTrain::find($id_program_train);
+
         if($search != ""){
-            $show_program_studys = DB::table('program_studies')
-                ->join('subjects', 'program_studies.subject_id', '=', 'subjects.id')
-                ->where('program_studies.subject_id','=', $search)
-                ->select('program_studies.*', 'subjects.id')
-                ->paginate(3);
+            $show_program_studys = ProgramStudy::where('subject_id','=', $search)->paginate(3);
         }else{
-            $show_program_studys = DB::table('program_studies')->latest()->paginate(30);
+            $show_program_studys = ProgramStudy::where('program_train_id', $id_program_train)->latest()->paginate(80);
         }
-        return view('page.subject.page_program_study',['show_program_studys'=>$show_program_studys]);
+        return view('page.subject.page_program_study',
+        ['program_train'=>$program_train,'show_program_studys'=>$show_program_studys]);
+    }
+
+    //THÊM CHƯƠNG TRÌNH HỌC
+    protected function add_program_study(Request $request, $id_program_train)
+    {
+        $program_train = ProgramTrain::find($id_program_train);
+        return view('page.subject.add_program_study',
+        ['program_train'=>$program_train]);
     }
 
     //XÓA CHƯƠNG TRÌNH HỌC
@@ -1150,7 +1360,7 @@ class AdminController extends Controller
     }
 
     //THÊM CHƯƠNG TRÌNH HỌC CSDL
-    protected function post_add_program_study(Request $request)
+    protected function post_add_program_study(Request $request, $id_program_train)
     {
         $this->validate($request, [
             'inputSubjectId'  => 'unique:program_studies,subject_id'
@@ -1159,13 +1369,39 @@ class AdminController extends Controller
         ]);
 
         $add_program_study = new ProgramStudy();
-        $add_program_study->category_subject_id = $request->input('inputCategorySubjectId');
         $add_program_study->subject_id = $request->input('inputSubjectId');
-        $add_program_study->program_train_id = $request->input('inputProgramTrainId');
+        $add_program_study->category_subject_id = $request->input('inputCategorySubjectId');
+        $add_program_study->program_train_id = $id_program_train;
+        $add_program_study->program_studie_note = $request->input('inputNote');
         $add_program_study->save();
 
         $add_program_study_session = $request->session()->get('add_program_study_session');
-        return redirect()->back()->with('add_program_study_session','');
+        return redirect('page-program-study/'.$id_program_train)->with('add_program_study_session','');
+    }
+    /*=================================================================*/
+
+
+
+
+    /*=================================================================*/
+    //RUN PYTHON
+    protected function run_script_python(Request $request, $id_student)
+    {
+        $infor_students = Student::find($id_student);
+
+        $process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/train_d1.py']);
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        //Kết quả chạy python
+        $result = $process->getOutput();
+
+        return view('page.student.suggestion_subject.view_suggestion_subject',
+        ['infor_students'=>$infor_students, 'result'=>$result]);
     }
     /*=================================================================*/
 
