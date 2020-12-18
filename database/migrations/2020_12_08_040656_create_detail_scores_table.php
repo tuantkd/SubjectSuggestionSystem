@@ -26,6 +26,7 @@ class CreateDetailScoresTable extends Migration
 
             $table->string('score_char')->nullable();
             $table->double('score_number')->nullable();
+            $table->double('score_ladder_four')->nullable();
 
             $table->timestamps();
         });

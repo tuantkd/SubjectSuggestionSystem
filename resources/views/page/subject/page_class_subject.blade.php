@@ -77,7 +77,7 @@
                                             <?php
                                                 $semester_year = str_split($semester_year->semester_year);
                                                 echo $semester = "HK ".$semester_year[0];
-                                                echo $year = " - NH ".$semester_year[1].$semester_year[2].$semester_year[3].$semester_year[4];
+                                                echo $year = " - Năm ".$semester_year[1].$semester_year[2].$semester_year[3].$semester_year[4];
                                             ?>
                                         </td>
                                         <td data-label="Ghi chú" class="text-justify">

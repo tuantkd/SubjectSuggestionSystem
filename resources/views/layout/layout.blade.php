@@ -137,7 +137,6 @@
     </style>
 
 </head>
-
 <!-- Loader CSS khi chuyển trang myFunction -->
 <body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Mulish', sans-serif;" onload="myFunction()">
 
@@ -189,7 +188,7 @@
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                @if(Auth::check())
+                @if((Auth::check() && Auth::user()->role_id == 1) || (Auth::check() && Auth::user()->role_id == 2))
                     <div class="image">
                         @php($teachers = DB::table('teachers')->where('id', Auth::user()->teacher_id)->first())
                         @if ($teachers->avatar != null)
@@ -201,6 +200,16 @@
                     </div>
                     <div class="info">
                         <a href="{{ url('page-profile-user/'.$teachers->id) }}" class="d-block">
+                            <b>{{ Auth::user()->username }}</b>
+                        </a>
+                    </div>
+                @else
+                    <div class="image">
+                        <img src="{{ url('public/dist/img/user_avatar.png') }}" class="img-circle elevation-2">
+                    </div>
+                    <div class="info">
+                        @php($students = DB::table('students')->where('id', Auth::user()->student_id)->first())
+                        <a href="{{ url('view-infor-student/'.$students->id) }}" class="d-block">
                             <b>{{ Auth::user()->username }}</b>
                         </a>
                     </div>
@@ -432,6 +441,17 @@
                             <a href="{{ url('page-class-subject') }}" class="nav-link">
                                 <i class="nav-icon fas fa-list-alt"></i>
                                 <p>Lớp học phần</p>
+                            </a>
+                        </li>
+                        {{--QUẢN LÝ HỌC PHẦN--}}
+
+                    @elseif (Auth::check() && Auth::user()->role_id == 3)
+
+                        {{--QUẢN LÝ HỌC PHẦN--}}
+                        <li class="nav-item has-treeview">
+                            <a href="{{ url('view-infor-student/'.$students->id) }}" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Kết quả học tập</p>
                             </a>
                         </li>
                         {{--QUẢN LÝ HỌC PHẦN--}}
