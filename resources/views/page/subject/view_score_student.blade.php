@@ -12,9 +12,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                </div><!-- /.col -->
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
                         <li class="breadcrumb-item">
@@ -70,12 +68,15 @@
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-6">
                                         <label for="">Điểm số</label>
-                                        <input type="text" name="inputScoreNumber" class="form-control" placeholder="Nhập điểm số" value="{{ $view_score_student->score_number }}">
+                                        <input type="text" name="inputScoreNumber" class="form-control" placeholder="Nhập điểm số" id="ScoreNumber"
+                                        value="{{ $view_score_student->score_number }}" onkeyup="keyup_score()">
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Điểm chữ</label>
-                                        <input type="text" name="inputScoreChar" class="form-control" placeholder="Nhập điểm chữ" value="{{ $view_score_student->score_char }}">
+                                        <input type="text" name="inputScoreChar" class="form-control" placeholder="Nhập điểm chữ" id="ScoreChar"
+                                        value="{{ $view_score_student->score_char }}">
                                     </div>
+                                    <input type="hidden" name="inputScoreLadderFour" id="LadderFour" value="{{ $view_score_student->score_ladder_four }}">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-12 text-right">
@@ -91,8 +92,61 @@
                 <!--  End col 6-->
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        function keyup_score() {
+
+            var input_score_number = document.getElementById('ScoreNumber').value;
+
+            if (input_score_number != ""){
+                if ((input_score_number >= 9.0) && (input_score_number <= 10.0)){
+                    document.getElementById('ScoreChar').value = "A";
+                    document.getElementById('LadderFour').value = 4.0;
+                }
+
+                if ((input_score_number >= 8.0) && (input_score_number <= 8.9)){
+                    document.getElementById('ScoreChar').value = 'B+';
+                    document.getElementById('LadderFour').value = 3.5;
+                }
+
+                if ((input_score_number >= 7.0) && (input_score_number <= 7.9)){
+                    document.getElementById('ScoreChar').value = 'B';
+                    document.getElementById('LadderFour').value = 3.0;
+                }
+
+                if ((input_score_number >= 6.5) && (input_score_number <= 6.9)){
+                    document.getElementById('ScoreChar').value = 'C+';
+                    document.getElementById('LadderFour').value = 2.5;
+                }
+
+                if ((input_score_number >= 5.5) && (input_score_number <= 6.4)){
+                    document.getElementById('ScoreChar').value = 'C';
+                    document.getElementById('LadderFour').value = 2.0;
+                }
+
+                if ((input_score_number >= 5.0) && (input_score_number <= 5.4)){
+                    document.getElementById('ScoreChar').value = 'D+';
+                    document.getElementById('LadderFour').value = 1.5;
+                }
+
+                if ((input_score_number >= 4.0) && (input_score_number <= 4.9)){
+                    document.getElementById('ScoreChar').value = 'D';
+                    document.getElementById('LadderFour').value = 1.0;
+                }
+
+                if ((input_score_number <= 4.0)){
+                    document.getElementById('ScoreChar').value = 'F';
+                    document.getElementById('LadderFour').value = 0.0;
+                }
+            }else {
+                document.getElementById('ScoreChar').value = "";
+                document.getElementById('LadderFour').value = "";
+            }
+        }
+    </script>
 
 @endsection

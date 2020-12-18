@@ -264,10 +264,14 @@
                                                         <?php $total_credit_semester = $total_credit_semester + $value_subject->subject_number_credit; ?>
                                                     </td>
                                                     <td data-label="Điểm số">
-                                                        <b>{{ round($score_student->score_number, 2) }}</b>
+                                                        @if ($score_student->score_number != null)
+                                                            <b>{{ round($score_student->score_number, 2) }}</b>
+                                                        @endif
                                                     </td>
                                                     <td data-label="Điểm chữ">
-                                                        <b>{{ $score_student->score_char }}</b>
+                                                        @if ($score_student->score_char != null)
+                                                            <b>{{ $score_student->score_char }}</b>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -294,7 +298,10 @@
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                            <b style="font-size:14px;"><?php echo round($score_avg_percent,2); ?></b>
+
+                                            @if(!empty($score_avg_percent))
+                                                <b style="font-size:14px;"><?php echo round($score_avg_percent,2); ?></b>
+                                            @endif
                                         </td>
                                     </tr>
                                     </tbody>

@@ -37,23 +37,55 @@
                     <div class="modal-header p-2">
                         <h5 class="modal-title"><b>THÊM SINH VIÊN LỚP HỌC PHẦN</b></h5>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="">Sinh viên</label>
-                            <select class="form-control selectpicker" name="inputStudentId" data-size="10" required
-                            data-live-search="true" data-title="- - Chọn sinh viên- -" data-width="100%">
-                                @php($get_students = DB::table('students')->get())
-                                @foreach($get_students as $get_student)
-                                    <option value="{{ $get_student->id }}">
-                                        {{ $get_student->student_code }} - {{ $get_student->student_fullname }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="modal-body p-1">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col" style="width:2%;"><input type="checkbox" id="master"></th>
+                                <th scope="col" style="width:3%;">STT</th>
+                                <th scope="col" style="width:10%;">Mã SV</th>
+                                <th scope="col" style="width:18%;">Họ tên</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @php($get_students = DB::table('students')->get())
+                            @forelse($get_students as $key => $show_student)
+                                <tr id="tr_{{ $show_student->id }}">
+                                    <td data-label="Chọn">
+                                        <input type="checkbox" class="sub_chk" data-id="{{ $show_student->id }}">
+                                    </td>
+                                    <td data-label="STT"><b>{{ ++$key }}</b></td>
+                                    <td data-label="Mã sinh viên">
+                                        @if ($show_student->student_code != null)
+                                            <b>{{ $show_student->student_code }}</b>
+                                        @else
+                                            <b class="text-danger">Không có</b>
+                                        @endif
+                                    </td>
+                                    <td data-label="Họ tên">
+                                        @if ($show_student->student_fullname != null)
+                                            <b>{{ $show_student->student_fullname }}</b>
+                                        @else
+                                            <b class="text-danger">Không có</b>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="10">
+                                        <b class="text-danger">Không có dữ liệu</b>
+                                    </td>
+                                </tr>
+                            @endforelse
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
+                        <button type="button" class="btn btn-primary btn-sm delete_all"
+                        data-url="{{ url('add-student-class-subject') }}">
+                            Thêm
+                        </button>
                     </div>
                 </div>
             </form>
@@ -110,20 +142,21 @@
                                         </td>
                                         <td data-label="Điểm số">
                                             @if($student->score_number != null)
-                                                <b class="text-success">{{ $student->score_number }}</b>
+                                                <b class="text-secondary" style="font-size:16px;">{{ $student->score_number }}</b>
                                             @else
                                                 <b class="text-danger">...</b>
                                             @endif
                                         </td>
                                         <td data-label="Điểm chữ">
                                             @if($student->score_char != null)
-                                                <b class="text-success">{{ $student->score_char }}</b>
+                                                <b class="text-secondary" style="font-size:16px;">{{ $student->score_char }}</b>
                                             @else
                                                 <b class="text-danger">...</b>
                                             @endif
                                         </td>
                                         <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-xs" href="#" role="button">
+                                            <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?')"
+                                            href="{{ url('delete-score-student/'.$student->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
@@ -144,6 +177,13 @@
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm">
+                                {{ $student_class_subjects->links() }}
+                            </ul>
+                            <!-- /pagination -->
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -157,12 +197,12 @@
     </section>
     <!-- /.content -->
 
-    @if (Session::has('add_detail_score_session'))
+    @if (Session::has('delete_score_student_session'))
         <script type="text/javascript">
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã Thêm'
+                , title: 'Đã Xóa'
                 , showConfirmButton: false
                 , timer: 1500
             });
@@ -192,5 +232,57 @@
             });
         </script>
     @endif
+
+    <script>
+        $(document).ready(function () {
+            $("#master").on('click', function(e) {
+                if($(this).is(':checked',true))
+                {
+                    $(".sub_chk").prop('checked', true);
+                } else {
+                    $(".sub_chk").prop('checked',false);
+                }
+            });
+
+            $('.delete_all').on('click', function(e) {
+                var allVals = [];
+                $(".sub_chk:checked").each(function() {
+                    allVals.push($(this).attr('data-id'));
+                });
+
+                if(allVals.length <=0){
+                    alert("Vui lòng chọn hàng!.");
+                }else{
+                    var check = confirm("Bạn có muốn thêm mới không ?");
+                    if(check == true){
+                        var join_selected_values = allVals.join(",");
+                        var class_subject_id = <?php echo $class_subject_id->id; ?>;
+                        $.ajax({
+                            type:'GET',
+                            url: $(this).data('url'),
+                            data:{join_selected_values:join_selected_values, class_subject_id:class_subject_id},
+                            success:function(data){
+                                Swal.fire({
+                                    position: 'center'
+                                    , icon: 'success'
+                                    , title: 'Đã Thêm'
+                                    , showConfirmButton: false
+                                    , timer: 1500
+                                });
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]',
+                onConfirm: function (event, element) {
+                    element.trigger('confirm');
+                }
+            });
+        });
+    </script>
 
 @endsection

@@ -21,6 +21,9 @@ Route::get('logout', [AdminController::class, 'logout']);
 //XỬ LÝ ĐĂNG NHẬP
 Route::post('post-login', [AdminController::class, 'post_login']);
 
+//TRANG THÔNG TIN SINH VIÊN
+Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
+
 
 Route::middleware([CheckLogin::class])->group(function () {
     //TRANG CHỦ
@@ -240,9 +243,6 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //TRANG CHỈNH SỬA SINH VIÊN
     Route::get('edit-student', [AdminController::class, 'edit_student']);
-
-    //TRANG THÔNG TIN SINH VIÊN
-    Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
     /*============================================================================*/
 
 
@@ -332,11 +332,17 @@ Route::middleware([CheckLogin::class])->group(function () {
     //TRANG XEM ĐIỂM VÀ CẬP NHẬT HỌC PHẦN SINH VIÊN
     Route::get('view-score-student/{id_class_subject}/{id_detail_score}', [AdminController::class, 'view_score_student']);
 
+    //XÓA CHI TIẾT ĐIỂM
+    Route::get('delete-score-student/{id_detail_score}', [AdminController::class, 'delete_score_student']);
+
     //CẬP NHẬT ĐIỂM HỌC PHẦN SINH VIÊN
     Route::put('update-score-student/{id_class_subject}/{id_detail_score}', [AdminController::class, 'update_score_student']);
 
     //TRANG CHƯƠNG TRÌNH HỌC.....................
     Route::get('page-program-study/{id_program_train}', [AdminController::class, 'page_program_study']);
+
+    //THÊM SINH VIÊN VÀO LỚP HỌC PHẦN CHECKBOX
+    Route::get('add-student-class-subject', [AdminController::class, 'add_student_class_subject']);
 
     //XÓA CHƯƠNG TRÌNH HỌC
     Route::delete('delete-program-study', [AdminController::class, 'delete_program_study']);

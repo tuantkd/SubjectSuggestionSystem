@@ -1278,7 +1278,7 @@ class AdminController extends Controller
     protected function view_detail_class_subject($id_class_subject)
     {
         $class_subject_id = ClassSubject::find($id_class_subject);
-        $student_class_subjects = DetailScore::where('class_subject_id',$id_class_subject)->latest()->paginate(20);
+        $student_class_subjects = DetailScore::where('class_subject_id',$id_class_subject)->latest()->paginate(30);
         return view('page.subject.view_detail_class_subject',
         ['class_subject_id'=>$class_subject_id, 'student_class_subjects'=>$student_class_subjects]);
     }
@@ -1322,6 +1322,7 @@ class AdminController extends Controller
         $update_score = DetailScore::find($id_detail_score);
         $update_score->score_number = $request->input('inputScoreNumber');
         $update_score->score_char = $request->input('inputScoreChar');
+        $update_score->score_ladder_four = $request->input('inputScoreLadderFour');
         $update_score->save();
 
         $update_score_student_session = $request->session()->get('update_score_student_session');
@@ -1349,6 +1350,47 @@ class AdminController extends Controller
         $program_train = ProgramTrain::find($id_program_train);
         return view('page.subject.add_program_study',
         ['program_train'=>$program_train]);
+    }
+
+    //THÊM SINH VIÊN VÀO LỚP HỌC PHẦN CHECKBOX
+    protected function add_student_class_subject(Request $request)
+    {
+        $id_class_subject = $request->class_subject_id;
+
+        $inputStudentId = $request->input('inputStudentId');
+
+        $count_detail_score = DB::table('detail_scores')
+
+            ->where([
+                ['class_subject_id','=',$id_class_subject],
+                ['student_id','=',$inputStudentId]
+            ])->count();
+
+        if ($count_detail_score >= 1) {
+            $message_error = $request->session()->get('message_error');
+            return redirect()->back()->with('message_error','');
+        }else{
+
+            $join_selected_values = $request->join_selected_values;
+
+            $ids = explode(",", $join_selected_values);
+
+            foreach($ids as $id) {
+                $add_detail_score = new DetailScore();
+                $add_detail_score->class_subject_id = $id_class_subject;
+                $add_detail_score->student_id = $id;
+                $add_detail_score->save();
+            }
+            return response()->json(['success'=>$id_class_subject]);
+        }
+    }
+
+    //XÓA CHƯƠNG TRÌNH HỌC
+    protected function delete_score_student(Request $request, $id_detail_score)
+    {
+        DetailScore::destroy($id_detail_score);
+        $delete_score_student_session = $request->session()->get('delete_score_student_session');
+        return redirect()->back()->with('delete_score_student_session','');
     }
 
     //XÓA CHƯƠNG TRÌNH HỌC
@@ -1402,6 +1444,15 @@ class AdminController extends Controller
 
         return view('page.student.suggestion_subject.view_suggestion_subject',
         ['infor_students'=>$infor_students, 'result'=>$result]);
+    }
+    /*=================================================================*/
+
+
+    /*=================================================================*/
+    //Gọi API Lấy data
+    public function get_data()
+    {
+        return DetailScore::all();
     }
     /*=================================================================*/
 

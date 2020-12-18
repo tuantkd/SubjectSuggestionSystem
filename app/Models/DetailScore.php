@@ -14,7 +14,7 @@ class DetailScore extends Model
 
     protected $fillable =
         [
-            'id', 'class_subject_id','student_id','score_char','score_number'
+            'id', 'class_subject_id','student_id','score_char','score_number','score_ladder_four'
         ];
 
     //Chi tiết điểm thuộc sinh viên
