@@ -55,6 +55,7 @@
                                     <div class="col-12 col-sm-4">
                                         <label for="">Mã lớp</label>
                                         <input type="text" name="inputClassSubjectCode" class="form-control" placeholder="Nhập mã lớp" required>
+                                        <small class="text-danger">{{ $errors->first('inputClassSubjectCode') }}</small>
                                     </div>
                                     <div class="col-12 col-sm-8">
                                         <label for="">Tên lớp học phần</label>
@@ -78,7 +79,7 @@
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-6">
                                         <label for="">Giảng viên</label>
-                                        <select class="form-control selectpicker" name="inputTeacherId" data-size="5" required
+                                        <select class="form-control selectpicker" name="inputTeacherId" data-size="15"
                                         data-live-search="true" data-title="- - Chọn - -" data-width="100%">
                                             @php($get_teachers = DB::table('teachers')->get())
                                             @foreach($get_teachers as $get_teacher)
@@ -90,18 +91,18 @@
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Năm học - Học kỳ </label>
-                                        <select class="form-control selectpicker" name="inputSemesterYearId" data-size="5" required
+                                        <select class="form-control selectpicker" name="inputSemesterYearId" data-size="15" required
                                         data-live-search="true" data-title="- - Chọn - -" data-width="100%">
-                                            @php($get_semester_years = DB::table('semester_years')->get())
+                                            @php($get_semester_years = DB::table('semester_years')->latest()->get())
                                             @foreach($get_semester_years as $get_semester_year)
                                                 <option value="{{ $get_semester_year->id }}">
                                                     <?php
-                                                        $year = str_split($get_semester_year->semester_year);
+                                                        $year = str_split($get_semester_year->semesteryear);
                                                         //Hiển thị học kỳ
                                                         echo $semester = "Học kỳ ".$year[0];
 
                                                         //Hiển thị năm học
-                                                        echo $year_arr = " - Năm ".$year[1].$year[2].$year[3].$year[4];
+                                                        echo $year_arr = " - Năm học ".$get_semester_year->semester_year;
                                                     ?>
                                                 </option>
                                             @endforeach
@@ -111,7 +112,7 @@
                                 <div class="form-group row">
                                     <div class="col-12 col-sm-12">
                                         <label for="">Ghi chú</label>
-                                        <textarea name="inputClassSubjectNote" class="form-control" rows="3" required placeholder="Nhập ghi chú lớp học phần"></textarea>
+                                        <textarea name="inputClassSubjectNote" class="form-control" rows="3" placeholder="Nhập ghi chú lớp học phần"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -153,5 +154,17 @@
             }, false);
         })();
     </script>
+
+    @if (Session::has('message_error'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'error'
+                , title: 'Lớp Học phần đã tồn tại!'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
 
 @endsection

@@ -41,7 +41,8 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-2">
-                            <form action="{{ url('post-add-admin') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            <form action="{{ url('post-add-admin') }}" method="POST" enctype="multipart/form-data" name="myForm" onsubmit="return validateForm()"
+                            class="needs-validation" novalidate>
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-6">
@@ -123,7 +124,7 @@
                                 <div class="form-group row">
                                     <div class="col-6">
                                         <label for="">Ảnh đại diện</label><br>
-                                        <input type="file" name="inputFileImage" id="file" onchange="return fileValidation()" required>
+                                        <input type="file" name="inputFileImage" id="file" onchange="return fileValidation()">
                                     </div>
                                     <div class="col-6">
                                         <!-- Image preview -->
@@ -192,6 +193,14 @@
                     };
                     reader.readAsDataURL(fileInput.files[0]);
                 }
+            }
+        }
+
+        function validateForm() {
+            var x = document.forms["myForm"]["inputSex"].value;
+            if (x == "") {
+                alert("Vui lòng chọn giới tính !");
+                return false;
             }
         }
     </script>

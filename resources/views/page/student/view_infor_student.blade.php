@@ -10,11 +10,13 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        @if (Auth::user()->role_id == 1)
+                        @if (Auth::check() && Auth::user()->role_id == 1)
                             <li class="breadcrumb-item"><a href="{{ url('/') }}">Bảng điều khiển</a></li>
                             <li class="breadcrumb-item"><a href="{{ url('page-list-student') }}">Danh sách sinh viên</a></li>
+                        @else
+                            <li class="breadcrumb-item active">Thông tin sinh viên</li>
                         @endif
-                        <li class="breadcrumb-item active">Thông tin sinh viên</li>
+
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -177,27 +179,27 @@
                             </h3>
                         </div><!-- /.card-header -->
                         <div class="card-body p-2">
-                            <form action="" method="get">
+                            <form action="{{ url('view-infor-student/'.$infor_students->id) }}" method="GET">
                                 <div class="form-group row">
-                                    <div class="col-12 col-sm-4 text-right">
+                                    <div class="col-12 col-sm-3 text-right">
                                         <label for="">Học kỳ - Năm học</label>
                                     </div>
-                                    <div class="col-12 col-sm-4 text-left">
-                                        <select class="form-control" name="" id="">
+                                    <div class="col-12 col-sm-6 text-left">
+                                        <select class="form-control" name="inputSearchSemesterYear">
                                             @php($semester_years = DB::table('semester_years')->get())
                                             @foreach($semester_years as $year)
                                                 <option value="{{ $year->id }}">
                                                     <?php
-                                                    $year = str_split($year->semester_year);
-                                                    echo $semester_arr = "HK ".$year[0];
-                                                    echo $year_arr = " - Năm ".$year[1].$year[2].$year[3].$year[4];
+                                                    $year_split = str_split($year->semesteryear);
+                                                    echo $semester_arr = "HK ".$year_split[0];
+                                                    echo $year_arr = " - Năm học ".$year->semester_year;
                                                     ?>
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-12 col-sm-4">
-                                        <button type="button" class="btn btn-primary">Liệt kê</button>
+                                    <div class="col-12 col-sm-3">
+                                        <button type="submit" class="btn btn-primary">Liệt kê</button>
                                     </div>
                                 </div>
                             </form>
@@ -216,9 +218,9 @@
                                         <b>
                                             XEM ĐIỂM
                                             <?php
-                                            $year = str_split($semester_years->semester_year);
+                                            $year = str_split($semester_years->semesteryear);
                                             echo $semester_arr = "HỌC KỲ ".$year[0];
-                                            echo $year_arr = " - NĂM HỌC ".$year[1].$year[2].$year[3].$year[4];
+                                            echo $year_arr = " - NĂM HỌC ".$semester_years->semester_year;
                                             ?>
                                         </b>
                                     @endif
@@ -264,8 +266,8 @@
                                                         <?php $total_credit_semester = $total_credit_semester + $value_subject->subject_number_credit; ?>
                                                     </td>
                                                     <td data-label="Điểm số">
-                                                        @if ($score_student->score_number != null)
-                                                            <b>{{ round($score_student->score_number, 2) }}</b>
+                                                        @if ($score_student->score_ladder_four != null)
+                                                            <b>{{ round($score_student->score_ladder_four, 2) }}</b>
                                                         @endif
                                                     </td>
                                                     <td data-label="Điểm chữ">
@@ -310,10 +312,13 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer p-2 text-right">
+                            {{--@if(!empty($score_avg_percent))
+                            @else--}}
                             <a class="btn btn-warning btn-sm"
                             href="{{ url('run-script-python/'.$infor_students->id) }}" role="button">
                                 <i class="fa fa-book"></i> GỢI Ý HỌC PHẦN
                             </a>
+                            {{--@endif--}}
                         </div>
                     </div>
 

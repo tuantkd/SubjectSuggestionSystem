@@ -95,7 +95,7 @@
                                         <th scope="col" style="width:5%;">STT</th>
                                         <th scope="col" style="width:20%;">Tên chức vụ</th>
                                         <th scope="col" style="width:70%;">Mô tả</th>
-                                        <th scope="col" style="width:5%;">Chọn</th>
+                                        <th scope="col" style="width:5%;"colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -114,6 +114,12 @@
                                             <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?');"
                                             href="{{ url('delete-position/'.$show_position->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-primary btn-sm"
+                                            href="{{ url('edit-position/'.$show_position->id) }}" role="button">
+                                                <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -176,6 +182,18 @@
                 position: 'center'
                 , icon: 'success'
                 , title: 'Đã thêm chức vụ'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_position_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã cập nhật chức vụ'
                 , showConfirmButton: false
                 , timer: 2000
             });

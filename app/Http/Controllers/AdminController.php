@@ -38,8 +38,10 @@ class AdminController extends Controller
     {
         if (!Auth::check()) {
             return view('page.login');
-        }else{
+        }elseif((Auth::check() && Auth::user()->role_id == 1) || (Auth::check() && Auth::user()->role_id == 2)){
             return redirect('/');
+        }else{
+            return redirect('view-infor-student/'.Auth::id());
         }
     }
 
@@ -55,12 +57,12 @@ class AdminController extends Controller
     {
         $username = $request->input('inputUsername');
         $password = $request->input('inputPassword');
-        $remember_me = (!empty($request->remember_me))? true : false;
+        $remember_me = (!empty($request->input('remember_me')))? true : false;
 
         if (Auth::attempt(['username' => $username, 'password' => $password], $remember_me)) {
             return redirect('/');
-        }elseif (Auth::attempt(['username'=>$username, 'password'=>$password, 'role_id'=>3], $remember_me)){
-            return redirect('home-student');
+        }elseif (Auth::attempt(['username' => $username, 'password' => $password, 'role_id' => 3], $remember_me)){
+            return redirect('view-infor-student/'.Auth::id());
         }else{
             $error_login_session = $request->session()->get('error_login_session');
             return redirect()->back()->with('error_login_session','');
@@ -96,6 +98,13 @@ class AdminController extends Controller
         return redirect()->back()->with('delete_position_session','');
     }
 
+    //CHỈNH SỬA CHỨC VỤ
+    protected function edit_position(Request $request, $id_position)
+    {
+        $edit_position = Position::find($id_position);
+        return view('page.position.edit_position',['edit_position'=>$edit_position]);
+    }
+
     //THÊM CHỨC VỤ CSDL
     protected function post_add_position(Request $request)
     {
@@ -114,11 +123,30 @@ class AdminController extends Controller
         return redirect()->back()->with('add_position_session','');
     }
 
+    //CẬP NHẬT CHỨC VỤ CSDL
+    protected function update_position(Request $request, $id_position)
+    {
+        $update_position = Position::find($id_position);
+        $update_position->position_name = $request->input('inputPositionName');
+        $update_position->position_description = $request->input('inputPositionDescription');
+        $update_position->save();
+
+        $update_position_session = $request->session()->get('update_position_session');
+        return redirect('page-position')->with('update_position_session','');
+    }
+
     //TRANG HỌC VỊ
     protected function page_degree()
     {
         $show_degrees = Degree::latest()->paginate(10);
         return view('page.degree.page_degree',['show_degrees'=>$show_degrees]);
+    }
+
+    //CHỈNH SỬA HỌC VỊ
+    protected function edit_degree($id_degree)
+    {
+        $edit_degree = Degree::find($id_degree);
+        return view('page.degree.edit_degree',['edit_degree'=>$edit_degree]);
     }
 
     //XÓA HỌC VỊ
@@ -148,11 +176,30 @@ class AdminController extends Controller
         return redirect()->back()->with('add_degree_session','');
     }
 
+    //CẬP NHẬT HỌC VỊ CSDL
+    protected function update_degree(Request $request, $id_degree)
+    {
+        $update_degree = Degree::find($id_degree);
+        $update_degree->degree_name = $request->input('inputDegreeName');
+        $update_degree->degree_description = $request->input('inputDegreeDescription');
+        $update_degree->save();
+
+        $update_degree_session = $request->session()->get('update_degree_session');
+        return redirect('page-degree')->with('update_degree_session','');
+    }
+
     //TRANG HỌC VỊ
     protected function page_title()
     {
         $show_titles = Title::latest()->paginate(10);
         return view('page.title.page_title',['show_titles'=>$show_titles]);
+    }
+
+    //CHỈNH SỬA HỌC VỊ
+    protected function edit_title($id_title)
+    {
+        $edit_title = Title::find($id_title);
+        return view('page.title.edit_title',['edit_title'=>$edit_title]);
     }
 
     //XÓA HỌC VỊ
@@ -179,6 +226,18 @@ class AdminController extends Controller
 
         $add_title_session = $request->session()->get('add_title_session');
         return redirect()->back()->with('add_title_session','');
+    }
+
+    //CẬP NHẬT HỌC VỊ CSDL
+    protected function update_title(Request $request, $id_title)
+    {
+        $add_title = Title::find($id_title);
+        $add_title->title_name = $request->input('inputTitleName');
+        $add_title->title_description = $request->input('inputTitleDescription');
+        $add_title->save();
+
+        $update_title_session = $request->session()->get('update_title_session');
+        return redirect('page-title')->with('update_title_session','');
     }
     /*=================================================================*/
 
@@ -654,6 +713,13 @@ class AdminController extends Controller
         return view('page.student.page_course',['show_courses'=>$show_courses]);
     }
 
+    //CHỈNH SỬA KHÓA HỌC
+    protected function edit_course($id_course)
+    {
+        $edit_course = Course::find($id_course);
+        return view('page.student.edit_course',['edit_course'=>$edit_course]);
+    }
+
     //TRANG KHÓA HỌC
     protected function delete_course(Request $request, $id_course)
     {
@@ -678,6 +744,18 @@ class AdminController extends Controller
 
         $add_course_session = $request->session()->get('add_course_session');
         return redirect()->back()->with('add_course_session','');
+    }
+
+    //CẬP NHẬT KHÓA HỌC CSDL
+    protected function update_course(Request $request, $id_course)
+    {
+        $update_course = Course::find($id_course);
+        $update_course->course_name = $request->input('inputCourseName');
+        $update_course->course_note = $request->input('inputCourseNote');
+        $update_course->save();
+
+        $update_course_session = $request->session()->get('update_course_session');
+        return redirect('page-course')->with('update_course_session','');
     }
 
 
@@ -938,10 +1016,35 @@ class AdminController extends Controller
     }
 
     //TRANG THÔNG TIN SINH VIÊN
-    protected function view_infor_student($id_student)
+    protected function view_infor_student(Request $request, $id_student)
     {
-        $infor_students = Student::find($id_student);
-        $detail_scores = DetailScore::where('student_id', $id_student)->get();
+        /*$inputSearch = $request->input('inputSearchSemesterYear');
+        if($inputSearch != ""){
+
+            if (Auth::check() && Auth::user()->role_id == 1) {
+                $infor_students = Student::find($id_student);
+            }else{
+                $user_student = User::where('id', Auth::id())->first();
+                $infor_students = Student::where('id', $user_student->student_id)->first();
+            }
+
+            $class_subjects = DB::table('class_subjects')->where('semester_year_id', $inputSearch)->get();
+            foreach ($class_subjects as $class_subject){
+                $detail_scores = DetailScore::where([['student_id','=',$id_student], ['class_subject_id','=',$class_subject->id]])->get();
+            }
+
+        }else{*/
+
+            if (Auth::check() && Auth::user()->role_id == 1) {
+                $infor_students = Student::find($id_student);
+            }else{
+                $user_student = User::where('id', Auth::id())->first();
+                $infor_students = Student::where('id',$user_student->student_id)->first();
+            }
+
+            $detail_scores = DetailScore::where('student_id', $id_student)->get();
+        /*}*/
+
         return view('page.student.view_infor_student',
             ['infor_students'=>$infor_students, 'detail_scores'=>$detail_scores]);
     }
@@ -954,6 +1057,13 @@ class AdminController extends Controller
     {
         $show_program_trains = ProgramTrain::latest()->paginate(10);
         return view('page.program_train.page_program_train',['show_program_trains'=>$show_program_trains]);
+    }
+
+    //CHỈNH SỬA SỬA CHƯƠNG TRÌNH ĐÀO TẠO
+    protected function page_edit_program_train($id_program_train)
+    {
+        $edit_program_train = ProgramTrain::find($id_program_train);
+        return view('page.program_train.page_edit_program_train',['edit_program_train'=>$edit_program_train]);
     }
 
     //XÓA CHƯƠNG TRÌNH ĐÀO TẠO
@@ -983,6 +1093,20 @@ class AdminController extends Controller
         $add_program_train_session = $request->session()->get('add_program_train_session');
         return redirect()->back()->with('add_program_train_session','');
     }
+
+    //CẬP NHẬT CHƯƠNG TRÌNH ĐÀO TẠO
+    protected function update_program_train(Request $request, $id_program_train)
+    {
+        $update_program_train = ProgramTrain::find($id_program_train);
+        $update_program_train->course_id = $request->input('inputProgramCourseId');
+        $update_program_train->major_id = $request->input('inputMajorId');
+        $update_program_train->program_train_name = $request->input('inputProgramName');
+        $update_program_train->program_train_date_begin = $request->input('inputProgramDateBegin');
+        $update_program_train->save();
+
+        $update_program_train_session = $request->session()->get('update_program_train_session');
+        return redirect('page-program-train')->with('update_program_train_session','');
+    }
     /*=================================================================*/
 
 
@@ -992,6 +1116,13 @@ class AdminController extends Controller
     {
         $show_semester_years = SemesterYear::latest()->paginate(5);
         return view('page.subject.page_semester_year',['show_semester_years'=>$show_semester_years]);
+    }
+
+    //CHỈNH SỬA HỌC KỲ NĂM HỌC
+    protected function edit_semester_year($id_semester_year)
+    {
+        $edit_semester_year = SemesterYear::find($id_semester_year);
+        return view('page.subject.edit_semester_year',['edit_semester_year'=>$edit_semester_year]);
     }
 
     //XÓA HỌC KỲ NĂM HỌC
@@ -1006,16 +1137,25 @@ class AdminController extends Controller
     protected function post_add_semester_year(Request $request)
     {
         $semester = $request->input('inputSemester');
-        $year_study = $request->input('inputYearStudy');
-        $semester_year = $semester.$year_study;
+        $semester_year = $request->input('inputYearStudy');
 
-        $count_semester_year  = DB::table('semester_years')->where('semester_year',$semester_year)->count();
+        //Tách năm học
+        $semesteryear = explode(" - ", $semester_year);
+
+        //Năm học ký tự đầu mảng thứ 0
+        $year = $semesteryear[0];
+
+        //Học kỳ nối năm học ký tự đầu
+        $se_year = $semester.$year;
+
+        $count_semester_year  = DB::table('semester_years')->where('semesteryear',$se_year)->count();
         if ($count_semester_year >= 1) {
             $message_error = $request->session()->get('message_error');
             return redirect()->back()->with('message_error','');
         }else{
             $add_semester_year = new SemesterYear();
             $add_semester_year->semester_year = $semester_year;
+            $add_semester_year->semesteryear = $se_year;
             $add_semester_year->date_begin = $request->input('inputDateBegin');
             $add_semester_year->date_end = $request->input('inputDateEnd');
             $add_semester_year->save();
@@ -1023,6 +1163,32 @@ class AdminController extends Controller
             $add_semester_year_session = $request->session()->get('add_semester_year_session');
             return redirect()->back()->with('add_semester_year_session','');
         }
+    }
+
+    //CẬP NHẬT HỌC KỲ NĂM HỌC
+    protected function update_semester_year(Request $request, $id_semester_year)
+    {
+        $semester = $request->input('inputSemester');
+        $semester_year = $request->input('inputYearStudy');
+
+        //Tách năm học
+        $semesteryear = explode(" - ", $semester_year);
+
+        //Năm học ký tự đầu mảng thứ 0
+        $year = $semesteryear[0];
+
+        //Học kỳ nối năm học ký tự đầu
+        $se_year = $semester.$year;
+
+        $update_semester_year = SemesterYear::find($id_semester_year);
+        $update_semester_year->semester_year = $semester_year;
+        $update_semester_year->semesteryear = $se_year;
+        $update_semester_year->date_begin = $request->input('inputDateBegin');
+        $update_semester_year->date_end = $request->input('inputDateEnd');
+        $update_semester_year->save();
+
+        $update_semester_year_session = $request->session()->get('update_semester_year_session');
+        return redirect('page-semester-year')->with('update_semester_year_session','');
     }
 
     //TRANG LOẠI HỌC PHẦN
@@ -1207,13 +1373,22 @@ class AdminController extends Controller
     }
 
     //TRANG LỚP HỌC PHẦN
-    protected function page_class_subject()
+    protected function page_class_subject(Request $request)
     {
-        if (Auth::user()->role_id == 1) {
-            $show_class_subjects = ClassSubject::latest()->paginate(10);
+        $search = $request->input('inputSearch');
+        if($search != ""){
+            $show_class_subjects = ClassSubject::where(function ($query) use ($search){
+                $query->where('class_subject_code','like', '%'.$search.'%')
+                    ->orWhere('class_subject_name', 'like', '%'.$search.'%');
+            })->paginate(2);
         }else{
-            $show_class_subjects = ClassSubject::where('teacher_id', Auth::user()->teacher_id)->latest()->paginate(10);
+            if (Auth::user()->role_id == 1) {
+                $show_class_subjects = ClassSubject::latest()->paginate(40);
+            }else{
+                $show_class_subjects = ClassSubject::where('teacher_id', Auth::user()->teacher_id)->latest()->paginate(40);
+            }
         }
+
         return view('page.subject.page_class_subject',['show_class_subjects'=>$show_class_subjects]);
     }
 
@@ -1234,22 +1409,32 @@ class AdminController extends Controller
     //THÊM LỚP HỌC PHẦN CSDL
     protected function post_add_class_subject(Request $request)
     {
-        $this->validate($request, [
-            'inputClassSubjectCode'  => 'unique:class_subjects,class_subject_code'
-        ],[
-            'inputClassSubjectCode.unique' => 'Mã lớp học phần đã tồn tại'
-        ]);
-        $add_class_subject = new ClassSubject();
-        $add_class_subject->teacher_id = $request->input('inputTeacherId');
-        $add_class_subject->semester_year_id = $request->input('inputSemesterYearId');
-        $add_class_subject->subject_id = $request->input('inputSubjectId');
-        $add_class_subject->class_subject_code = $request->input('inputClassSubjectCode');
-        $add_class_subject->class_subject_name = $request->input('inputClassSubjectName');
-        $add_class_subject->class_subject_note = $request->input('inputClassSubjectNote');
-        $add_class_subject->save();
+        $inputSubjectId = $request->input('inputSubjectId');
+        $inputClassSubjectCode = $request->input('inputClassSubjectCode');
 
-        $add_class_subject_session = $request->session()->get('add_class_subject_session');
-        return redirect('page-class-subject')->with('add_class_subject_session','');
+        $count_class_subject = DB::table('class_subjects')
+            ->where([
+                ['class_subject_code','=',$inputClassSubjectCode],
+                ['subject_id','=',$inputSubjectId]
+            ])->count();
+
+        if ($count_class_subject >= 1) {
+            $message_error = $request->session()->get('message_error');
+            return redirect()->back()->with('message_error','');
+        }else {
+
+            $add_class_subject = new ClassSubject();
+            $add_class_subject->teacher_id = $request->input('inputTeacherId');
+            $add_class_subject->semester_year_id = $request->input('inputSemesterYearId');
+            $add_class_subject->subject_id = $request->input('inputSubjectId');
+            $add_class_subject->class_subject_code = $request->input('inputClassSubjectCode');
+            $add_class_subject->class_subject_name = $request->input('inputClassSubjectName');
+            $add_class_subject->class_subject_note = $request->input('inputClassSubjectNote');
+            $add_class_subject->save();
+
+            $add_class_subject_session = $request->session()->get('add_class_subject_session');
+            return redirect('page-class-subject')->with('add_class_subject_session', '');
+        }
     }
 
     //THÊM LỚP HỌC PHẦN CSDL
@@ -1357,6 +1542,9 @@ class AdminController extends Controller
     {
         $id_class_subject = $request->class_subject_id;
 
+        //$class_subject_id = ClassSubject::find($id_class_subject);
+        //$subject_student = DB::table('subjects')->where('id', $class_subject_id->subject_id)->first();
+
         $inputStudentId = $request->input('inputStudentId');
 
         $count_detail_score = DB::table('detail_scores')
@@ -1381,6 +1569,7 @@ class AdminController extends Controller
                 $add_detail_score->student_id = $id;
                 $add_detail_score->save();
             }
+
             return response()->json(['success'=>$id_class_subject]);
         }
     }
@@ -1431,7 +1620,7 @@ class AdminController extends Controller
     {
         $infor_students = Student::find($id_student);
 
-        $process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/train_d1.py']);
+        /*$process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/run_file_export.py']);
         $process->run();
 
         // executes after the command finishes
@@ -1441,9 +1630,38 @@ class AdminController extends Controller
 
         //Kết quả chạy python
         $result = $process->getOutput();
+        //echo $process->getOutput();
 
         return view('page.student.suggestion_subject.view_suggestion_subject',
-        ['infor_students'=>$infor_students, 'result'=>$result]);
+        ['infor_students'=>$infor_students, 'result'=>$result]);*/
+
+
+
+
+        /*$detail_scores = DetailScore::where('student_id','<>',$id_student)->get();
+        foreach ($detail_scores as $detail_score) {
+            dd($detail_score);
+        }*/
+
+        //$total_subject_study = 0;
+
+        /*$class_majors = DB::table('class_majors')->where('id', $infor_students->class_major_id)->get();
+        foreach ($class_majors as $class_major) {
+            $courses = DB::table('courses')->where('id', $class_major->course_id)->get();
+            foreach ($courses as $course){
+                $trains = DB::table('program_trains')->where('course_id', $course->id)->get();
+                foreach ($trains as $train){
+                    $subject_unstudy = DB::table('program_studies')
+                        ->leftJoin('class_subjects', 'program_studies.subject_id', '=', 'class_subjects.subject_id')
+                        ->where('program_train_id', $train->id)
+                        ->get();
+                }
+            }
+        }*/
+
+        return view('page.student.suggestion_subject.view_suggestion_subject',
+            ['infor_students'=>$infor_students]);
+
     }
     /*=================================================================*/
 

@@ -12,7 +12,7 @@ class SemesterYear extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['id', 'semester_year', 'date_begin', 'date_end'];
+    protected $fillable = ['id', 'semester_year', 'semesteryear', 'date_begin', 'date_end'];
 
     //Học kỳ có nhiều lớp học phần
     public function ClassSubject()

@@ -114,7 +114,7 @@
                                         <th scope="col" style="width:15%;">Ngày bắt đầu</th>
                                         <th scope="col" style="width:10%;">Khóa học</th>
                                         <th scope="col" style="width:35%;">Chuyên ngành</th>
-                                        <th scope="col" style="width:5%;" colspan="2">Chọn</th>
+                                        <th scope="col" style="width:5%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -151,6 +151,12 @@
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-primary btn-xs"
+                                                href="{{ url('page-edit-study/'.$show_program_train->id) }}" role="button">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
@@ -181,7 +187,19 @@
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã Thêm chương trình đào tạo'
+                , title: 'Đã Thêm CTĐT'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_program_train_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật CTĐT'
                 , showConfirmButton: false
                 , timer: 2000
             });
@@ -193,7 +211,7 @@
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã Xóa chương trình đào tạo'
+                , title: 'Đã Xóa CTĐT'
                 , showConfirmButton: false
                 , timer: 2000
             });

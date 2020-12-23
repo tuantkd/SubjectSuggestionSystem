@@ -21,9 +21,6 @@ Route::get('logout', [AdminController::class, 'logout']);
 //XỬ LÝ ĐĂNG NHẬP
 Route::post('post-login', [AdminController::class, 'post_login']);
 
-//TRANG THÔNG TIN SINH VIÊN
-Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
-
 
 Route::middleware([CheckLogin::class])->group(function () {
     //TRANG CHỦ
@@ -39,6 +36,12 @@ Route::middleware([CheckLogin::class])->group(function () {
     //XÓA CHỨC VỤ
     Route::get('delete-position/{id_position}', [AdminController::class, 'delete_position']);
 
+    //CHỈNH SỬA CHỨC VỤ
+    Route::get('edit-position/{id_position}', [AdminController::class, 'edit_position']);
+
+    //CẬP NHẬT CHỨC VỤ
+    Route::put('update-position/{id_position}', [AdminController::class, 'update_position']);
+
     //TRANG HỌC VỊ
     Route::get('page-degree', [AdminController::class, 'page_degree']);
 
@@ -48,6 +51,12 @@ Route::middleware([CheckLogin::class])->group(function () {
     //XÓA HỌC VỊ
     Route::get('delete-degree/{id_degree}', [AdminController::class, 'delete_degree']);
 
+    //CHỈNH SỬA HỌC VỊ
+    Route::get('edit-degree/{id_degree}', [AdminController::class, 'edit_degree']);
+
+    //CẬP NHẬT HỌC VỊ
+    Route::put('update-degree/{id_degree}', [AdminController::class, 'update_degree']);
+
     //TRANG CHỨC DANH
     Route::get('page-title', [AdminController::class, 'page_title']);
 
@@ -56,6 +65,12 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //XÓA CHỨC DANH
     Route::get('delete-title/{id_title}', [AdminController::class, 'delete_title']);
+
+    //CHỈNH SỬA CHỨC DANH
+    Route::get('edit-title/{id_title}', [AdminController::class, 'edit_title']);
+
+    //CẬP NHẬT CHỨC DANH
+    Route::put('update-title/{id_title}', [AdminController::class, 'update_title']);
     /*============================================================================*/
 
 
@@ -187,6 +202,12 @@ Route::middleware([CheckLogin::class])->group(function () {
     //XÓA KHÓA HỌC
     Route::get('delete-course/{id_course}', [AdminController::class, 'delete_course']);
 
+    //CHỈNH SỬA KHÓA HỌC
+    Route::get('edit-course/{id_course}', [AdminController::class, 'edit_course']);
+
+    //CẬP NHẬT KHÓA HỌC
+    Route::put('update-course/{id_course}', [AdminController::class, 'update_course']);
+
     //THÊM KHÓA HỌC
     Route::post('post-add-page-course', [AdminController::class, 'post_add_page_course']);
 
@@ -243,6 +264,9 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //TRANG CHỈNH SỬA SINH VIÊN
     Route::get('edit-student', [AdminController::class, 'edit_student']);
+
+    //TRANG THÔNG TIN SINH VIÊN
+    Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
     /*============================================================================*/
 
 
@@ -253,6 +277,12 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //XÓA CHƯƠNG TRÌNH ĐÀO TẠO
     Route::get('delete-program-train/{id_program_train}', [AdminController::class, 'delete_program_train']);
+
+    //CHỈNH SỬA CHƯƠNG TRÌNH ĐÀO TẠO
+    Route::get('page-edit-study/{id_program_train}', [AdminController::class, 'page_edit_program_train']);
+
+    //CẬP NHẬT CHƯƠNG TRÌNH ĐÀO TẠO
+    Route::put('update-program-train/{id_program_train}', [AdminController::class, 'update_program_train']);
 
     //THÊM CHƯƠNG TRÌNH ĐÀO TẠO
     Route::post('post-add-program-train', [AdminController::class, 'post_add_program_train']);
@@ -265,6 +295,12 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //XÓA HỌC KỲ NĂM HỌC
     Route::get('delete-semester-year/{id_semester_year}', [AdminController::class, 'delete_semester_year']);
+
+    //CHỈNH SỬA HỌC KỲ NĂM HỌC
+    Route::get('edit-semester-year/{id_semester_year}', [AdminController::class, 'edit_semester_year']);
+
+    //CẬP NHẬT HỌC KỲ NĂM HỌC
+    Route::put('update-semester-year/{id_semester_year}', [AdminController::class, 'update_semester_year']);
 
     //THÊM HỌC KỲ NĂM HỌC CSDL
     Route::post('post-add-semester-year', [AdminController::class, 'post_add_semester_year']);

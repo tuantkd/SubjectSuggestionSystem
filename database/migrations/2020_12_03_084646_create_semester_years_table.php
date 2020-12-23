@@ -15,9 +15,10 @@ class CreateSemesterYearsTable extends Migration
     {
         Schema::create('semester_years', function (Blueprint $table) {
             $table->id();
-            $table->string('semester_year');
-            $table->date('date_begin');
-            $table->date('date_end');
+            $table->string('semester_year')->nullable();
+            $table->string('semesteryear')->nullable();
+            $table->date('date_begin')->nullable();
+            $table->date('date_end')->nullable();
             $table->timestamps();
         });
     }

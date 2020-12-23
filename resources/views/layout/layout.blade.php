@@ -208,10 +208,14 @@
                         <img src="{{ url('public/dist/img/user_avatar.png') }}" class="img-circle elevation-2">
                     </div>
                     <div class="info">
-                        @php($students = DB::table('students')->where('id', Auth::user()->student_id)->first())
-                        <a href="{{ url('view-infor-student/'.$students->id) }}" class="d-block">
-                            <b>{{ Auth::user()->username }}</b>
-                        </a>
+                        @if(Auth::check() && Auth::user()->student_id != null)
+                            @php($students = DB::table('students')->where('id', Auth::user()->student_id)->first())
+                            <a href="{{ url('view-infor-student/'.$students->id) }}" class="d-block">
+                                <b>{{ Auth::user()->username }}</b>
+                            </a>
+                        @else
+                            <script>location.href = "{{ url('logout') }}";</script>
+                        @endif
                     </div>
                 @endif
             </div>
@@ -445,7 +449,7 @@
                         </li>
                         {{--QUẢN LÝ HỌC PHẦN--}}
 
-                    @elseif (Auth::check() && Auth::user()->role_id == 3)
+                    @else
 
                         {{--QUẢN LÝ HỌC PHẦN--}}
                         <li class="nav-item has-treeview">

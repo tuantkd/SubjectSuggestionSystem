@@ -28,6 +28,20 @@
             <div class="row">
                 <!--  col 6-->
                 <section class="col-lg-12">
+
+                    <!-- SEARCH FORM -->
+                    <form action="{{ url('page-class-subject') }}" method="GET">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" placeholder="Nhập tìm kiếm lớp học phần" name="inputSearch">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- SEARCH FORM -->
+
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
@@ -48,11 +62,11 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width: 5%;">STT</th>
-                                        <th scope="col" style="width: 10%;">Mã lớp</th>
-                                        <th scope="col" style="width: 25%;">Tên lớp</th>
-                                        <th scope="col" style="width: 20%;">Giảng viên</th>
-                                        <th scope="col" style="width: 15%;">HK - NH</th>
-                                        <th scope="col" style="width: 20%;">Ghi chú</th>
+                                        <th scope="col" style="width: 8%;">Mã lớp</th>
+                                        <th scope="col" style="width: 30%;">Tên lớp</th>
+                                        <th scope="col" style="width: 15%;">Giảng viên</th>
+                                        <th scope="col" style="width: 20%;">Học Kỳ - Năm Học</th>
+                                        <th scope="col" style="width: 17%;">Ghi chú</th>
                                         <th scope="col" style="width: 5%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
@@ -67,21 +81,32 @@
                                             <b style="text-transform: uppercase;">{{ $show_class_subject->class_subject_name }}</b>
                                         </td>
                                         <td data-label="Giảng viên">
-                                            @php($teachers = DB::table('teachers')->where('id', $show_class_subject->teacher_id)->get())
-                                            @foreach($teachers as $teacher)
-                                                <b>{{ $teacher->fullname }}</b>
-                                            @endforeach
+                                            @if ($show_class_subject->teacher_id != null)
+                                                @php($teachers = DB::table('teachers')->where('id', $show_class_subject->teacher_id)->get())
+                                                @foreach($teachers as $teacher)
+                                                    <b>{{ $teacher->fullname }}</b>
+                                                @endforeach
+                                            @else
+                                                <b>Giảng viên khác</b>
+                                            @endif
                                         </td>
                                         <td data-label="Học kỳ - Năm học">
-                                            @php($semester_year = DB::table('semester_years')->where('id', $show_class_subject->semester_year_id)->first())
-                                            <?php
-                                                $semester_year = str_split($semester_year->semester_year);
-                                                echo $semester = "HK ".$semester_year[0];
-                                                echo $year = " - Năm ".$semester_year[1].$semester_year[2].$semester_year[3].$semester_year[4];
-                                            ?>
+                                            @if ($show_class_subject->semester_year_id != null)
+                                                @php($semester_year = DB::table('semester_years')->where('id', $show_class_subject->semester_year_id)->first())
+                                                <?php
+                                                $semesteryear = str_split($semester_year->semesteryear);
+                                                echo $semester = "HK ".$semesteryear[0];
+                                                echo $year = " - Năm Học ".$semester_year->semester_year;
+                                                ?>
+                                            @endif
                                         </td>
                                         <td data-label="Ghi chú" class="text-justify">
-                                            <p>{{ $show_class_subject->class_subject_note }}</p>
+                                            @if ($show_class_subject->class_subject_note != null)
+                                                <p>{{ $show_class_subject->class_subject_note }}</p>
+                                            @else
+                                                Không có
+                                            @endif
+
                                         </td>
 
                                         <td data-label="Chọn">
@@ -112,6 +137,13 @@
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm">
+                                {{ $show_class_subjects->links() }}
+                            </ul>
+                            <!-- /pagination -->
+
                         </div>
                         <!-- /.card-body -->
                     </div>

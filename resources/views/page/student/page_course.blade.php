@@ -87,7 +87,7 @@
                                         <th scope="col" style="width:5%;">STT</th>
                                         <th scope="col" style="width:15%;">Khóa học</th>
                                         <th scope="col" style="width:45%;">Ghi chú</th>
-                                        <th scope="col" style="width:5%;">Chọn</th>
+                                        <th scope="col" style="width:5%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -106,6 +106,12 @@
                                             <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?');"
                                             href="{{ url('delete-course/'.$show_course->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-primary btn-sm"
+                                            href="{{ url('edit-course/'.$show_course->id) }}" role="button">
+                                                <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -145,6 +151,18 @@
                 position: 'center'
                 , icon: 'success'
                 , title: 'Đã thêm khóa học'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_course_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật khóa học'
                 , showConfirmButton: false
                 , timer: 2000
             });

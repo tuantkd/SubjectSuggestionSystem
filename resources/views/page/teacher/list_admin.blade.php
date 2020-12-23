@@ -49,13 +49,14 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
-                                        <th scope="col" style="width:15%;">Họ và tên</th>
+                                        <th scope="col" style="width:12%;">Họ và tên</th>
+                                        <th scope="col" style="width:10%;">Tài khoản</th>
                                         <th scope="col" style="width:10%;">Ảnh đại diện</th>
-                                        <th scope="col" style="width:10%;">Giới tính</th>
+                                        <th scope="col" style="width:8%;">Giới tính</th>
                                         <th scope="col" style="width:10%;">Điện thoại</th>
                                         <th scope="col" style="width:10%;">Email</th>
                                         <th scope="col" style="width:10%;">Chức vụ</th>
-                                        <th scope="col" style="width:25%;">Quê quán</th>
+                                        <th scope="col" style="width:15%;">Quê quán</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -65,9 +66,18 @@
                                         <td data-label="Họ và tên">
                                             <b>{{ $show_admin->fullname }}</b>
                                         </td>
+                                        <td data-label="Tài khoản">
+                                            @php($users = DB::table('users')->where('teacher_id', $show_admin->id)->first())
+                                            <b>{{ $users->username }}</b>
+                                        </td>
                                         <td data-label="Ảnh đại diện">
-                                            <img src="{{ url('public/upload_avatar/'.$show_admin->avatar) }}" alt="Ảnh đại diện"
-                                            style="max-width:100%;height:70px;border-radius:30%;">
+                                            @if ($show_admin->avatar != null)
+                                                <img src="{{ url('public/upload_avatar/'.$show_admin->avatar) }}" alt="Ảnh đại diện"
+                                                     style="max-width:100%;height:70px;border-radius:30%;">
+                                            @else
+                                                <img src="{{ url('public/dist/img/user_avatar.png') }}" alt="Ảnh đại diện"
+                                                     style="max-width:100%;height:70px;border-radius:30%;">
+                                            @endif
                                         </td>
                                         <td data-label="Giới tính">
                                             <p>{{ $show_admin->sex }}</p>
