@@ -267,8 +267,10 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //TRANG THÔNG TIN SINH VIÊN
     Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
-    /*============================================================================*/
 
+    //XEM ĐIỂM SINH VIÊN
+    //Route::get('view-score-subject/{id_student}', [AdminController::class, 'view_score_subject']);
+    /*============================================================================*/
 
 
     /*============================================================================*/

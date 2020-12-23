@@ -77,7 +77,7 @@
                     <tbody>
 
 
-                    @php($detail_scores = DB::table('detail_scores')->where('student_id', '=', $infor_students->id)->get())
+                    {{--@php($detail_scores = DB::table('detail_scores')->where('student_id', '=', $infor_students->id)->get())
                     @foreach($detail_scores as $detail_score)
                         @if ($loop->first)
                             @php($class_subjects = DB::table('class_subjects')->where('id', '<>', $detail_score->class_subject_id)->get())
@@ -110,7 +110,7 @@
                                 @endforeach
                             @endforeach
                         @endif
-                    @endforeach
+                    @endforeach--}}
 
 
 

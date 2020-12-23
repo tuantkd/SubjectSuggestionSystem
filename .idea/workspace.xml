@@ -2,45 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/run_python/data_predict.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/run_python/run_file_export.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/run_python/train_model.pickle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1608303921-NHHOA.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1608304209-Ngo Ba Hung.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1608304314-hxhiep-23082011.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/upload_avatar/1608304374-khang.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/degree/edit_degree.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/position/edit_position.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_edit_program_train.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/edit_course.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_semester_year.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/page/title/edit_title.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_score_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/CheckLogin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/CheckLogin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/SemesterYear.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SemesterYear.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_03_084646_create_semester_years_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_03_084646_create_semester_years_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/run_python/test_format_phase2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/public/run_python/test_format_phase2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/run_python/train_d1.py" beforeDir="false" afterPath="$PROJECT_DIR$/public/run_python/train_d1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/run_python/train_format_phase1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/public/run_python/train_format_phase1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/degree/page_degree.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/degree/page_degree.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/position/page_position.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/position/page_position.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/program_train/page_program_train.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/page_course.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/page_course.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/page_semester_year.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/page_semester_year.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/add_admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/teacher/add_admin.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/add_teacher.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/teacher/add_teacher.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/list_admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/teacher/list_admin.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/teacher/list_teacher.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/teacher/list_teacher.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/title/page_title.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/title/page_title.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subject_suggestion_system.sql" beforeDir="false" afterPath="$PROJECT_DIR$/subject_suggestion_system.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,7 +272,7 @@
       <workItem from="1608600050221" duration="9724000" />
       <workItem from="1608621765755" duration="7297000" />
       <workItem from="1608637647938" duration="12912000" />
-      <workItem from="1608684702727" duration="19000" />
+      <workItem from="1608684702727" duration="17008000" />
     </task>
     <servers />
   </component>
