@@ -1,4 +1,3 @@
-
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
@@ -8,8 +7,8 @@ import json
 import pickle
 import numpy as np
 
-dataset = pd.read_csv('train_format_phase1.csv')
-dataset_test = pd.read_csv('test_format_phase2.csv')
+dataset = pd.read_csv('C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/train_format_phase1.csv')
+dataset_test = pd.read_csv('C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/test_format_phase2.csv')
 
 dataset = dataset.dropna()
 dataset_test = dataset.dropna()
@@ -69,27 +68,32 @@ print("\n")
 
 print('Tập dữ liệu khác đưa vào kiểm tra hiển thị 10 dòng')
 print(dataset_test.head(10))
-data_train = dataset_test.iloc[0:1, 0:3].values
+data_train = dataset_test.iloc[:, 0:3].values
 data_test = dataset_test.iloc[:, 3].values
-
 print("\n")
-print("Đầu vào 1 dòng các thuộc tính trích từ tập dữ liệu khác")
+
+print("Đầu vào các thuộc tính trích từ tập dữ liệu khác")
 print(data_train)
 
 
-ran_data_arr = np.array(data_train)
-ran_data_num = ran_data_arr.reshape(1, -1)
-pred_single_row = regressor.predict(ran_data_num)
-pred_single_row = round(float(pred_single_row), 2)
+# ran_data_arr = np.array(data_train)
+# ran_data_num = ran_data_arr.reshape(1, -1)
+pred_single_row = regressor.predict(data_train)
+#pred_single_row = round(float(pred_single_row), 2)
+# print(pred_single_row)
+# print("\n")
 
 
-print("\n")
-print("Kết quả dự đoán hồi quy 1 dòng dữ liệu")
+print("Kết quả dự đoán")
 print(pred_single_row)
 print("\n")
 
+# input_msv = int(input("Ma SV: "))
+# input_mmh = int(input("Ma MH: "))
+# input_nhhk = int(input("Ma NHHK: "))
 
-# ran_data = [1607138, 234, 20192]
+# ran_data = [input_msv, input_mmh, input_nhhk]
+# # ran_data = [1607138, 234, 20192]
 # ran_data_arr = np.array(ran_data)
 # ran_data_num = ran_data_arr.reshape(1, -1)
 # pred_single_row = regressor.predict(ran_data_num)
@@ -108,10 +112,9 @@ print('Mean Squared Error:', mean_squared_error(y_test, y_pred))
 print('Root Mean Squared Error:', np.sqrt(mean_squared_error(y_test, y_pred)))
 
 
-# serialize our model and save it in the file area_model.pickle
-# print("Lưu mô hình vào file result.pickle")
-# with open("train_model.pickle", "wb") as file:
-#     pickle.dump(regressor, file)
+#print("Lưu mô hình vào file result.pickle")
+#with open("train_model.pickle", "wb") as file:
+#    pickle.dump(regressor, file)
 
 
 # with open('result.json', 'r') as j:

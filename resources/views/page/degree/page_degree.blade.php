@@ -78,7 +78,6 @@
                     @endif
                     <!-- /Report message -->
 
-
                     <!-- TO DO List -->
                     <div class="card">
                         <div class="card-header">
@@ -101,7 +100,7 @@
                                         <th scope="col" style="width:5%;">STT</th>
                                         <th scope="col" style="width:15%;">Tên học vị</th>
                                         <th scope="col" style="width:75%;">Mô tả</th>
-                                        <th scope="col" style="width:5%;">Chọn</th>
+                                        <th scope="col" style="width:5%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -120,6 +119,12 @@
                                             <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?');"
                                             href="{{ url('delete-degree/'.$show_degree->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-primary btn-sm"
+                                            href="{{ url('edit-degree/'.$show_degree->id) }}" role="button">
+                                                <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -174,12 +179,24 @@
     </script>
 
     {{--Thông báo box--}}
+    @if (Session::has('update_degree_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật học vị'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
     @if (Session::has('add_degree_session'))
         <script type="text/javascript">
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã thêm học vị'
+                , title: 'Đã Thêm học vị'
                 , showConfirmButton: false
                 , timer: 2000
             });
@@ -191,7 +208,7 @@
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã xóa học vị'
+                , title: 'Đã Xóa học vị'
                 , showConfirmButton: false
                 , timer: 2000
             });

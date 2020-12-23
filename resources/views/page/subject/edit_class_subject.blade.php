@@ -105,11 +105,11 @@
                                             @foreach($semester_years as $get_semester_year)
                                                 <option value="{{ $get_semester_year->id }}">
                                                     <?php
-                                                        $year = str_split($get_semester_year->semester_year);
+                                                        $year = str_split($get_semester_year->semesteryear);
                                                         //Hiển thị học kỳ
                                                         echo $semester = "Học kỳ ".$year[0];
                                                         //Hiển thị năm học
-                                                        echo $year_arr = " - Năm ".$year[1].$year[2].$year[3].$year[4];
+                                                        echo $year_arr = " - Năm học ".$get_semester_year->semesteryear;
                                                     ?>
                                                 </option>
                                             @endforeach
@@ -119,12 +119,12 @@
                                             @foreach($get_semester_years as $get_semester_year)
                                                 <option value="{{ $get_semester_year->id }}">
                                                     <?php
-                                                    $year = str_split($get_semester_year->semester_year);
+                                                    $year = str_split($get_semester_year->semesteryear);
                                                     //Hiển thị học kỳ
                                                     echo $semester = "Học kỳ ".$year[0];
 
                                                     //Hiển thị năm học
-                                                    echo $year_arr = " - Năm ".$year[1].$year[2].$year[3].$year[4];
+                                                    echo $year_arr = " - Năm học ".$get_semester_year->semester_year;
                                                     ?>
                                                 </option>
                                             @endforeach

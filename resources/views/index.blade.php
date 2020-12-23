@@ -117,8 +117,8 @@
                                         <th scope="col" style="width: 5%;">STT</th>
                                         <th scope="col" style="width: 10%;">Mã lớp</th>
                                         <th scope="col" style="width: 25%;">Tên lớp</th>
-                                        <th scope="col" style="width: 20%;">Giảng viên</th>
-                                        <th scope="col" style="width: 15%;">HK - NH</th>
+                                        <th scope="col" style="width: 15%;">Giảng viên</th>
+                                        <th scope="col" style="width: 20%;">Học Kỳ - Năm Học</th>
                                         <th scope="col" style="width: 20%;">Ghi chú</th>
                                         <th scope="col" style="width: 5%;" colspan="3">Chọn</th>
                                     </tr>
@@ -142,9 +142,9 @@
                                             <td data-label="Học kỳ - Năm học">
                                                 @php($semester_year = DB::table('semester_years')->where('id', $show_class_subject->semester_year_id)->first())
                                                 <?php
-                                                $semester_year = str_split($semester_year->semester_year);
-                                                echo $semester = "HK ".$semester_year[0];
-                                                echo $year = " - NH ".$semester_year[1].$semester_year[2].$semester_year[3].$semester_year[4];
+                                                $semesteryear = str_split($semester_year->semesteryear);
+                                                echo $semester = "HK ".$semesteryear[0];
+                                                echo $year = " - NH ".$semester_year->semester_year;
                                                 ?>
                                             </td>
                                             <td data-label="Ghi chú" class="text-justify">

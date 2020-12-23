@@ -90,13 +90,14 @@
                                     <thead>
                                     <tr>
                                         <th scope="col" style="width:5%;">STT</th>
-                                        <th scope="col" style="width:15%;">Họ và tên</th>
+                                        <th scope="col" style="width:12%;">Họ và tên</th>
+                                        <th scope="col" style="width:10%;">Tài khoản</th>
                                         <th scope="col" style="width:10%;">Ảnh đại diện</th>
-                                        <th scope="col" style="width:10%;">Giới tính</th>
+                                        <th scope="col" style="width:8%;">Giới tính</th>
                                         <th scope="col" style="width:10%;">Điện thoại</th>
                                         <th scope="col" style="width:10%;">Email</th>
                                         <th scope="col" style="width:10%;">Chức vụ</th>
-                                        <th scope="col" style="width:20%;">Quê quán</th>
+                                        <th scope="col" style="width:15%;">Quê quán</th>
                                         <th scope="col" style="width:5%;" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
@@ -106,6 +107,10 @@
                                             <td data-label="STT"><b>{{ ++$key }}</b></td>
                                             <td data-label="Họ và tên">
                                                 <b>{{ $show_teacher->fullname }}</b>
+                                            </td>
+                                            <td data-label="Tài khoản">
+                                                @php($teacher = DB::table('users')->where('teacher_id', $show_teacher->id)->first())
+                                                <b>{{ $teacher->username }}</b>
                                             </td>
                                             <td data-label="Ảnh đại diện">
                                                 @if ($show_teacher->avatar != null)

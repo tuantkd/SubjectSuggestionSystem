@@ -44,7 +44,24 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label for="">Năm học</label>
-                                <input type="text" name="inputYearStudy" class="form-control" placeholder="Nhập năm học" required>
+                                <?php
+                                    // Sets the top option to be the current year. (IE. the option that is chosen by default).
+                                    $currently_selected = date('Y');
+                                    // Year to start available options at
+                                    $earliest_year = 2010;
+                                    // Set your latest year you want in the range, in this case we use PHP to just set it to the current year.
+                                    $latest_year = date('Y');
+
+                                    print '<select class="form-control" name="inputYearStudy">';
+                                        // Loops over each int[year] from current year, back to the $earliest_year [2000]
+                                        foreach ( range( $latest_year, $earliest_year ) as $i ) {
+                                            // Prints the option with the next year in range.
+                                            print '<option value="' .$i. ' - ' .($i+1). '"' .($i === $currently_selected ? 'selected="selected"' : '').'>'
+                                                    .$i.' - '.($i+1).
+                                                  '</option>';
+                                        }
+                                    print '</select>';
+                                ?>
                             </div>
                         </div>
 
@@ -101,7 +118,7 @@
                                         <th scope="col">Học kỳ</th>
                                         <th scope="col">Ngày bắt đầu</th>
                                         <th scope="col">Ngày kết thúc</th>
-                                        <th scope="col">Chọn</th>
+                                        <th scope="col" colspan="2">Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -109,17 +126,12 @@
                                     <tr>
                                         <td data-label="STT">{{ ++$key }}</td>
                                         <td data-label="Năm học">
-                                            <b>Năm
-                                                <?php
-                                                    $year = str_split($show_semester_year->semester_year);
-                                                    echo $year_arr = $year[1].$year[2].$year[3].$year[4]
-                                                ?>
-                                            </b>
+                                            <b>Năm Học {{ $show_semester_year->semester_year }}</b>
                                         </td>
                                         <td data-label="Học kỳ">
                                             <b>Học kỳ
                                                 <?php
-                                                    $semester = str_split($show_semester_year->semester_year);
+                                                    $semester = str_split($show_semester_year->semesteryear);
                                                     echo $semester_arr = $semester[0]
                                                 ?>
                                             </b>
@@ -136,6 +148,13 @@
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
+
+                                        <td data-label="Chọn">
+                                            <a class="btn btn-primary btn-sm"
+                                            href="{{ url('edit-semester-year/'.$show_semester_year->id) }}" role="button">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                     @empty
                                         <tr>
@@ -147,6 +166,13 @@
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- pagination -->
+                            <ul class="pagination justify-content-center pagination-sm">
+                                {{ $show_semester_years->links() }}
+                            </ul>
+                            <!-- /pagination -->
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -177,7 +203,19 @@
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã Thêm năm học và học kỳ'
+                , title: 'Đã Thêm'
+                , showConfirmButton: false
+                , timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (Session::has('update_semester_year_session'))
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'center'
+                , icon: 'success'
+                , title: 'Đã Cập nhật'
                 , showConfirmButton: false
                 , timer: 2000
             });
@@ -189,7 +227,7 @@
             Swal.fire({
                 position: 'center'
                 , icon: 'success'
-                , title: 'Đã Xóa năm học và học kỳ'
+                , title: 'Đã Xóa'
                 , showConfirmButton: false
                 , timer: 2000
             });

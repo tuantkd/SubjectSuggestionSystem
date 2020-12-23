@@ -41,7 +41,8 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-2">
-                            <form action="{{ url('post-add-teacher') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            <form action="{{ url('post-add-teacher') }}" method="POST" enctype="multipart/form-data"
+                            class="needs-validation" novalidate name="myForm" onsubmit="return validateForm()">
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-6">
@@ -204,6 +205,15 @@
                 }
             }
         }
+
+        function validateForm() {
+            var x = document.forms["myForm"]["inputSex"].value;
+            if (x == "") {
+                alert("Vui lòng chọn giới tính !");
+                return false;
+            }
+        }
+
     </script>
 
 @endsection
