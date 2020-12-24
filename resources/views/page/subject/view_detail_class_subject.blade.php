@@ -37,7 +37,25 @@
                     <div class="modal-header p-2">
                         <h5 class="modal-title"><b>THÊM SINH VIÊN LỚP HỌC PHẦN</b></h5>
                     </div>
-                    <div class="modal-body p-1">
+                    <div class="modal-body p-2">
+
+                        <div class="input-group mt-2">
+                            <select class="form-control select2bs4" name="inputStudentId" required data-title="">
+                                <option value="">- - Sinh viên - -</option>
+                                @php($students = DB::table('students')->get())
+                                @foreach($students as $student)
+                                    <option value="{{ $student->id }}">{{ $student->student_code }} - {{ $student->student_fullname }}</option>
+                                @endforeach
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-user-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr>
+
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -141,8 +159,8 @@
                                             <b>{{ $students->student_fullname }}</b>
                                         </td>
                                         <td data-label="Điểm số">
-                                            @if($student->score_number != null)
-                                                <b class="text-secondary" style="font-size:16px;">{{ $student->score_number }}</b>
+                                            @if($student->score_ladder_four != null)
+                                                <b class="text-secondary" style="font-size:16px;">{{ round($student->score_ladder_four, 2) }}</b>
                                             @else
                                                 <b class="text-danger">...</b>
                                             @endif
@@ -196,6 +214,15 @@
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+        })
+    </script>
 
     @if (Session::has('delete_score_student_session'))
         <script type="text/javascript">

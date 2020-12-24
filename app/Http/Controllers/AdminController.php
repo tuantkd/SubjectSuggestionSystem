@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PropertyStudentExport;
+use App\Models\PropertyStudent;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -1645,7 +1648,39 @@ class AdminController extends Controller
             }
         }
 
-        /*$process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/run_file_export.py']);
+
+        //Làm rỗng xóa DB trước
+        DB::table('property_students')->truncate();
+
+        //Thêm vào bảng thuộc tính sinh viên chạy máy học
+        $detail_scores = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->first();
+        $class_subjects = DB::table('class_subjects')->where('id', '<>', $detail_scores->class_subject_id)->get();
+        foreach($class_subjects as $key => $class_subject){
+            $subjects = DB::table('subjects')->where('id','=',$class_subject->subject_id)->get();
+            foreach ($subjects as $subject){
+
+                //Lấy mã số sinh viên
+                $get_student = DB::table('students')->where('id', $infor_students->id)->first();
+
+                //Lấy học kỳ năm học
+                $semester_year = DB::table('semester_years')->where('id', $class_subject->semester_year_id)->first();
+
+                $add_property = new PropertyStudent();
+                $add_property->student_code = $get_student->student_code;
+                $add_property->subject_code = $subject->subject_code;
+                $add_property->semester_year = $semester_year->semesteryear;
+                $add_property->save();
+
+            }
+        }
+
+        Excel::store(new PropertyStudentExport(), 'test_property_student.xlsx', 'public');
+
+
+
+
+
+        $process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/storage/app/public/run_file_export.py']);
         $process->run();
 
         // executes after the command finishes
@@ -1658,7 +1693,7 @@ class AdminController extends Controller
         //echo $process->getOutput();
 
         return view('page.student.suggestion_subject.view_suggestion_subject',
-        ['infor_students'=>$infor_students, 'result'=>$result]);*/
+        ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs, 'result'=>$result]);
 
 
 
@@ -1684,8 +1719,8 @@ class AdminController extends Controller
             }
         }*/
 
-        return view('page.student.suggestion_subject.view_suggestion_subject',
-            ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs]);
+        /*return view('page.student.suggestion_subject.view_suggestion_subject',
+            ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs]);*/
 
     }
     /*=================================================================*/

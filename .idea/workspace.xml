@@ -2,13 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_score_subject.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Console/Commands/ExportExcel.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Exports/PropertyStudentExport.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/PropertyStudent.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_23_123022_create_property_students_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-JmMHkKPR1IoyJ58xfdDVT99DCni9N564.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-XfkT4Kn1U1mS9OxaAyLigiIcx8m15T5s.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-jlZrdojvQ6iKeb7zHDsrdX2S1hS09YwG.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-qPWE7ycCJA4cMTzS1xXuyxADZKUuGapt.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_score_subject.blade.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/subject_suggestion_system.sql" beforeDir="false" afterPath="$PROJECT_DIR$/subject_suggestion_system.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,12 +165,15 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/storage/app/public" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\subjectsuggestionsystem\storage\app\public" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\subjectsuggestionsystem\resources\views\page\subject" />
       <recent name="C:\xampp\htdocs\subjectsuggestionsystem\public\dist\css" />
@@ -272,7 +286,9 @@
       <workItem from="1608600050221" duration="9724000" />
       <workItem from="1608621765755" duration="7297000" />
       <workItem from="1608637647938" duration="12912000" />
-      <workItem from="1608684702727" duration="17008000" />
+      <workItem from="1608684702727" duration="19963000" />
+      <workItem from="1608725822351" duration="7967000" />
+      <workItem from="1608779809212" duration="2414000" />
     </task>
     <servers />
   </component>
@@ -318,5 +334,16 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1607584604523" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php</url>
+          <line>39</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

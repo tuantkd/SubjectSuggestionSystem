@@ -175,7 +175,7 @@
                         <div class="card-header p-2 text-center">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                XEM ĐIỂM HỌC KỲ
+                                HỌC KỲ - NĂM HỌC
                             </h3>
                         </div><!-- /.card-header -->
                         <div class="card-body p-2">
@@ -213,7 +213,7 @@
                                         </select>
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <button type="submit" class="btn btn-primary">Liệt kê</button>
+                                        <button type="submit" class="btn btn-primary"><b><i class="fa fa-list-ul"></i> Liệt kê</b></button>
                                     </div>
                                 </div>
                             </form>
@@ -227,8 +227,8 @@
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
                                 @forelse($semester_year_class_subs as $semester_year)
+                                    XEM ĐIỂM
                                     <b>
-                                        XEM ĐIỂM
                                         <?php
                                         $year = str_split($semester_year->semesteryear);
                                         echo $semester_arr = "HỌC KỲ ".$year[0];
@@ -257,16 +257,16 @@
                                     </thead>
                                     <tbody>
 
-                                    <?php $total_credit_semester = 0; ?>
+                                    <?php $total_credit_semester = 0; $i=1; ?>
                                     @php($scores = DB::table('detail_scores')->where('student_id','=',$infor_students->id)->get())
-                                    @foreach($scores as $key => $score_sub)
+                                    @foreach($scores as $score_sub)
                                         @foreach($semester_year_class_subs as $value_sub)
                                             @php($class_sub = DB::table('class_subjects')->where([['id','=',$score_sub->class_subject_id], ['semester_year_id','=',$value_sub->id]])->get())
                                             @foreach($class_sub as $value_sub)
                                                 @php($subjects = DB::table('subjects')->where('id', $value_sub->subject_id)->get())
                                                 @foreach($subjects as $value_subject)
                                                     <tr>
-                                                        <td data-label="STT"><b>{{ ++$key }}</b></td>
+                                                        <td data-label="STT"><b><?php echo $i++; ?></b></td>
                                                         <td data-label="Nhóm lớp">
                                                             {{ $value_sub->class_subject_code }}
                                                         </td>

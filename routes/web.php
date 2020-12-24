@@ -356,7 +356,7 @@ Route::middleware([CheckLogin::class])->group(function () {
     Route::post('post-add-class-subject', [AdminController::class, 'post_add_class_subject']);
 
     //TRANG CHỈNH SỬA LỚP HỌC PHẦN
-    Route::get('edit-class-subject/{id_class_subject}', [AdminController::class, 'edit_class_subject']);
+    Route::get('edit-class-subject/{id_class_subject}', [AdminController::class, 'edview-infor-studentit_class_subject']);
 
     //CẬP NHẬT LỚP HỌC PHẦN
     Route::put('update-class-subject/{id_class_subject}', [AdminController::class, 'update_class_subject']);

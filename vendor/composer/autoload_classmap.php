@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\ExportExcel' => $baseDir . '/app/Console/Commands/ExportExcel.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
@@ -33,6 +34,7 @@ return array(
     'App\\Models\\PrerequisiteParallel' => $baseDir . '/app/Models/PrerequisiteParallel.php',
     'App\\Models\\ProgramStudy' => $baseDir . '/app/Models/ProgramStudy.php',
     'App\\Models\\ProgramTrain' => $baseDir . '/app/Models/ProgramTrain.php',
+    'App\\Models\\PropertyStudent' => $baseDir . '/app/Models/PropertyStudent.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
     'App\\Models\\SemesterYear' => $baseDir . '/app/Models/SemesterYear.php',
     'App\\Models\\Student' => $baseDir . '/app/Models/Student.php',
