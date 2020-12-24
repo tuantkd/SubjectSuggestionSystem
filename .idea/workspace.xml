@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Console/Commands/ExportExcel.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Exports/PropertyStudentExport.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/PropertyStudent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_23_123022_create_property_students_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-JmMHkKPR1IoyJ58xfdDVT99DCni9N564.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-XfkT4Kn1U1mS9OxaAyLigiIcx8m15T5s.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-jlZrdojvQ6iKeb7zHDsrdX2S1hS09YwG.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-qPWE7ycCJA4cMTzS1xXuyxADZKUuGapt.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_score_subject.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
-    </list>
+    <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -288,7 +269,7 @@
       <workItem from="1608637647938" duration="12912000" />
       <workItem from="1608684702727" duration="19963000" />
       <workItem from="1608725822351" duration="7967000" />
-      <workItem from="1608779809212" duration="2414000" />
+      <workItem from="1608779809212" duration="2834000" />
     </task>
     <servers />
   </component>
