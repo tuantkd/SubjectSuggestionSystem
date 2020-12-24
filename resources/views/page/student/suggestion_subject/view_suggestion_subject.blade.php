@@ -58,10 +58,10 @@
     <div class="card animate-bottom" style="display:none;" id="myDiv">
         <div class="card-header p-2 text-center">
             <h3 class="card-title">
-                <i class="ion ion-clipboard mr-1"></i> <b>GỢI Ý CÁC HỌC PHẦN</b>
+                <i class="ion ion-clipboard mr-1"></i> <b>GỢI Ý CÁC MÔN HỌC</b>
             </h3>
         </div><!-- /.card-header -->
-        <div class="card-body p-1">
+        <div class="card-body p-4 text-center">
 
             {{--<div class="table-responsive-sm">
                 <table class="table table-striped">
@@ -131,7 +131,11 @@
                 </table>
             </div>--}}
 
-            {{ $result }}
+            {{--{{ $result }}--}}
+
+            <a href="{{ url('http://localhost/subjectsuggestionsystem/storage/app/public/table.html') }}" class="btn btn-primary btn-lg">
+                <b>XEM KẾT QUẢ GỢI Ý</b>
+            </a>
 
         </div>
     </div>

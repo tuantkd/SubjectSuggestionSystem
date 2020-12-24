@@ -29,6 +29,12 @@
 
 @section('content')
 
+    <style>
+        .text-muted{
+            font-size:13px;
+        }
+    </style>
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -149,7 +155,7 @@
                             <hr>
 
                             <strong><i class="fa fa-calendar mr-1"></i> Ngày sinh</strong>
-                            <p class="text-muted">{{ $infor_students->student_birthday }}</p>
+                            <p class="text-muted">{{ date('d-m-Y', strtotime($infor_students->student_birthday)) }}</p>
                             <hr>
 
                             <strong><i class="fas fa-phone mr-1"></i> Điện thoại</strong>
