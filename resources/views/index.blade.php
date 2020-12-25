@@ -134,10 +134,15 @@
                                                 <b style="text-transform: uppercase;">{{ $show_class_subject->class_subject_name }}</b>
                                             </td>
                                             <td data-label="Giảng viên">
-                                                @php($teachers = DB::table('teachers')->where('id', $show_class_subject->teacher_id)->get())
-                                                @foreach($teachers as $teacher)
-                                                    <b>{{ $teacher->fullname }}</b>
-                                                @endforeach
+                                                @if ($show_class_subject->teacher_id != null)
+                                                    @php($teachers = DB::table('teachers')->where('id', $show_class_subject->teacher_id)->get())
+                                                    @foreach($teachers as $teacher)
+                                                        <b>{{ $teacher->fullname }}</b>
+                                                    @endforeach
+                                                @else
+                                                    <b>Giảng viên khác</b>
+                                                @endif
+
                                             </td>
                                             <td data-label="Học kỳ - Năm học">
                                                 @php($semester_year = DB::table('semester_years')->where('id', $show_class_subject->semester_year_id)->first())
@@ -148,7 +153,11 @@
                                                 ?>
                                             </td>
                                             <td data-label="Ghi chú" class="text-justify">
-                                                <p>{{ $show_class_subject->class_subject_note }}</p>
+                                                @if ($show_class_subject->class_subject_note != null)
+                                                    <p>{{ $show_class_subject->class_subject_note }}</p>
+                                                @else
+                                                    <b>Không có</b>
+                                                @endif
                                             </td>
 
                                             <td data-label="Chọn">
@@ -157,6 +166,7 @@
                                                     <i class="fa fa-trash-o"></i>
                                                 </a>
                                             </td>
+
                                             <td data-label="Chọn">
                                                 <a class="btn btn-primary btn-xs"
                                                    href="{{ url('edit-class-subject/'.$show_class_subject->id) }}" role="button">

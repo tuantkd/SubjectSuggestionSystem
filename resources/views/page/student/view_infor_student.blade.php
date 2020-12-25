@@ -29,6 +29,12 @@
 
 @section('content')
 
+    <style>
+        .text-muted{
+            font-size:13px;
+        }
+    </style>
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -149,7 +155,7 @@
                             <hr>
 
                             <strong><i class="fa fa-calendar mr-1"></i> Ngày sinh</strong>
-                            <p class="text-muted">{{ $infor_students->student_birthday }}</p>
+                            <p class="text-muted">{{ date('d-m-Y', strtotime($infor_students->student_birthday)) }}</p>
                             <hr>
 
                             <strong><i class="fas fa-phone mr-1"></i> Điện thoại</strong>
@@ -175,7 +181,7 @@
                         <div class="card-header p-2 text-center">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                XEM ĐIỂM HỌC KỲ
+                                HỌC KỲ - NĂM HỌC
                             </h3>
                         </div><!-- /.card-header -->
                         <div class="card-body p-2">
@@ -186,8 +192,22 @@
                                     </div>
                                     <div class="col-12 col-sm-6 text-left">
                                         <select class="form-control" name="inputSearchSemesterYear">
-                                            @php($semester_years = DB::table('semester_years')->get())
-                                            @foreach($semester_years as $year)
+
+                                            @foreach($semester_year_class_subs as $semes_years)
+                                                @if ($loop->first)
+                                                    <?php
+                                                    $se_year = str_split($semes_years->semesteryear);
+                                                    $semester_arr = "HK ".$se_year[0];
+                                                    $year_arr = " - Năm học ".$semes_years->semester_year;
+                                                    echo '<option value="'.$semes_years->id.'">'.$semester_arr.$year_arr.'</option>';
+                                                    ?>
+                                                @endif
+                                            @endforeach
+
+                                            <option value="">- - Chọn khác - -</option>
+
+                                            @php($get_semester_years = DB::table('semester_years')->latest()->get())
+                                            @foreach($get_semester_years as $year)
                                                 <option value="{{ $year->id }}">
                                                     <?php
                                                     $year_split = str_split($year->semesteryear);
@@ -199,7 +219,7 @@
                                         </select>
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <button type="submit" class="btn btn-primary">Liệt kê</button>
+                                        <button type="submit" class="btn btn-primary"><b><i class="fa fa-list-ul"></i> Liệt kê</b></button>
                                     </div>
                                 </div>
                             </form>
@@ -207,28 +227,26 @@
                         <!-- /.card-body -->
                     </div>
 
+
                     <div class="card">
                         <div class="card-header p-2 text-center">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                @forelse($detail_scores as $score)
-                                    @if ($loop->first)
-                                        @php($class_subs = DB::table('class_subjects')->where('id', $score->class_subject_id)->first())
-                                        @php($semester_years = DB::table('semester_years')->where('id', $class_subs->semester_year_id)->first())
-                                        <b>
-                                            XEM ĐIỂM
-                                            <?php
-                                            $year = str_split($semester_years->semesteryear);
-                                            echo $semester_arr = "HỌC KỲ ".$year[0];
-                                            echo $year_arr = " - NĂM HỌC ".$semester_years->semester_year;
-                                            ?>
-                                        </b>
-                                    @endif
+                                @forelse($semester_year_class_subs as $semester_year)
+                                    XEM ĐIỂM
+                                    <b>
+                                        <?php
+                                        $year = str_split($semester_year->semesteryear);
+                                        echo $semester_arr = "HỌC KỲ ".$year[0];
+                                        echo $year_arr = " - NĂM HỌC ".$semester_year->semester_year;
+                                        ?>
+                                    </b>
                                 @empty
                                     <b>XEM ĐIỂM </b>
                                 @endforelse
                             </h3>
-                        </div><!-- /.card-header -->
+                        </div>
+                        <!-- /.card-header -->
                         <div class="card-body p-1">
                             <div class="table-responsive-sm">
                                 <table class="table table-striped">
@@ -244,38 +262,42 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php $total_credit_semester = 0; ?>
-                                    @foreach($detail_scores as $key => $score_student)
-                                        @php($class_sub = DB::table('class_subjects')->where('id', $score_student->class_subject_id)->get())
-                                        @foreach($class_sub as $value_sub)
-                                            @php($subjects = DB::table('subjects')->where('id', $value_sub->subject_id)->get())
-                                            @foreach($subjects as $value_subject)
-                                                <tr>
-                                                    <td data-label="STT"><b>{{ ++$key }}</b></td>
-                                                    <td data-label="Nhóm lớp">
-                                                        {{ $value_sub->class_subject_code }}
-                                                    </td>
-                                                    <td data-label="Mã học phần">
-                                                        {{ $value_subject->subject_code }}
-                                                    </td>
-                                                    <td data-label="Tên học phần">
-                                                        {{ $value_subject->subject_name }}
-                                                    </td>
-                                                    <td data-label="Tín chỉ">
-                                                        {{ $value_subject->subject_number_credit }}
-                                                        <?php $total_credit_semester = $total_credit_semester + $value_subject->subject_number_credit; ?>
-                                                    </td>
-                                                    <td data-label="Điểm số">
-                                                        @if ($score_student->score_ladder_four != null)
-                                                            <b>{{ round($score_student->score_ladder_four, 2) }}</b>
-                                                        @endif
-                                                    </td>
-                                                    <td data-label="Điểm chữ">
-                                                        @if ($score_student->score_char != null)
-                                                            <b>{{ $score_student->score_char }}</b>
-                                                        @endif
-                                                    </td>
-                                                </tr>
+
+                                    <?php $total_credit_semester = 0; $i=1; ?>
+                                    @php($scores = DB::table('detail_scores')->where('student_id','=',$infor_students->id)->get())
+                                    @foreach($scores as $score_sub)
+                                        @foreach($semester_year_class_subs as $value_sub)
+                                            @php($class_sub = DB::table('class_subjects')->where([['id','=',$score_sub->class_subject_id], ['semester_year_id','=',$value_sub->id]])->get())
+                                            @foreach($class_sub as $value_sub)
+                                                @php($subjects = DB::table('subjects')->where('id', $value_sub->subject_id)->get())
+                                                @foreach($subjects as $value_subject)
+                                                    <tr>
+                                                        <td data-label="STT"><b><?php echo $i++; ?></b></td>
+                                                        <td data-label="Nhóm lớp">
+                                                            {{ $value_sub->class_subject_code }}
+                                                        </td>
+                                                        <td data-label="Mã học phần">
+                                                            {{ $value_subject->subject_code }}
+                                                        </td>
+                                                        <td data-label="Tên học phần">
+                                                            {{ $value_subject->subject_name }}
+                                                        </td>
+                                                        <td data-label="Tín chỉ">
+                                                            {{ $value_subject->subject_number_credit }}
+                                                            <?php $total_credit_semester = $total_credit_semester + $value_subject->subject_number_credit; ?>
+                                                        </td>
+                                                        <td data-label="Điểm số">
+                                                            @if ($score_sub->score_ladder_four != null)
+                                                                <b>{{ round($score_sub->score_ladder_four, 2) }}</b>
+                                                            @endif
+                                                        </td>
+                                                        <td data-label="Điểm chữ">
+                                                            @if ($score_sub->score_char != null)
+                                                                <b>{{ $score_sub->score_char }}</b>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         @endforeach
                                     @endforeach
@@ -285,18 +307,20 @@
                                         </td>
                                         <td colspan="3">
                                             <?php $score_avg = 0; ?>
-                                            @foreach($detail_scores as $score_value)
-                                                @php($classsubjects = DB::table('class_subjects')->where('id', $score_value->class_subject_id)->get())
-                                                @foreach($classsubjects as $classsubject)
-                                                    @php($subject_scores = DB::table('subjects')->where('id', $classsubject->subject_id)->get())
-                                                    @foreach($subject_scores as $data_subject)
-                                                        <?php
+                                            @foreach($semester_year_class_subs as $key => $value_subs)
+                                                @foreach($scores as $score_sub)
+                                                    @php($class_sub = DB::table('class_subjects')->where([['id','=',$score_sub->class_subject_id], ['semester_year_id','=',$value_subs->id]])->get())
+                                                    @foreach($class_sub as $classsubject)
+                                                        @php($subject_scores = DB::table('subjects')->where('id', $classsubject->subject_id)->get())
+                                                        @foreach($subject_scores as $data_subject)
+                                                            <?php
                                                             $credit = $data_subject->subject_number_credit;
-                                                            $score = $score_value->score_number;
+                                                            $score = $score_sub->score_number;
                                                             $credit_score = ($credit * $score)/$total_credit_semester;
                                                             $score_avg = $score_avg + $credit_score;
                                                             $score_avg_percent = ($score_avg * 40)/100;
-                                                        ?>
+                                                            ?>
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
@@ -306,19 +330,17 @@
                                             @endif
                                         </td>
                                     </tr>
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer p-2 text-right">
-                            {{--@if(!empty($score_avg_percent))
-                            @else--}}
                             <a class="btn btn-warning btn-sm"
-                            href="{{ url('run-script-python/'.$infor_students->id) }}" role="button">
+                               href="{{ url('run-script-python/'.$infor_students->id) }}" role="button">
                                 <i class="fa fa-book"></i> GỢI Ý HỌC PHẦN
                             </a>
-                            {{--@endif--}}
                         </div>
                     </div>
 
@@ -326,6 +348,8 @@
                     <!-- Xem các môn gợi ý điểm -->
                     @yield('view-suggestion-subject')
                     <!-- /Xem các môn gợi ý điểm -->
+
+
                 </div>
                 <!-- /.col -->
             </div>

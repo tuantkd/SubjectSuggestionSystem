@@ -601,6 +601,7 @@ class ComposerStaticInitf4924d910abf62961e5ed2f9c8ebab6f
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\ExportExcel' => __DIR__ . '/../..' . '/app/Console/Commands/ExportExcel.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
@@ -628,6 +629,7 @@ class ComposerStaticInitf4924d910abf62961e5ed2f9c8ebab6f
         'App\\Models\\PrerequisiteParallel' => __DIR__ . '/../..' . '/app/Models/PrerequisiteParallel.php',
         'App\\Models\\ProgramStudy' => __DIR__ . '/../..' . '/app/Models/ProgramStudy.php',
         'App\\Models\\ProgramTrain' => __DIR__ . '/../..' . '/app/Models/ProgramTrain.php',
+        'App\\Models\\PropertyStudent' => __DIR__ . '/../..' . '/app/Models/PropertyStudent.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\SemesterYear' => __DIR__ . '/../..' . '/app/Models/SemesterYear.php',
         'App\\Models\\Student' => __DIR__ . '/../..' . '/app/Models/Student.php',

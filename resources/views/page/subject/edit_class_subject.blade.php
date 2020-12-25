@@ -99,9 +99,9 @@
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <label for="">Năm học - Học kỳ </label>
-                                        <select class="form-control form-control-xs selectpicker" name="inputSemesterYearId" data-size="5"
+                                        <select class="form-control form-control-xs selectpicker" name="inputSemesterYearId" data-size="10"
                                         data-live-search="true" data-width="100%" required>
-                                            @php($semester_years = DB::table('semester_years')->where('id', $edit_class_subject->semester_year_id)->get())
+                                            @php($semester_years = DB::table('semester_years')->where('id', $edit_class_subject->semester_year_id)->latest()->get())
                                             @foreach($semester_years as $get_semester_year)
                                                 <option value="{{ $get_semester_year->id }}">
                                                     <?php
@@ -115,7 +115,7 @@
                                             @endforeach
 
                                             <option value="">- - Chọn - -</option>
-                                            @php($get_semester_years = DB::table('semester_years')->get())
+                                            @php($get_semester_years = DB::table('semester_years')->latest()->get())
                                             @foreach($get_semester_years as $get_semester_year)
                                                 <option value="{{ $get_semester_year->id }}">
                                                     <?php

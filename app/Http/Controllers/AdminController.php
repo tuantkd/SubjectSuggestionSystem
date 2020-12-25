@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PropertyStudentExport;
+use App\Models\PropertyStudent;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -59,7 +62,9 @@ class AdminController extends Controller
         $password = $request->input('inputPassword');
         $remember_me = (!empty($request->input('remember_me')))? true : false;
 
-        if (Auth::attempt(['username' => $username, 'password' => $password], $remember_me)) {
+        if (Auth::attempt(['username' => $username, 'password' => $password, 'role_id' => 1], $remember_me)) {
+            return redirect('/');
+        }elseif (Auth::attempt(['username' => $username, 'password' => $password, 'role_id' => 2], $remember_me)){
             return redirect('/');
         }elseif (Auth::attempt(['username' => $username, 'password' => $password, 'role_id' => 3], $remember_me)){
             return redirect('view-infor-student/'.Auth::id());
@@ -74,7 +79,7 @@ class AdminController extends Controller
     {
         if (Auth::check() && Auth::user()->role_id == 1) {
             $show_class_subjects = ClassSubject::latest()->take(5)->get();
-        }elseif (Auth::check()){
+        }elseif (Auth::check() && Auth::user()->role_id == 2){
             $teachers = Teacher::where('id', Auth::user()->teacher_id)->first();
             $show_class_subjects = ClassSubject::where('teacher_id',$teachers->id)->latest()->take(5)->get();
         }
@@ -1018,35 +1023,50 @@ class AdminController extends Controller
     //TRANG THÔNG TIN SINH VIÊN
     protected function view_infor_student(Request $request, $id_student)
     {
-        /*$inputSearch = $request->input('inputSearchSemesterYear');
-        if($inputSearch != ""){
+        $search = $request->input('inputSearchSemesterYear');
 
-            if (Auth::check() && Auth::user()->role_id == 1) {
+        if ($search != "") {
+
+            if ((Auth::user()->role_id == 1) || (Auth::user()->role_id == 2)) {
                 $infor_students = Student::find($id_student);
+                $semester_year_class_subs = DB::table('semester_years')->where('id','=',$search)->latest()->get();
             }else{
-                $user_student = User::where('id', Auth::id())->first();
-                $infor_students = Student::where('id', $user_student->student_id)->first();
+                $user = User::where('id', Auth::id())->first();
+                $infor_students = Student::where('id',$user->student_id)->first();
+                $semester_year_class_subs = DB::table('semester_years')->where('id','=',$search)->latest()->get();
             }
 
-            $class_subjects = DB::table('class_subjects')->where('semester_year_id', $inputSearch)->get();
-            foreach ($class_subjects as $class_subject){
-                $detail_scores = DetailScore::where([['student_id','=',$id_student], ['class_subject_id','=',$class_subject->id]])->get();
-            }
+        }else{
 
-        }else{*/
-
-            if (Auth::check() && Auth::user()->role_id == 1) {
+            if ((Auth::user()->role_id == 1) || (Auth::user()->role_id == 2)) {
                 $infor_students = Student::find($id_student);
+                $score = DB::table('detail_scores')->where('student_id', $id_student)->latest()->get();
+                foreach ($score as $score_value){
+                    $class_subjects = DB::table('class_subjects')->where('id', $score_value->class_subject_id)->latest()->get();
+                    foreach ($class_subjects as $class_subject_value){
+                        $semester_year_class_subs = DB::table('semester_years')->where('id',$class_subject_value->semester_year_id)->latest()->get();
+                    }
+                }
             }else{
-                $user_student = User::where('id', Auth::id())->first();
-                $infor_students = Student::where('id',$user_student->student_id)->first();
+                $user = User::where('id', Auth::id())->first();
+                $infor_students = Student::where('id',$user->student_id)->first();
+
+                $score = DB::table('detail_scores')->where('student_id', $id_student)->latest()->get();
+                foreach ($score as $score_value){
+                    $class_subjects = DB::table('class_subjects')->where('id', $score_value->class_subject_id)->latest()->get();
+                    foreach ($class_subjects as $class_subject_value){
+                        $semester_year_class_subs = DB::table('semester_years')->where('id',$class_subject_value->semester_year_id)->latest()->get();
+                    }
+                }
             }
 
-            $detail_scores = DetailScore::where('student_id', $id_student)->get();
-        /*}*/
+        }
 
         return view('page.student.view_infor_student',
-            ['infor_students'=>$infor_students, 'detail_scores'=>$detail_scores]);
+        [
+            'infor_students'=>$infor_students,
+            'semester_year_class_subs'=>$semester_year_class_subs
+        ]);
     }
     /*=================================================================*/
 
@@ -1620,7 +1640,47 @@ class AdminController extends Controller
     {
         $infor_students = Student::find($id_student);
 
-        /*$process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/public/run_python/run_file_export.py']);
+        $score = DB::table('detail_scores')->where('student_id', $id_student)->latest()->get();
+        foreach ($score as $score_value){
+            $class_subjects = DB::table('class_subjects')->where('id', $score_value->class_subject_id)->latest()->get();
+            foreach ($class_subjects as $class_subject_value){
+                $semester_year_class_subs = DB::table('semester_years')->where('id',$class_subject_value->semester_year_id)->latest()->get();
+            }
+        }
+
+
+        //Làm rỗng xóa DB trước
+        DB::table('property_students')->truncate();
+
+        //Thêm vào bảng thuộc tính sinh viên chạy máy học
+        $detail_scores = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->first();
+        $class_subjects = DB::table('class_subjects')->where('id', '<>', $detail_scores->class_subject_id)->get();
+        foreach($class_subjects as $key => $class_subject){
+            $subjects = DB::table('subjects')->where('id','=',$class_subject->subject_id)->get();
+            foreach ($subjects as $subject){
+
+                //Lấy mã số sinh viên
+                $get_student = DB::table('students')->where('id', $infor_students->id)->first();
+
+                //Lấy học kỳ năm học
+                $semester_year = DB::table('semester_years')->where('id', $class_subject->semester_year_id)->first();
+
+                $add_property = new PropertyStudent();
+                $add_property->student_code = $get_student->student_code;
+                $add_property->subject_code = $subject->subject_code;
+                $add_property->semester_year = $semester_year->semesteryear;
+                $add_property->save();
+
+            }
+        }
+
+        Excel::store(new PropertyStudentExport(), 'test_property_student.xlsx', 'public');
+
+
+
+
+
+        $process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/storage/app/public/run_file_export.py']);
         $process->run();
 
         // executes after the command finishes
@@ -1633,7 +1693,7 @@ class AdminController extends Controller
         //echo $process->getOutput();
 
         return view('page.student.suggestion_subject.view_suggestion_subject',
-        ['infor_students'=>$infor_students, 'result'=>$result]);*/
+        ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs, 'result'=>$result]);
 
 
 
@@ -1659,8 +1719,8 @@ class AdminController extends Controller
             }
         }*/
 
-        return view('page.student.suggestion_subject.view_suggestion_subject',
-            ['infor_students'=>$infor_students]);
+        /*return view('page.student.suggestion_subject.view_suggestion_subject',
+            ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs]);*/
 
     }
     /*=================================================================*/
