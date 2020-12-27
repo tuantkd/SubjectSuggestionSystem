@@ -67,7 +67,7 @@
                                         <select class="form-control form-control-xs selectpicker" name="inputSubjectId" data-size="5"
                                         data-live-search="true" data-width="100%" required>
                                             @php($subject = DB::table('subjects')->where('id',$edit_class_subject->subject_id)->first())
-                                            <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                                            <option value="{{ $subject->id }}">{{ $subject->subject_code }} - {{ $subject->subject_name }}</option>
 
                                             <option value="">- - Chọn - -</option>
                                             @php($get_subjects = DB::table('subjects')->get())
@@ -85,8 +85,10 @@
                                         <label for="">Giảng viên</label>
                                         <select class="form-control form-control-xs selectpicker" name="inputTeacherId" data-size="5"
                                         data-live-search="true" data-width="100%" required>
-                                            @php($teacher = DB::table('teachers')->where('id',$edit_class_subject->teacher_id)->first())
-                                            <option value="{{ $teacher->id }}">{{ $teacher->fullname }}</option>
+                                            @php($teacher = DB::table('teachers')->where('id',$edit_class_subject->teacher_id)->get())
+                                            @foreach($teacher as $value_teacher)
+                                            <option value="{{ $value_teacher->id }}">{{ $value_teacher->fullname }}</option>
+                                            @endforeach
 
                                             <option value="">- - Chọn - -</option>
                                             @php($get_teachers = DB::table('teachers')->get())
@@ -109,7 +111,7 @@
                                                         //Hiển thị học kỳ
                                                         echo $semester = "Học kỳ ".$year[0];
                                                         //Hiển thị năm học
-                                                        echo $year_arr = " - Năm học ".$get_semester_year->semesteryear;
+                                                        echo $year_arr = " - Năm học ".$get_semester_year->semester_year;
                                                     ?>
                                                 </option>
                                             @endforeach

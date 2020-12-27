@@ -50,6 +50,9 @@
     <!-- Sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ url('public/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ url('public/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -507,11 +510,18 @@
     $.widget.bridge('uibutton', $.ui.button)
 </script>
 
+
+<!-- ChartJS -->
+<script src="{{ url('public/plugins/chart.js/Chart.min.js') }}"></script>
+
 <!-- Bootstrap 4 -->
 <script src="{{ url('public/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 <!-- Sparkline -->
 <script src="{{ url('public/plugins/sparklines/sparkline.js') }}"></script>
+
+<!-- jQuery Knob Chart -->
+<script src="{{ url('public/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
 
 <!-- Select2 -->
 <script src="{{ url('public/plugins/select2/js/select2.full.min.js') }}"></script>
