@@ -1051,7 +1051,7 @@ class AdminController extends Controller
                 $user = User::where('id', Auth::id())->first();
                 $infor_students = Student::where('id',$user->student_id)->first();
 
-                $score = DB::table('detail_scores')->where('student_id', $id_student)->latest()->get();
+                $score = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->get();
                 foreach ($score as $score_value){
                     $class_subjects = DB::table('class_subjects')->where('id', $score_value->class_subject_id)->latest()->get();
                     foreach ($class_subjects as $class_subject_value){
@@ -1492,6 +1492,7 @@ class AdminController extends Controller
     protected function post_add_detail_score(Request $request, $id_class_subject)
     {
         $inputStudentId = $request->input('inputStudentId');
+
         $count_detail_score = DB::table('detail_scores')
             ->where([
                 ['class_subject_id','=',$id_class_subject],
@@ -1561,27 +1562,20 @@ class AdminController extends Controller
     protected function add_student_class_subject(Request $request)
     {
         $id_class_subject = $request->class_subject_id;
+        $join_selected_values = $request->join_selected_values;
 
-        //$class_subject_id = ClassSubject::find($id_class_subject);
-        //$subject_student = DB::table('subjects')->where('id', $class_subject_id->subject_id)->first();
-
-        $inputStudentId = $request->input('inputStudentId');
-
-        $count_detail_score = DB::table('detail_scores')
-
-            ->where([
-                ['class_subject_id','=',$id_class_subject],
-                ['student_id','=',$inputStudentId]
-            ])->count();
+        $ids = explode(",", $join_selected_values);
+        foreach ($ids as $id_student){
+            $count_detail_score = DB::table('detail_scores')
+                ->where([
+                    ['class_subject_id','=',$id_class_subject],
+                    ['student_id','=',$id_student]
+                ])->count();
+        }
 
         if ($count_detail_score >= 1) {
-            $message_error = $request->session()->get('message_error');
-            return redirect()->back()->with('message_error','');
+            return response()->json(['error'=>'Lỗi! Sinh viên đã tồn tại']);
         }else{
-
-            $join_selected_values = $request->join_selected_values;
-
-            $ids = explode(",", $join_selected_values);
 
             foreach($ids as $id) {
                 $add_detail_score = new DetailScore();
@@ -1638,8 +1632,10 @@ class AdminController extends Controller
     //RUN PYTHON
     protected function run_script_python(Request $request, $id_student)
     {
+        //Lấy ID sinh viên
         $infor_students = Student::find($id_student);
 
+        //Lấy học kỳ năm học
         $score = DB::table('detail_scores')->where('student_id', $id_student)->latest()->get();
         foreach ($score as $score_value){
             $class_subjects = DB::table('class_subjects')->where('id', $score_value->class_subject_id)->latest()->get();
@@ -1648,38 +1644,37 @@ class AdminController extends Controller
             }
         }
 
-
         //Làm rỗng xóa DB trước
         DB::table('property_students')->truncate();
 
         //Thêm vào bảng thuộc tính sinh viên chạy máy học
-        $detail_scores = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->first();
-        $class_subjects = DB::table('class_subjects')->where('id', '<>', $detail_scores->class_subject_id)->get();
-        foreach($class_subjects as $key => $class_subject){
-            $subjects = DB::table('subjects')->where('id','=',$class_subject->subject_id)->get();
-            foreach ($subjects as $subject){
+        $score_student = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->first();
+        $class_students = DB::table('class_subjects')->where('id','<>',$score_student->class_subject_id)->latest()->get();
+        foreach($class_students as $value_class){
 
-                //Lấy mã số sinh viên
-                $get_student = DB::table('students')->where('id', $infor_students->id)->first();
+            //Lấy môn học
+            $value_subject = DB::table('subjects')->where('id','=',$value_class->subject_id)->first();
 
-                //Lấy học kỳ năm học
-                $semester_year = DB::table('semester_years')->where('id', $class_subject->semester_year_id)->first();
+            //Lấy mã số sinh viên
+            $get_student = DB::table('students')->where('id', $infor_students->id)->first();
 
-                $add_property = new PropertyStudent();
-                $add_property->student_code = $get_student->student_code;
-                $add_property->subject_code = $subject->subject_code;
-                $add_property->semester_year = $semester_year->semesteryear;
-                $add_property->save();
+            //Lấy học kỳ năm học
+            $semester_year = DB::table('semester_years')->where('id', $value_class->semester_year_id)->first();
 
-            }
+            $add_property = new PropertyStudent();
+            $add_property->student_code = $get_student->student_code;
+            $add_property->subject_code = $value_subject->subject_code;
+            $add_property->semester_year = $semester_year->semesteryear;
+            $add_property->save();
         }
 
+
+
+        //Lưu Excel vào folder
         Excel::store(new PropertyStudentExport(), 'test_property_student.xlsx', 'public');
 
 
-
-
-
+        //Thực hiện chạy Python
         $process = new Process(['python', 'C:/xampp/htdocs/subjectsuggestionsystem/storage/app/public/run_file_export.py']);
         $process->run();
 
@@ -1694,33 +1689,6 @@ class AdminController extends Controller
 
         return view('page.student.suggestion_subject.view_suggestion_subject',
         ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs, 'result'=>$result]);
-
-
-
-
-        /*$detail_scores = DetailScore::where('student_id','<>',$id_student)->get();
-        foreach ($detail_scores as $detail_score) {
-            dd($detail_score);
-        }*/
-
-        //$total_subject_study = 0;
-
-        /*$class_majors = DB::table('class_majors')->where('id', $infor_students->class_major_id)->get();
-        foreach ($class_majors as $class_major) {
-            $courses = DB::table('courses')->where('id', $class_major->course_id)->get();
-            foreach ($courses as $course){
-                $trains = DB::table('program_trains')->where('course_id', $course->id)->get();
-                foreach ($trains as $train){
-                    $subject_unstudy = DB::table('program_studies')
-                        ->leftJoin('class_subjects', 'program_studies.subject_id', '=', 'class_subjects.subject_id')
-                        ->where('program_train_id', $train->id)
-                        ->get();
-                }
-            }
-        }*/
-
-        /*return view('page.student.suggestion_subject.view_suggestion_subject',
-            ['infor_students'=>$infor_students, 'semester_year_class_subs'=>$semester_year_class_subs]);*/
 
     }
     /*=================================================================*/

@@ -2,10 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07e87095-aaee-4a77-8401-dc915e014bb8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-B86OJ7dNiHQsh3hkN0cC5k9GM7aUAe0W.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/framework/laravel-excel/laravel-excel-H67zegm6ryn0tUVCl4J5D04eJn9eYPRn.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layout.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/suggestion_subject/view_suggestion_subject.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/student/view_infor_student.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/add_class_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/edit_class_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subject_suggestion_system.sql" beforeDir="false" afterPath="$PROJECT_DIR$/subject_suggestion_system.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +285,14 @@
       <workItem from="1608725822351" duration="7967000" />
       <workItem from="1608779809212" duration="3938000" />
       <workItem from="1608793285043" duration="2571000" />
-      <workItem from="1608795894052" duration="5611000" />
+      <workItem from="1608795894052" duration="7280000" />
+      <workItem from="1608810586204" duration="7636000" />
+      <workItem from="1608857697747" duration="9593000" />
+      <workItem from="1608870293784" duration="692000" />
+      <workItem from="1608905969552" duration="6037000" />
+      <workItem from="1608952305451" duration="11534000" />
+      <workItem from="1608986199652" duration="692000" />
+      <workItem from="1609045875679" duration="1198000" />
     </task>
     <servers />
   </component>
@@ -298,10 +314,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="439" y="189" key="#Notifications/0.0.1366.728@0.0.1366.728" timestamp="1608168276159" />
-    <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605689599405">
+    <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1608955476676">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1605689599405" />
+    <state x="460" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1608955476676" />
     <state x="363" y="101" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1606727169598">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -310,10 +326,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1608444542379" />
-    <state x="199" y="9" key="SettingsEditor" timestamp="1608795862925">
+    <state x="199" y="9" key="SettingsEditor" timestamp="1608870267924">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="199" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1608795862925" />
+    <state x="199" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1608870267924" />
     <state x="339" y="162" width="672" height="677" key="run.anything.popup" timestamp="1606456754029">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -322,16 +338,5 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1607584604523" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/resources/views/page/subject/view_detail_class_subject.blade.php</url>
-          <line>39</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

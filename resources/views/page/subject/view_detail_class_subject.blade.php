@@ -288,15 +288,24 @@
                             type:'GET',
                             url: $(this).data('url'),
                             data:{join_selected_values:join_selected_values, class_subject_id:class_subject_id},
-                            success:function(data){
-                                Swal.fire({
-                                    position: 'center'
-                                    , icon: 'success'
-                                    , title: 'Đã Thêm'
-                                    , showConfirmButton: false
-                                    , timer: 1500
-                                });
+                            success: function(data){
+                                if (data['success']) {
+                                    Swal.fire({
+                                        position: 'center'
+                                        , icon: 'success'
+                                        , title: 'Đã Thêm sinh viên'
+                                        , showConfirmButton: false
+                                        , timer: 2000
+                                    });
+                                } else if (data['error']) {
+                                    alert(data['error']);
+                                } else {
+                                    alert('Rất tiếc, đã xảy ra lỗi!');
+                                }
                                 location.reload();
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
                             }
                         });
                     }

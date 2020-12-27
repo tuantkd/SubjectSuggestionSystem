@@ -267,9 +267,6 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     //TRANG THÔNG TIN SINH VIÊN
     Route::get('view-infor-student/{id_student}', [AdminController::class, 'view_infor_student']);
-
-    //XEM ĐIỂM SINH VIÊN
-    //Route::get('view-score-subject/{id_student}', [AdminController::class, 'view_score_subject']);
     /*============================================================================*/
 
 
@@ -356,7 +353,7 @@ Route::middleware([CheckLogin::class])->group(function () {
     Route::post('post-add-class-subject', [AdminController::class, 'post_add_class_subject']);
 
     //TRANG CHỈNH SỬA LỚP HỌC PHẦN
-    Route::get('edit-class-subject/{id_class_subject}', [AdminController::class, 'edview-infor-studentit_class_subject']);
+    Route::get('edit-class-subject/{id_class_subject}', [AdminController::class, 'edit_class_subject']);
 
     //CẬP NHẬT LỚP HỌC PHẦN
     Route::put('update-class-subject/{id_class_subject}', [AdminController::class, 'update_class_subject']);

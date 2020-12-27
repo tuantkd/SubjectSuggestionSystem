@@ -193,16 +193,19 @@
                                     <div class="col-12 col-sm-6 text-left">
                                         <select class="form-control" name="inputSearchSemesterYear">
 
-                                            @foreach($semester_year_class_subs as $semes_years)
-                                                @if ($loop->first)
-                                                    <?php
-                                                    $se_year = str_split($semes_years->semesteryear);
-                                                    $semester_arr = "HK ".$se_year[0];
-                                                    $year_arr = " - Năm học ".$semes_years->semester_year;
-                                                    echo '<option value="'.$semes_years->id.'">'.$semester_arr.$year_arr.'</option>';
-                                                    ?>
-                                                @endif
-                                            @endforeach
+                                            @if (isset($semester_year_class_subs))
+                                                @foreach($semester_year_class_subs as $semes_years)
+                                                    @if ($loop->first)
+                                                        <?php
+                                                        $se_year = str_split($semes_years->semesteryear);
+                                                        $semester_arr = "HK ".$se_year[0];
+                                                        $year_arr = " - Năm học ".$semes_years->semester_year;
+                                                        echo '<option value="'.$semes_years->id.'">'.$semester_arr.$year_arr.'</option>';
+                                                        ?>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+
 
                                             <option value="">- - Chọn khác - -</option>
 
@@ -232,18 +235,20 @@
                         <div class="card-header p-2 text-center">
                             <h3 class="card-title">
                                 <i class="ion ion-clipboard mr-1"></i>
-                                @forelse($semester_year_class_subs as $semester_year)
-                                    XEM ĐIỂM
-                                    <b>
-                                        <?php
-                                        $year = str_split($semester_year->semesteryear);
-                                        echo $semester_arr = "HỌC KỲ ".$year[0];
-                                        echo $year_arr = " - NĂM HỌC ".$semester_year->semester_year;
-                                        ?>
-                                    </b>
-                                @empty
-                                    <b>XEM ĐIỂM </b>
-                                @endforelse
+                                @if (isset($semester_year_class_subs))
+                                    @forelse($semester_year_class_subs as $semester_year)
+                                        XEM ĐIỂM
+                                        <b>
+                                            <?php
+                                            $year = str_split($semester_year->semesteryear);
+                                            echo $semester_arr = "HỌC KỲ ".$year[0];
+                                            echo $year_arr = " - NĂM HỌC ".$semester_year->semester_year;
+                                            ?>
+                                        </b>
+                                    @empty
+                                        <b>XEM ĐIỂM </b>
+                                    @endforelse
+                                @endif
                             </h3>
                         </div>
                         <!-- /.card-header -->
@@ -263,6 +268,7 @@
                                     </thead>
                                     <tbody>
 
+                                    @if (isset($semester_year_class_subs))
                                     <?php $total_credit_semester = 0; $i=1; ?>
                                     @php($scores = DB::table('detail_scores')->where('student_id','=',$infor_students->id)->get())
                                     @foreach($scores as $score_sub)
@@ -301,29 +307,33 @@
                                             @endforeach
                                         @endforeach
                                     @endforeach
+                                    @endif
+
                                     <tr>
                                         <td colspan="4">
                                             <b>ĐIỂM TRUNG BÌNH HỌC KỲ:</b>
                                         </td>
                                         <td colspan="3">
                                             <?php $score_avg = 0; ?>
-                                            @foreach($semester_year_class_subs as $key => $value_subs)
-                                                @foreach($scores as $score_sub)
-                                                    @php($class_sub = DB::table('class_subjects')->where([['id','=',$score_sub->class_subject_id], ['semester_year_id','=',$value_subs->id]])->get())
-                                                    @foreach($class_sub as $classsubject)
-                                                        @php($subject_scores = DB::table('subjects')->where('id', $classsubject->subject_id)->get())
-                                                        @foreach($subject_scores as $data_subject)
-                                                            <?php
-                                                            $credit = $data_subject->subject_number_credit;
-                                                            $score = $score_sub->score_number;
-                                                            $credit_score = ($credit * $score)/$total_credit_semester;
-                                                            $score_avg = $score_avg + $credit_score;
-                                                            $score_avg_percent = ($score_avg * 40)/100;
-                                                            ?>
+                                            @if (isset($semester_year_class_subs))
+                                                @foreach($semester_year_class_subs as $key => $value_subs)
+                                                    @foreach($scores as $score_sub)
+                                                        @php($class_sub = DB::table('class_subjects')->where([['id','=',$score_sub->class_subject_id], ['semester_year_id','=',$value_subs->id]])->get())
+                                                        @foreach($class_sub as $classsubject)
+                                                            @php($subject_scores = DB::table('subjects')->where('id', $classsubject->subject_id)->get())
+                                                            @foreach($subject_scores as $data_subject)
+                                                                <?php
+                                                                $credit = $data_subject->subject_number_credit;
+                                                                $score = $score_sub->score_number;
+                                                                $credit_score = ($credit * $score)/$total_credit_semester;
+                                                                $score_avg = $score_avg + $credit_score;
+                                                                $score_avg_percent = ($score_avg * 40)/100;
+                                                                ?>
+                                                            @endforeach
                                                         @endforeach
                                                     @endforeach
                                                 @endforeach
-                                            @endforeach
+                                            @endif
 
                                             @if(!empty($score_avg_percent))
                                                 <b style="font-size:14px;"><?php echo round($score_avg_percent,2); ?></b>

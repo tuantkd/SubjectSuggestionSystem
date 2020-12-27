@@ -76,42 +76,35 @@
                     </thead>
                     <tbody>
 
+                    <?php $i=1; ?>
+                    @php($score_student = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->first())
+                    @php($class_students = DB::table('class_subjects')->where('id','<>',$score_student->class_subject_id)->latest()->get())
+                    @foreach($class_students as $key => $value_class)
 
-                    --}}{{--@php($detail_scores = DB::table('detail_scores')->where('student_id', '=', $infor_students->id)->get())
-                    @foreach($detail_scores as $detail_score)
-                        @if ($loop->first)
-                            @php($class_subjects = DB::table('class_subjects')->where('id', '<>', $detail_score->class_subject_id)->get())
-                            @foreach($class_subjects as $key => $class_subject)
-                                @php($subjects = DB::table('subjects')->where('id','=',$class_subject->subject_id)->get())
-                                @foreach ($subjects as $subject)
+                        @php($value_subject = DB::table('subjects')->where('id','=',$value_class->subject_id)->first())
+                        <tr>
+                            <td data-label="STT"><b>{{ ++$key }}</b></td>
+                            <td data-label="Mã SV">
+                                @php($get_student = DB::table('students')->where('id', $infor_students->id)->first())
+                                <b>{{ $get_student->student_code }}</b>
+                            </td>
+                            <td data-label="Mã HP">
+                                <b>{{ $value_subject->subject_code }}</b>
+                            </td>
+                            <td data-label="Tên HP">
+                                <b>{{ $value_subject->subject_name }}</b>
+                            </td>
+                            <td data-label="Học kỳ - Năm học">
+                                @php($se_year = DB::table('semester_years')->where('id', $value_class->semester_year_id)->first())
+                                <?php
+                                $se_year_student = str_split($se_year->semesteryear);
+                                echo $semester = "HK ".$se_year_student[0];
+                                echo $year = " - NH ".$se_year->semester_year;
+                                ?>
+                            </td>
+                        </tr>
 
-                                        <tr>
-                                            <td data-label="STT"><b>{{ ++$key }}</b></td>
-                                            <td data-label="Mã SV">
-                                                @php($get_student = DB::table('students')->where('id', $infor_students->id)->first())
-                                                <b>{{ $get_student->student_code }}</b>
-                                            </td>
-                                            <td data-label="Mã HP">
-                                                <b>{{ $subject->subject_code }}</b>
-                                            </td>
-                                            <td data-label="Tên HP">
-                                                <b>{{ $subject->subject_name }}</b>
-                                            </td>
-                                            <td data-label="Học kỳ - Năm học">
-                                                @php($semester_year = DB::table('semester_years')->where('id', $class_subject->semester_year_id)->first())
-                                                <?php
-                                                $semesteryear = str_split($semester_year->semesteryear);
-                                                echo $semester = "HK ".$semesteryear[0];
-                                                echo $year = " - NH ".$semester_year->semester_year;
-                                                ?>
-                                            </td>
-                                        </tr>
-
-                                @endforeach
-                            @endforeach
-                        @endif
-                    @endforeach--}}{{--
-
+                    @endforeach
 
 
                     --}}{{--@php($detail_scores = DB::table('detail_scores')->where('student_id','=', $infor_students->id)->get())
@@ -120,7 +113,6 @@
                         @foreach ($class_subs as $class_sub)
                             @php($subject_learned = DB::table('subjects')->where('id',$class_sub->subject_id)->get())
                             @foreach($subject_learned->unique('subject_code') as $key => $value)
-
                             @endforeach
                         @endforeach
                     @endforeach--}}{{--
@@ -133,9 +125,9 @@
 
             {{--{{ $result }}--}}
 
-            <a href="{{ url('http://localhost/subjectsuggestionsystem/storage/app/public/table.html') }}" class="btn btn-primary btn-lg">
+            <button id="btn_result" class="btn btn-outline-primary btn-lg" type="button">
                 <b>XEM KẾT QUẢ GỢI Ý</b>
-            </a>
+            </button>
 
         </div>
     </div>
@@ -152,6 +144,13 @@
             document.getElementById("loader").style.display = "none";
             document.getElementById("myDiv").style.display = "block";
         }
+
+
+        document.getElementById('btn_result').addEventListener('click', function() {
+            location.reload();
+            location.href = "{{ url('http://localhost/subjectsuggestionsystem/storage/app/public/table_score_predict.html') }}";
+        }, false);
+
     </script>
 
 @endsection

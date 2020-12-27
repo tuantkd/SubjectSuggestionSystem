@@ -59,7 +59,9 @@
                                     </div>
                                     <div class="col-12 col-sm-8">
                                         <label for="">Tên lớp học phần</label>
-                                        <input type="text" name="inputClassSubjectName" class="form-control" placeholder="Nhập tên lớp học phần" required>
+                                        <input type="text" name="inputClassSubjectName" class="form-control"
+                                               placeholder="Nhập tên lớp học phần" required>
+                                        <small class="text-danger">{{ $errors->first('inputClassSubjectName') }}</small>
                                     </div>
                                 </div>
                                 <div class="form-group row">
