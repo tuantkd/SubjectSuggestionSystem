@@ -43,14 +43,18 @@
                             <form action="{{ url('post-add-class-major') }}" method="POST" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="form-group row">
-                                    <div class="col-12 col-sm-6">
+                                    <div class="col-12 col-sm-3">
                                         <label for="">Mã lớp học</label>
                                         <input type="text" name="inputClassMajorCode" class="form-control" placeholder="Nhập mã lớp học" required>
                                         <small>{{ $errors->first('inputClassMajorCode') }}</small>
                                     </div>
-                                    <div class="col-12 col-sm-6">
+                                    <div class="col-12 col-sm-7">
                                         <label for="">Tên lớp học</label>
                                         <input type="text" name="inputClassMajorName" class="form-control" placeholder="Nhập tên lớp học" required>
+                                    </div>
+                                    <div class="col-12 col-sm-2">
+                                        <label for="">Sỉ số</label>
+                                        <input type="number" name="inputTotalNumber" required class="form-control" placeholder="Sỉ số lớp">
                                     </div>
                                 </div>
                                 <div class="form-group row">

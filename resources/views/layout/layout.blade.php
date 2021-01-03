@@ -184,7 +184,7 @@
         <!-- Brand Logo -->
         <a href="#" class="brand-link">
             <img src="{{ asset('public/images/logo_ctu.png') }}" class="brand-image img-circle elevation-2" style="opacity: .8">
-            <span class="brand-text font-weight-light"><b>Suggestion System</b></span>
+            <span class="brand-text font-weight-light font-weight-bold"><b>Hệ Thống Gợi Ý</b></span>
         </a>
 
         <!-- Sidebar -->

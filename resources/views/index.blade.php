@@ -136,78 +136,12 @@
     <section class="content">
         <div class="container-fluid">
 
-            <!-- row -->
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>
-                                @php($count_subject = DB::table('subjects')->count())
-                                {{ $count_subject }}
-                            </h3>
-                            <p>Học phần</p>
-                        </div>
-                        <div class="icon">
-                            <i class=" fa fa-book"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>
-                                @php($count_class_major = DB::table('class_majors')->count())
-                                {{ $count_class_major }}
-                            </h3>
-                            <p>Lớp chuyên ngành</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-graduation-cap"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3>
-                                @php($count_student = DB::table('students')->count())
-                                {{ $count_student }}
-                            </h3>
-                            <p>Sinh viên</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>
-                                @php($count_class_subject = DB::table('class_subjects')->count())
-                                {{ $count_class_subject }}
-                            </h3>
-                            <p>Lớp học phần</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-th-list"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- ./col -->
-            </div>
-            <!-- /.row -->
+
 
             <!-- row -->
             <div class="row">
-                <div class="col-lg-12">
+                <!-- score -->
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
@@ -274,6 +208,80 @@
                     </div>
                     <!-- /.card -->
                 </div>
+                <!-- /score -->
+
+                <!-- classification learning -->
+                <div class="col-lg-6">
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-lg-6 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>
+                                        @php($count_subject = DB::table('subjects')->count())
+                                        {{ $count_subject }}
+                                    </h3>
+                                    <p>Học phần</p>
+                                </div>
+                                <div class="icon">
+                                    <i class=" fa fa-book"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-6 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>
+                                        @php($count_class_major = DB::table('class_majors')->count())
+                                        {{ $count_class_major }}
+                                    </h3>
+                                    <p>Lớp chuyên ngành</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-6 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3>
+                                        @php($count_student = DB::table('students')->count())
+                                        {{ $count_student }}
+                                    </h3>
+                                    <p>Sinh viên</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-person-add"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-6 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3>
+                                        @php($count_class_subject = DB::table('class_subjects')->count())
+                                        {{ $count_class_subject }}
+                                    </h3>
+                                    <p>Lớp học phần</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-th-list"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /classification learning -->
             </div>
             <!-- /.row -->
 
@@ -498,5 +506,6 @@
         createPieCharts();
 
     </script>
+
 
 @endsection

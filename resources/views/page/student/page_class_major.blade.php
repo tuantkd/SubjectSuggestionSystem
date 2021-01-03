@@ -54,7 +54,8 @@
                                         <th scope="col" style="width:15%;">Mã lớp</th>
                                         <th scope="col" style="width:30%;">Tên lớp</th>
                                         <th scope="col" style="width:10%;">Khóa học</th>
-                                        <th scope="col" style="width:30%;">Chuyên ngành</th>
+                                        <th scope="col" style="width:20%;">Chuyên ngành</th>
+                                        <th scope="col" style="width:10%;">Sỉ số</th>
                                         <th scope="col" style="width:10%;" colspan="3">Chọn</th>
                                     </tr>
                                     </thead>
@@ -81,6 +82,13 @@
                                             @foreach($get_majors as $get_major)
                                                 <h6>{{ $get_major->major_name }}</h6>
                                             @endforeach
+                                        </td>
+                                        <td data-label="Sỉ số">
+                                            @if ($show_class_major->class_major_total_number != null)
+                                                <h6>{{ $show_class_major->class_major_total_number }}</h6>
+                                            @else
+                                                <b>...</b>
+                                            @endif
                                         </td>
                                         <td data-label="Chọn">
                                             <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn không ?')"

@@ -6,7 +6,7 @@
         #loader {
             position: absolute;
             left: 50%;
-            top: 70%;
+            top: 80%;
             z-index: 1;
             width: 120px;
             height: 120px;
@@ -61,7 +61,7 @@
                 <i class="ion ion-clipboard mr-1"></i> <b>GỢI Ý CÁC MÔN HỌC</b>
             </h3>
         </div><!-- /.card-header -->
-        <div class="card-body p-4 text-center">
+        <div class="card-body p-1 text-center">
 
             {{--<div class="table-responsive-sm">
                 <table class="table table-striped">
@@ -125,9 +125,13 @@
 
             {{--{{ $result }}--}}
 
-            <button id="btn_result" class="btn btn-outline-primary btn-lg" type="button">
+            {{--<a id="btn_result" class="btn btn-outline-primary btn-lg" href="{{ url('view-result-table') }}" target="_blank">
                 <b>XEM KẾT QUẢ GỢI Ý</b>
-            </button>
+            </a>--}}
+
+            <!--Nhúng file html vào trang web-->
+
+            <?php include public_path().'/table_score_predict.html'; ?>
 
         </div>
     </div>
@@ -144,13 +148,6 @@
             document.getElementById("loader").style.display = "none";
             document.getElementById("myDiv").style.display = "block";
         }
-
-
-        document.getElementById('btn_result').addEventListener('click', function() {
-            location.reload();
-            location.href = "{{ url('http://localhost/subjectsuggestionsystem/storage/app/public/table_score_predict.html') }}";
-        }, false);
-
     </script>
 
 @endsection
