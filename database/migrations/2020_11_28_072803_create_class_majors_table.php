@@ -26,6 +26,7 @@ class CreateClassMajorsTable extends Migration
 
             $table->string('class_major_code')->unique()->nullable();
             $table->string('class_major_name')->nullable();
+            $table->integer('class_major_total_number')->nullable();
 
             $table->timestamps();
         });

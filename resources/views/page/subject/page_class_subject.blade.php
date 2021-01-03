@@ -10,7 +10,9 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
+                        @if (Auth::user()->role_id == 1)
+                            <li class="breadcrumb-item"><a href="{{ url('/') }}">Bảng điều khiển</a></li>
+                        @endif
                         <li class="breadcrumb-item active">Lớp học phần</li>
                     </ol>
                 </div><!-- /.col -->
@@ -50,9 +52,11 @@
                                 <b>LỚP HỌC PHẦN</b>
                             </h3>
                             <div class="card-tools">
+                                @if (Auth::user()->role_id == 1)
                                 <a class="btn btn-primary btn-xs" href="{{ url('add-class-subject') }}" role="button">
                                     <i class="fa fa-plus"></i> Thêm mới
                                 </a>
+                                @endif
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -67,7 +71,11 @@
                                         <th scope="col" style="width: 15%;">Giảng viên</th>
                                         <th scope="col" style="width: 20%;">Học Kỳ - Năm Học</th>
                                         <th scope="col" style="width: 17%;">Ghi chú</th>
-                                        <th scope="col" style="width: 5%;" colspan="3">Chọn</th>
+                                        @if (Auth::user()->role_id == 1)
+                                            <th scope="col" style="width: 5%;" colspan="3">Chọn</th>
+                                        @else
+                                            <th scope="col" style="width: 5%;">Chọn</th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -109,18 +117,24 @@
 
                                         </td>
 
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?')"
-                                            href="{{ url('delete-class-subject/'.$show_class_subject->id) }}" role="button">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </td>
-                                        <td data-label="Chọn">
-                                            <a class="btn btn-primary btn-xs"
-                                            href="{{ url('edit-class-subject/'.$show_class_subject->id) }}" role="button">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                        </td><td data-label="Chọn">
+
+                                        @if (Auth::user()->role_id == 1)
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?')"
+                                                   href="{{ url('delete-class-subject/'.$show_class_subject->id) }}" role="button">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+
+                                            <td data-label="Chọn">
+                                                <a class="btn btn-primary btn-xs"
+                                                   href="{{ url('edit-class-subject/'.$show_class_subject->id) }}" role="button">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        @endif
+
+                                       <td data-label="Chọn">
                                             <a class="btn btn-success btn-xs"
                                             href="{{ url('view-detail-class-subject/'.$show_class_subject->id) }}" role="button">
                                                 <i class="fa fa-eye"></i>

@@ -53,14 +53,6 @@
                                     </div>
                                 @endif
 
-                                <div class="alert alert-warning p-2" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        <span class="sr-only">Close</span>
-                                    </button>
-                                    <span><b>Lưu ý:</b> Chọn Học phần, có "Vd: HP Tiên quyết CT134" có chữ màu CAM, thì bỏ chọn check "Loại Học phần" bên dưới và Ngược lại</span>
-                                </div>
-
                                 <div class="form-group">
                                     <label for="">Học phần</label>
                                     <select class="form-control selectpicker" name="inputSubjectId" data-size="10" required data-live-search="true" data-title="- - Chọn - -" data-width="100%">

@@ -13,7 +13,9 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
+                        @if (Auth::user()->role_id == 1)
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">Bảng điều khiển</a></li>
+                        @endif
                         <li class="breadcrumb-item"><a href="{{ url('page-class-subject') }}">Lớp học phần</a></li>
                         <li class="breadcrumb-item active">
                             {{ $class_subject_id->class_subject_code }} - {{ $class_subject_id->class_subject_name }}
@@ -127,10 +129,12 @@
                                 <b style="text-transform: uppercase;">{{ $class_subject_id->class_subject_code }} - {{ $class_subject_id->class_subject_name }}</b>
                             </h3>
                             <div class="card-tools">
-                                <a class="btn btn-primary btn-xs" href="#" role="button"
-                                data-toggle="modal" data-target="#modelAddToClassSubject">
-                                    <i class="fa fa-plus"></i> Thêm mới
-                                </a>
+                                @if (Auth::user()->role_id == 1)
+                                    <a class="btn btn-primary btn-xs" href="#" role="button"
+                                       data-toggle="modal" data-target="#modelAddToClassSubject">
+                                        <i class="fa fa-plus"></i> Thêm mới
+                                    </a>
+                                @endif
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -144,7 +148,11 @@
                                         <th scope="col" style="width:45%;">Họ tên</th>
                                         <th scope="col" style="width:15%;">Điểm số</th>
                                         <th scope="col" style="width:15%;">Điểm chữ</th>
+                                        @if (Auth::user()->role_id == 1)
                                         <th scope="col" style="width:5%;" colspan="2">Chọn</th>
+                                        @else
+                                        <th scope="col" style="width:5%;">Chọn</th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -172,12 +180,16 @@
                                                 <b class="text-danger">...</b>
                                             @endif
                                         </td>
+
+                                        @if (Auth::user()->role_id == 1)
                                         <td data-label="Chọn">
                                             <a class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc chắn không ?')"
                                             href="{{ url('delete-score-student/'.$student->id) }}" role="button">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
+                                        @endif
+
                                         <td data-label="Chọn">
                                             <a class="btn btn-warning btn-xs"
                                             href="{{ url('view-score-student/'.$class_subject_id->id.'/'.$student->id) }}" role="button" title="Cập nhật điểm">
@@ -217,7 +229,6 @@
 
     <script>
         $(function () {
-            //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })

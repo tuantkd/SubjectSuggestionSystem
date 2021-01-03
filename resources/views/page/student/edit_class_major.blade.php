@@ -44,14 +44,20 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group row">
-                                    <div class="col-12 col-sm-6">
+                                    <div class="col-12 col-sm-3">
                                         <label for="">Mã lớp học</label>
                                         <input type="text" name="" class="form-control" disabled value="{{ $edit_class_major->class_major_code }}">
                                     </div>
-                                    <div class="col-12 col-sm-6">
+                                    <div class="col-12 col-sm-7">
                                         <label for="">Tên lớp học</label>
                                         <input type="text" name="inputClassMajorName" required
                                         value="{{ $edit_class_major->class_major_name }}" class="form-control" placeholder="Nhập tên lớp học">
+                                    </div>
+                                    <div class="col-12 col-sm-2">
+                                        <label for="">Sỉ số</label>
+                                        <input type="number" name="inputTotalNumber" required
+                                        value="{{ $edit_class_major->class_major_total_number }}" class="form-control"
+                                               placeholder="Sỉ số lớp">
                                     </div>
                                 </div>
                                 <div class="form-group row">

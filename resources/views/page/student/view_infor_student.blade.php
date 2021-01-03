@@ -347,6 +347,11 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer p-2 text-right">
+                            {{--<a class="btn btn-warning btn-sm"
+                               href="{{ url('test-demo/'.$infor_students->id) }}" role="button">
+                                <i class="fa fa-book"></i> DEMO TEST
+                            </a>--}}
+
                             <a class="btn btn-warning btn-sm"
                                href="{{ url('run-script-python/'.$infor_students->id) }}" role="button">
                                 <i class="fa fa-book"></i> GỢI Ý HỌC PHẦN

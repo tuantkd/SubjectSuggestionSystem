@@ -393,5 +393,8 @@ Route::middleware([CheckLogin::class])->group(function () {
     /*============================================================================*/
     //RUN PYTHON
     Route::get('run-script-python/{id_student}', [AdminController::class, 'run_script_python']);
+
+    //VIEW TABLE
+    Route::get('test-demo/{id_student}', [AdminController::class, 'test_demo']);
     /*============================================================================*/
 });

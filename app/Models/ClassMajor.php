@@ -12,7 +12,7 @@ class ClassMajor extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['id', 'major_id', 'course_id', 'class_major_code', 'class_major_name'];
+    protected $fillable = ['id', 'major_id', 'course_id', 'class_major_code', 'class_major_name', 'class_major_total_number'];
 
     //Lớp Chuyên ngành thuộc Chuyên ngành
     public function Major()

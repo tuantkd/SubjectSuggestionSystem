@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\PropertyStudentExport;
 use App\Models\PropertyStudent;
+use App\Models\SubjectStudentStudy;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -799,6 +800,7 @@ class AdminController extends Controller
         $add_class_major->course_id = $request->input('inputCourseId');
         $add_class_major->class_major_code = $request->input('inputClassMajorCode');
         $add_class_major->class_major_name = $request->input('inputClassMajorName');
+        $add_class_major->class_major_total_number = $request->input('inputTotalNumber');
         $add_class_major->save();
 
         $add_class_major_session = $request->session()->get('add_class_major_session');
@@ -812,6 +814,7 @@ class AdminController extends Controller
         $update_class_major->major_id = $request->input('inputMajorId');
         $update_class_major->course_id = $request->input('inputCourseId');
         $update_class_major->class_major_name = $request->input('inputClassMajorName');
+        $update_class_major->class_major_total_number = $request->input('inputTotalNumber');
         $update_class_major->save();
 
         $update_class_major_session = $request->session()->get('update_class_major_session');
@@ -1644,30 +1647,60 @@ class AdminController extends Controller
             }
         }
 
-        //Làm rỗng xóa DB trước
+
+        //Làm rỗng bảng "subject_student_studies" môn học sinh viên đã học để add mới vào
+        DB::table('subject_student_studies')->truncate();
+
+        //Lọc các môn học sinh viên đã học vào bảng "subject_student_studies"
+        $scores = DB::table('detail_scores')->where('student_id', $infor_students->id)->get();
+        foreach ($scores->unique('class_subject_id') as $score){
+            $class_subjects = DB::table('class_subjects')->where('id', $score->class_subject_id)->get();
+            foreach ($class_subjects as $class_subject){
+                $subject_stus = DB::table('subjects')->where('id', $class_subject->subject_id)->get();
+                foreach ($subject_stus as $data){
+
+                    $add = new SubjectStudentStudy();
+                    $add->class_subject_id = $score->class_subject_id;
+                    $add->save();
+
+                }
+            }
+        }
+
+        //Làm rỗng bảng "property_students" xóa DB trước
         DB::table('property_students')->truncate();
 
-        //Thêm vào bảng thuộc tính sinh viên chạy máy học
-        $score_student = DB::table('detail_scores')->where('student_id', $infor_students->id)->latest()->first();
-        $class_students = DB::table('class_subjects')->where('id','<>',$score_student->class_subject_id)->latest()->get();
-        foreach($class_students as $value_class){
+        //lọc các môn học chưa học của sinh viên vào bảng "property_students"
+        $diff = DB::table('subject_student_studies')->pluck('class_subject_id')->toArray();
 
-            //Lấy môn học
-            $value_subject = DB::table('subjects')->where('id','=',$value_class->subject_id)->first();
+        $class_subject_all = DB::table('class_subjects')
+            ->whereNotIn('id', $diff)->latest()->orderBy('semester_year_id', 'desc')->get();
+        foreach ($class_subject_all->unique('subject_id') as $class_sub){
 
             //Lấy mã số sinh viên
             $get_student = DB::table('students')->where('id', $infor_students->id)->first();
 
             //Lấy học kỳ năm học
-            $semester_year = DB::table('semester_years')->where('id', $value_class->semester_year_id)->first();
+            $semester_year = DB::table('semester_years')
+                ->where('id', $class_sub->semester_year_id)->orderBy('semester_year', 'desc')->first();
+            $semester = str_split($semester_year->semesteryear);
+            $years = $semester_year->semester_year; //Lấy năm học
+            $semester_arr = $semester[0]; //Lấy học kỳ
+            $semester_year_new = "Hoc_ky " . $semester_arr . " - Nam_hoc " . $years;
 
-            $add_property = new PropertyStudent();
-            $add_property->student_code = $get_student->student_code;
-            $add_property->subject_code = $value_subject->subject_code;
-            $add_property->semester_year = $semester_year->semesteryear;
-            $add_property->save();
+            //Lấy môn học
+            $subject_alls = DB::table('subjects')->where('id', $class_sub->subject_id)->latest()->get();
+            foreach ($subject_alls->unique('subject_code') as $value_subject) {
+
+                //add new property_students
+                $add_property = new PropertyStudent();
+                $add_property->student_code = $get_student->student_code;
+                $add_property->subject_code = $value_subject->subject_code;
+                $add_property->semester_year = $semester_year_new;
+                $add_property->save();
+
+            }
         }
-
 
 
         //Lưu Excel vào folder
@@ -1695,11 +1728,55 @@ class AdminController extends Controller
 
 
     /*=================================================================*/
-    //Gọi API Lấy data
-    public function get_data()
+    //VIEW TABLE
+    /*public function test_demo($id_student)
     {
-        return DetailScore::all();
-    }
+        $infor_students = Student::find($id_student);
+
+        $i=1;
+
+        DB::table('subject_student_studies')->truncate();
+
+        $scores = DB::table('detail_scores')->where('student_id', $id_student)->get();
+        foreach ($scores as $score){
+            $class_subjects = DB::table('class_subjects')->where('id', $score->class_subject_id)->get();
+            foreach ($class_subjects as $class_subject){
+                $subjects = DB::table('subjects')->where('id', $class_subject->subject_id)->get();
+                foreach ($subjects as $data){
+                    DB::table('subject_student_studies')->insert([
+                        'class_subject_id' => $class_subject->id,
+                        'subject_code' => $data->subject_code,
+                        'subject_name' => $data->subject_name
+                    ]);
+                }
+            }
+        }
+
+        $class_subject_all = DB::table('class_subjects')
+            ->whereNotIn('id', DB::table('subject_student_studies')->pluck('class_subject_id')->toArray())
+            ->get();
+
+        foreach ($class_subject_all as $class_sub){
+
+            //Lấy môn học
+            $value_subject = DB::table('subjects')->where('id','=',$class_sub->subject_id)->first();
+
+            //Lấy mã số sinh viên
+            $get_student = DB::table('students')->where('id', $infor_students->id)->first();
+
+            //Lấy học kỳ năm học
+            $semester_year = DB::table('semester_years')->where('id', $class_sub->semester_year_id)->first();
+            $semester = str_split($semester_year->semesteryear);
+            $years = $semester_year->semester_year; //Lấy năm học
+            $semester_arr = $semester[0]; //Lấy học kỳ
+            $semester_year_new = "Hoc_ky ".$semester_arr." - Nam_hoc ".$years;
+
+            print $i++." - ".$get_student->student_code." - ".$value_subject->subject_code." - ".$semester_year_new."<br>";
+        }
+
+
+
+    }*/
     /*=================================================================*/
 
 }
